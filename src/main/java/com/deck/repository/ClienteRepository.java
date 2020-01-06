@@ -1,8 +1,8 @@
-package com.deck.cliente.repository;
+package com.deck.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.deck.cliente.models.Cliente;
+import com.deck.models.Cliente;
 
 public interface ClienteRepository extends JpaRepository <Cliente, Long> {
 	

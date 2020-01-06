@@ -1,4 +1,4 @@
-package com.deck.cliente.models;
+package com.deck.models;
 
 import java.io.Serializable;
 
@@ -17,19 +17,44 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
 	private String nome;
 	private String telefone;
+	private String rua;
+	private String numCasa;
+	private String bairro;
+	private String pontoReferencia;
 
 	public String getTelefone() {
 		return telefone;
 	}
 
+	public String getNumCasa() {
+		return numCasa;
+	}
+
+	public void setNumCasa(String numCasa) {
+		this.numCasa = numCasa;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getPontoReferencia() {
+		return pontoReferencia;
+	}
+
+	public void setPontoReferencia(String pontoReferencia) {
+		this.pontoReferencia = pontoReferencia;
+	}
+
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-
-	private String endereco;
 
 	public long getId() {
 		return id;
@@ -47,12 +72,12 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getEndereco() {
-		return endereco;
+	public String getRua() {
+		return rua;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void setRua(String rua) {
+		this.rua = rua;
 	}
 
 }

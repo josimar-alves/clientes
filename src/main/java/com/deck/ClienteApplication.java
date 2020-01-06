@@ -1,4 +1,4 @@
-package com.deck.cliente;
+package com.deck;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.deck.cliente.resources;
+package com.deck.resources;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.deck.cliente.models.Cliente;
-import com.deck.cliente.repository.ClienteRepository;
+import com.deck.models.Cliente;
+import com.deck.repository.ClienteRepository;
 
 @RestController
 @RequestMapping(value="/cliente")

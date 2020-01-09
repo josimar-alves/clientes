@@ -1,13 +1,20 @@
 package com.deck.models;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "TB_VENDA")
@@ -19,7 +26,10 @@ public class Venda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private LinkedList<Produto> listaDeCompra;
+	@Autowired
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name="TB_VENDA_PRODUTO", joinColumns={@JoinColumn(name = "ID_VENDA")})
+	private List<Produto> listaDeCompra;
 
 	public long getId() {
 		return id;
@@ -29,12 +39,12 @@ public class Venda implements Serializable {
 		this.id = id;
 	}
 
-	public LinkedList<Produto> getListaDeCompra() {
+	public List<Produto> getListaDeCompra() {
 		return listaDeCompra;
 	}
 
-	public void setListaDeCompra(Produto p) {
-		this.listaDeCompra.add(p);
+	public void setListaDeCompra(List<Produto> lista) {
+		this.listaDeCompra = lista;
 	}
 	
 	public double getValorTotal () {

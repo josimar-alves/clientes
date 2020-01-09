@@ -19,11 +19,14 @@ import com.deck.repository.ProdutoRepository;
 @RequestMapping(value="/produto")
 public class ProdutoResource {
 	
+	public ProdutoResource() {
+	}
+	
 	@Autowired
 	ProdutoRepository produtoRepository;
 	
 	@GetMapping("/getAll")
-	public List<Produto> listaClitentes() {
+	public List<Produto> getAllProduto() {
 		return produtoRepository.findAll();
 	}
 	
@@ -32,17 +35,17 @@ public class ProdutoResource {
 		return produtoRepository.findByid(id);
 	}
 	
-	@PostMapping("/addProduto")
+	@PostMapping("/add")
 	public Produto addProduto (@RequestBody Produto produto) {
 		return produtoRepository.save(produto);
 	}
 	
-	@PutMapping("/modifyProduto")
+	@PutMapping("/modify")
 	public Produto modifyProduto (@RequestBody Produto produto) {
 		return produtoRepository.save(produto);
 	}
 	
-	@DeleteMapping("/removeProduto")
+	@DeleteMapping("/delete")
 	public void removeProduto (@RequestBody Produto produto) {
 		produtoRepository.delete(produto);
 	}

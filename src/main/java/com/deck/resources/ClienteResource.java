@@ -32,17 +32,17 @@ public class ClienteResource {
 		return clienteRepository.findByid(id);
 	}
 	
-	@PostMapping("/addCliente")
+	@PostMapping("/add")
 	public Cliente addCliente (@RequestBody Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}
 	
-	@PutMapping("/modifyCliente")
+	@PutMapping("/modify")
 	public Cliente modifyCliente (@RequestBody Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}
 	
-	@DeleteMapping("/removeCliente")
+	@DeleteMapping("/delete")
 	public void removeCliente (@RequestBody Cliente cliente) {
 		clienteRepository.delete(cliente);
 	}

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deck.models.Produto;
 import com.deck.models.Venda;
 import com.deck.repository.VendaRepository;
 
@@ -32,17 +33,19 @@ public class VendaResource {
 		return vendaRepository.findByid(id);
 	}
 	
-	@PostMapping("/addVenda")
-	public Venda addVenda (@RequestBody Venda venda) {
+	@PostMapping("/add")
+	public Venda addVenda (@RequestBody List<Produto> lista) {
+		Venda venda = new Venda();
+		venda.setListaDeCompra(lista);
 		return vendaRepository.save(venda);
 	}
 	
-	@PutMapping("/modifyVenda")
+	@PutMapping("/modify")
 	public Venda modifyVenda (@RequestBody Venda venda) {
 		return vendaRepository.save(venda);
 	}
 	
-	@DeleteMapping("/removeVenda")
+	@DeleteMapping("/delete")
 	public void removeVenda (@RequestBody Venda venda) {
 		vendaRepository.delete(venda);
 	}

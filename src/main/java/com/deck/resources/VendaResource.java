@@ -1,5 +1,6 @@
 package com.deck.resources;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deck.models.Produto;
 import com.deck.models.Venda;
+import com.deck.repository.ProdutoRepository;
 import com.deck.repository.VendaRepository;
 
 @RestController
@@ -22,6 +24,7 @@ public class VendaResource {
 	
 	@Autowired
 	VendaRepository vendaRepository;
+	ProdutoRepository produtoRepository;
 	
 	@GetMapping("/getAll")
 	public List<Venda> listaClitentes() {
@@ -35,8 +38,14 @@ public class VendaResource {
 	
 	@PostMapping("/add")
 	public Venda addVenda (@RequestBody List<Produto> lista) {
+		List<Produto> produtos = new LinkedList<Produto>();
 		Venda venda = new Venda();
-		venda.setListaDeCompra(lista);
+				
+		for (Produto p : lista) {
+			produtos.add(produtoRepository.findByid(p.getId()));
+		}
+		
+		venda.setListaDeCompra(produtos);
 		return vendaRepository.save(venda);
 	}
 	

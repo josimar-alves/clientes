@@ -3,6 +3,7 @@ package com.deck.resources;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.deck.models.Produto;
 import com.deck.repository.ProdutoRepository;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value="/produto")
 public class ProdutoResource {
@@ -40,13 +42,17 @@ public class ProdutoResource {
 		return produtoRepository.save(produto);
 	}
 	
-	@PutMapping("/modify")
-	public Produto modifyProduto (@RequestBody Produto produto) {
-		return produtoRepository.save(produto);
+	@PutMapping("/modify/{id}")
+	public Produto modifyProduto (@PathVariable(value="id") long id, @RequestBody Produto produto) {
+		Produto p = produtoRepository.findByid(id);
+		p.setNome(produto.getNome());
+		p.setDescricao(produto.getNome());
+		p.setPreco(produto.getPreco());
+		return produtoRepository.save(p);
 	}
 	
-	@DeleteMapping("/delete")
-	public void removeProduto (@RequestBody Produto produto) {
-		produtoRepository.delete(produto);
+	@DeleteMapping("/delete/{id}")
+	public void removeProduto (@PathVariable(value="id") long id) {
+		produtoRepository.deleteById(id);
 	}
 }

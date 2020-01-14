@@ -1,0 +1,6 @@
+{
+    "name": "My extension",
+    "permissions": [
+      "http://localhost:8080/"
+    ]
+  }

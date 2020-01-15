@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Angular 6 + Spring Boot 2 + Spring Data JPA + MySQL + CRUD Tutorial';
+  title = 'Deck Delivery - Sistema de Vendas';
 }

@@ -1,19 +1,19 @@
-<h3>Create Employee</h3>
+<h3>Adicionar Produto</h3>
 <div [hidden]="submitted" style="width: 400px;">
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="name">First Name</label>
-      <input type="text" class="form-control" id="firstName" required [(ngModel)]="employee.nome" name="firstName">
+      <label for="name">Nome</label>
+      <input type="text" class="form-control" id="nome" required [(ngModel)]="employee.nome" name="nome">
     </div>
 
     <div class="form-group">
-      <label for="name">Last Name</label>
-      <input type="text" class="form-control" id="lastName" required [(ngModel)]="employee.descricao" name="lastName">
+      <label for="name">Descrição</label>
+      <input type="text" class="form-control" id="descricao" required [(ngModel)]="employee.descricao" name="descricao">
     </div>
 
     <div class="form-group">
-      <label for="name">First Name</label>
-      <input type="text" class="form-control" id="emailId" required [(ngModel)]="employee.preco" name="emailId">
+      <label for="name">Preço</label>
+      <input type="text" class="form-control" id="preco" required [(ngModel)]="employee.preco" name="preco">
     </div>
 
     <button type="submit" class="btn btn-success">Submit</button>

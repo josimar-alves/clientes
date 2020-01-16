@@ -1,33 +1,24 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h1>Produtos</h1>
-  </div>
-  <div class="panel-body">
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>
-
-            <input type="text" class="form-control" id="nome" placeholder="Nome" >
-
-          </th>
-          <th>Descrição</th>
-          <th>Preço</th>
-          <th>Remover</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let employee of employees | async">
-          <td>{{employee.nome}}</td>
-          <td>{{employee.descricao}}</td>
-          <td>{{employee.preco}}</td>
-          <td><button (click)="deleteEmployee(employee.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
+<form>
+  <div class="form-group">
     
+    <select>
+      <input type="text" ng-class="{ myFocus: focus, myBlur: blur }">
+      <option (blur)="populaDadosForm(produto)" *ngFor="let produto of produtos | async" [value]="produto.nome">{{produto.nome}}</option>
+    </select>
   </div>
-</div>
-
+  <div class="form-group">
+    <label for="let produto of produtos | async">{{produto.descricao}}</label>
+    <input type="text" (blur)="populaDadosForm(produto)" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">Entrada de arquivo</label>
+    <input type="file" id="exampleInputFile">
+    <p class="help-block">Exemplo de texto de ajuda em nível de bloco.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Me selecione
+    </label>
+  </div>
+  <button type="submit" class="btn btn-default">Enviar</button>
+</form>

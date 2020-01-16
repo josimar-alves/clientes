@@ -3,6 +3,7 @@ import { EmployeeService } from "./../employee.service";
 import { Employee } from "./../employee";
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-venda-form',
@@ -21,6 +22,9 @@ export class VendaFormComponent implements OnInit {
 
   reloadData() {
     this.produtos = this.employeeService.getEmployeesList();
-  }
+  } 
 
+  @HostListener('blur', ['$produto.nome']) populaDadosForm (produto) {
+    console.log("lol")
+  }
 }

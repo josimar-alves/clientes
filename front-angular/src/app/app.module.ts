@@ -8,6 +8,10 @@ import { EmployeeDetailsComponent } from './employee-details/employee-details.co
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { VendaFormComponent } from './venda-form/venda-form.component';
+import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +24,8 @@ import { VendaFormComponent } from './venda-form/venda-form.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,10 @@
+/*.ng-invalid.ng-touched:not(form) {
+    border: 1px solid red;
+}*/
+
+.center-align {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -7,6 +7,8 @@ import { map } from '../../../../node_modules/rxjs/operators';
 
 @Injectable()
 export class DropdownService {
+  cliente: Cliente = new Cliente();
+
   constructor(private http: HttpClient) {}
 
   getEstadosBr() {
@@ -14,7 +16,14 @@ export class DropdownService {
   }
 
   getClientes() {
-    return this.http.get<Cliente[]>('http://localhost:8080/produto/getAll/');
+    return this.http.get<Cliente[]>('http://localhost:8080/cliente/getAll');
+  }
+
+  addCliente(cliente: Object) {
+    this.cliente.bairro = cliente.toLocaleString();
+    console.log("Em baixo");
+    this.http.post('http://localhost:8080/cliente/add', this.cliente,);
+    console.log("Em cima");
   }
 
   getCidades(idEstado: number) {

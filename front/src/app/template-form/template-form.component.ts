@@ -25,7 +25,7 @@ export class TemplateFormComponent implements OnInit {
 
 private value:any = {};
 private _disabledV:string = '0';
-private disabled:boolean = false;
+private disabled:boolean = false; 
 
 private get disabledV():string {
   return this._disabledV;
@@ -65,16 +65,7 @@ public refreshValue(value:any):void {
   };
 
   onSubmit(formulario) {
-    console.log(formulario);
-
-    // form.value
-    // console.log(this.usuario);
-
-    this.http.post('https://httpbin.org/post', JSON.stringify(formulario.value))
-      .subscribe(dados => {
-        console.log(dados);
-        formulario.form.reset();
-      });
+    this.dropdownServide.addCliente(formulario.value.endereco);
   }
 
   constructor(
@@ -84,10 +75,8 @@ public refreshValue(value:any):void {
   ) {  }
 
   ngOnInit() {
-    console.log("lol");
     this.dropdownServide.getClientes().subscribe(dados => {
       this.clientes = dados;
-      console.log(dados);
     })
   }
 
@@ -102,52 +91,43 @@ public refreshValue(value:any):void {
     };
   }
 
-  consultaCEP(cep, form) {
-    // Nova variável "cep" somente com dígitos.
-    cep = cep.replace(/\D/g, '');
-
-    if (cep != null && cep !== '') {
-      this.cepService.consultaCEP(cep)
-      .subscribe(dados => this.populaDadosForm(dados, form));
-    }
-  }
-
-
 
   setCliente(cliente, form) { 
     if (cliente != null && cliente !== '') {
       this.populaDadosForm(cliente, form);
     }
-  
   }
 
   populaDadosForm(dados, formulario) {
-
-    console.log(dados);
-
     formulario.form.patchValue({
       endereco: {
-        rua: dados.descricao,
-        numero: dados.nome,
-        // cep: dados.cep,
-        complemento: dados.preco,
+        nomeCliente: dados.nome,
+        rua: dados.rua,
+        numero: dados.numCasa,
         bairro: dados.bairro,
-        cidade: dados.localidade,
-        estado: dados.uf
+        telefone: dados.telefone, 
+        pontoReferencia: dados.pontoReferencia
       }
     });
 
     // console.log(form);
   }
 
+  getTotal(tradicional, canadense, original, australiano, cheddarSimples, cheddarDuplo, onions, comboRefri, comboCerveja, batata, batataCheddar, refrigerante) {
+    
+    return (tradicional*10.00 + canadense*12.00 + original*12.00 + australiano*12.00 + cheddarSimples*12.00 +
+    cheddarDuplo*14.00 + onions*7.00 + comboRefri*5.00 + comboCerveja*7.00 + batata*3.50 +
+    batataCheddar*6.00 + refrigerante*2.00 + 1).toFixed(2);
+  }
+
   resetaDadosForm(formulario) {
     formulario.form.patchValue({
       endereco: {
         rua: null,
-        complemento: null,
+        numero: null,
         bairro: null,
-        cidade: null,
-        estado: null
+        telefone: null, 
+        pontoReferencia: null
       }
     });
   }

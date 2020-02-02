@@ -21,8 +21,17 @@
      </div>
   </div>
 
+  <div ngModelGroup="endereco">
+
   <div class="form-group">
-    <div class="col-md-7">
+
+    <div class="col-md-5">
+      <label for="nomeCliente" class="control-label">Nome Cliente</label>
+      <input type="text" class="form-control" id="nomeCliente" 
+        name="nomeCliente" ngModel #nomeCliente="ngModel">
+    </div>
+
+    <div class="col-md-6">
       <label for="rua" class="control-label">Rua</label>
       <input type="text" class="form-control" id="rua" 
         name="rua" ngModel #rua="ngModel">
@@ -34,31 +43,31 @@
         name="numero" ngModel #numero="ngModel">
     </div>
 
-    <div class="col-md-4">
+    
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-3">
       <label for="bairro" class="control-label">Bairro</label>
       <input type="text" class="form-control" id="bairro" 
         name="bairro" ngModel #bairro="ngModel">
     </div>
-  </div>
-  
-  <div class="form-group">
-    <div class="col-md-4">
+
+    <div class="col-md-2">
       <label for="telefone" class="control-label">Telefone</label>
       <input type="text" class="form-control" id="telefone" 
         name="telefone" ngModel #telefone="ngModel">
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-7">
       <label for="pontoReferencia" class="control-label">Ponto de Referência</label>
       <input type="text" class="form-control" id="pontoReferencia" 
         name="pontoReferencia" ngModel #pontoReferencia="ngModel">
     </div>
   </div>
-  
+</div>
 <hr>
 <hr>
-<hr>
-
 <div class="form-group">
   <div class="col-md-2">
     <label for="tradicional" class="control-label">Deck Tradicional</label>
@@ -135,20 +144,52 @@
   </div>
 </div>
 
-<hr>
-<hr>
-<hr>
+<div class="form-group">
+  <div class="col-md-12">
+    <label for="obs" class="control-label">Observações</label>
+    <input type="text" class="form-control" id="obs" 
+      name="obs" ngModel #obs="ngModel">
+  </div>
+</div>
 
-Tradicional: {{tradicional.value}}
-
-<hr>
-<hr>
-<hr>
-
-  <button type="submit" class="btn btn-primary"
-    [disabled]="!f.valid">Submit</button>
-
-    <app-form-debug [form]="f"></app-form-debug>
-
-
+<font size="1">
+******* CUPOM NÃO-FISCAL *******
+<br>
+********* DECK DELIVERY **********
+<br>
+<br>
+------------ Dados do Cliente ------------
+<br><br>
+<b>Nome:</b> {{nomeCliente.value}}
+<br>
+<b>Telefone:</b> {{telefone.value}}
+<br>
+<b>Rua:</b> {{rua.value}}
+<br>
+<b>Nº:</b> {{numero.value}}
+<br>
+<b>Bairro:</b> {{bairro.value}}
+<br>
+<b>Ponto de Ref.:</b> {{pontoReferencia.value}}
+<br><br>
+------------------ Pedido ------------------
+<br><br>
+<div *ngIf="tradicional.value > 0"><b>Deck Tradicional:</b> R$ 10.00 x {{tradicional.value}} uni.</div>
+<div *ngIf="canadense.value > 0"><b>Deck Canadense:</b> R$ 12.00 x {{canadense.value}} uni.</div>
+<div *ngIf="original.value > 0"><b>Deck Original:</b> R$ 12,00 x {{original.value}} uni.</div>
+<div *ngIf="australiano.value > 0"><b>Deck Australiano:</b> R$ 12.00 x {{australiano.value}} uni.</div>
+<div *ngIf="cheddarSimples.value > 0"><b>Deck Cheddar Simples:</b> R$ 12.00 x {{cheddarSimples.value}} uni.</div>
+<div *ngIf="cheddarDuplo.value > 0"><b>Deck Cheddar Duplo:</b> R$ 14.00 x {{cheddarDuplo.value}} uni.</div>
+<div *ngIf="onions.value > 0"><b>Onions:</b> R$ 7.00 x {{onions.value}} uni.</div>
+<div *ngIf="comboRefri.value > 0"><b>Combo 1 (refri):</b> R$ 5.00 x {{comboRefri.value}} uni.</div>
+<div *ngIf="comboCerveja.value > 0"><b>Combo 2 (Cerveja):</b> R$ 7.00 x {{comboCerveja.value}} uni.</div>
+<div *ngIf="batata.value > 0"><b>Batata Frita:</b> R$ 3.50 x {{batata.value}} uni.</div>
+<div *ngIf="batataCheddar.value > 0"><b>Batata Cheddar Bacon:</b> R$ 6.00 x {{batataCheddar.value}} uni.</div>
+<div *ngIf="refrigerante.value > 0"><b>Refrigerante (250 ml):</b> R$ 2.00 x {{refrigerante.value}} uni.</div>
+<b>Entrega:</b> R$ 1.00
+<br><br>
+<div *ngIf="obs.value !== ''"><b>*Obs:</b> {{obs.value}}</div>
+<br><br>
+</font>
+<b>TOTAL:</b> R$ {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
 </form>

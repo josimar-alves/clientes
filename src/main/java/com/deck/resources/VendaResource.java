@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deck.dto.VendaDTO;
+import com.deck.models.ItemVenda;
 import com.deck.models.Produto;
 import com.deck.models.Venda;
+import com.deck.repository.ItemVendaRepository;
 import com.deck.repository.ProdutoRepository;
 import com.deck.repository.VendaRepository;
 
@@ -25,6 +28,9 @@ public class VendaResource {
 	@Autowired
 	VendaRepository vendaRepository;
 	ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private ItemVendaRepository itemVendaRepository;
 	
 	@GetMapping("/getAll")
 	public List<Venda> listaClitentes() {
@@ -45,7 +51,7 @@ public class VendaResource {
 			produtos.add(produtoRepository.findByid(p.getId()));
 		}
 		
-		venda.setListaDeCompra(produtos);
+//		venda.setListaDeCompra(produtos);
 		return vendaRepository.save(venda);
 	}
 	
@@ -58,4 +64,41 @@ public class VendaResource {
 	public void removeVenda (@RequestBody Venda venda) {
 		vendaRepository.delete(venda);
 	}
+	
+	
+	
+	
+	
+	@PostMapping("/addTest")
+	public Venda addVendaTest (@RequestBody VendaDTO dto) {
+		Venda venda = dto.getVenda();
+		venda = vendaRepository.save(venda);
+		
+		for(ItemVenda item: dto.getItems()) {
+			item.setVenda(venda);
+			itemVendaRepository.save(item);
+		}
+		
+		return venda;
+	}
+	
+	@GetMapping("/getTest/{id}")
+	public VendaDTO getVendaTest (@PathVariable(value="id") long id) {
+		List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(id);
+		VendaDTO vendaDTO = new VendaDTO();
+		vendaDTO.setVenda(items.get(0).getVenda());
+		
+		List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+		for(ItemVenda i: items) {
+			i.setVenda(null);
+			itemsAux.add(i);
+		}
+		
+		vendaDTO.setItems(itemsAux);
+		return vendaDTO;
+	}
+	
+	
+	
+	
 }

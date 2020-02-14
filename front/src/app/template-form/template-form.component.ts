@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { Cliente } from '../shared/models/cliente';
 import { DropdownService } from '../shared/services/dropdown.service';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-template-form',
@@ -11,18 +12,7 @@ import { DropdownService } from '../shared/services/dropdown.service';
 })
 export class TemplateFormComponent implements OnInit {
 
-  private baseUrl = 'http://localhost:8080/produto';
-
-  public items:Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
-  'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
-  'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
-  'Düsseldorf', 'Essen', 'Frankfurt', 'Genoa', 'Glasgow', 'Gothenburg',
-  'Hamburg', 'Hannover', 'Helsinki', 'Kraków', 'Leeds', 'Leipzig', 'Lisbon',
-  'London', 'Madrid', 'Manchester', 'Marseille', 'Milan', 'Munich', 'Málaga',
-  'Naples', 'Palermo', 'Paris', 'Poznań', 'Prague', 'Riga', 'Rome',
-  'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
-  'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
-  'Zagreb', 'Zaragoza', 'Łódź'];
+  private baseUrl = 'http://localhost:8080/cliente';
 
 private value:any = {};
 private _disabledV:string = '0';
@@ -101,9 +91,9 @@ public refreshValue(value:any):void {
 
   populaDadosForm(dados, formulario) {
     formulario.form.patchValue({
-      endereco: {
+      cliente: {
         clienteID: dados.id,
-        nomeCliente: dados.nome,
+        nome: dados.nome,
         rua: dados.rua,
         numero: dados.numCasa,
         bairro: dados.bairro,
@@ -123,14 +113,14 @@ public refreshValue(value:any):void {
   }
 
   salvarCliente(formulario) {
-    let valueSubmit = Object.assign({}, formulario.value.endereco);
-   
-    this.dropdownServide.addCliente(JSON.stringify(valueSubmit));
-
+    let valueSubmit = Object.assign({}, formulario.value.cliente);
+     
     if (valueSubmit.clienteID === null || valueSubmit.clienteID === "") {
       let json = JSON.stringify(valueSubmit);
-      console.log(json.valueOf);
-      console.log(this.http.post<any>(`${this.baseUrl}/add`, json));
+      let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
+      this.http.post(`${this.baseUrl}/add`, json, {headers}).toPromise().then((data:any) => {
+        console.log(this.populaDadosForm(data, formulario));
+      });
     } else {
       console.log("não cadastra")
     }
@@ -138,9 +128,9 @@ public refreshValue(value:any):void {
 
    limparCliente(formulario) {
     formulario.form.patchValue({
-      endereco: {
+      cliente: {
         clienteID: null,
-        nomeCliente: null,
+        nome: null,
         rua: null,
         numero: null,
         bairro: null,
@@ -150,6 +140,65 @@ public refreshValue(value:any):void {
     });
    }
 
-   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  public maskNumber = [/[0-9]/, /\d/, /\d/, /\d/, /\d/];
+
+
+  salvarVenda(formulario) {
+
+
+    var venda = 
+    {
+        "name": name
+    };
+
+
+
+    let valueSubmit = Object.assign({}, formulario.value.itemsVenda);
+    let json = JSON.parse((JSON.stringify(valueSubmit)));
+    console.log(json.tradicional)
+
+
+    json.forEach(element => {
+      console.log(element)
+    });
+
+
+    if (valueSubmit.clienteID === null || valueSubmit.clienteID === "") {
+      let json = JSON.stringify(valueSubmit);
+      let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
+      this.http.post(`${this.baseUrl}/add`, json, {headers}).toPromise().then((data:any) => {
+        console.log(this.populaDadosForm(data, formulario));
+      });
+    } else {
+      console.log("não cadastra")
+    }
+   }
+
+   limparVenda(formulario) {
+    formulario.form.patchValue({
+      itemsVenda: {
+        tradicional: null,
+        canadense: null,
+        original: null,
+        australiano: null,
+        cheddarSimples: null,
+        cheddarDuplo: null, 
+        onions: null,
+        comboRefri: null,
+        comboCerveja: null,
+        batata: null,
+        batataCheddar: null,
+        refrigerante: null,
+        observacoes: null 
+      }
+    });
+   }
+
+
+
+
+
+
 
 }

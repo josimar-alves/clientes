@@ -25,6 +25,16 @@ public class Venda implements Serializable {
 	private Cliente cliente;
 	
 	private Date data;
+	
+	private String obs;
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String observacoes) {
+		this.obs = observacoes;
+	}
 
 	public String getData() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm:ss");   

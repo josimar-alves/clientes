@@ -21,8 +21,6 @@ import com.deck.models.Venda;
 import com.deck.repository.ItemVendaRepository;
 import com.deck.repository.ProdutoRepository;
 import com.deck.repository.VendaRepository;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @RestController
 @RequestMapping(value = "/venda")

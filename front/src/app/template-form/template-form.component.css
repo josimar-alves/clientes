@@ -8,3 +8,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.ng-invalid:not(form-group, form) {
+    border: 1px solid red;
+}

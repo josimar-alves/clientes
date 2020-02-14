@@ -5,13 +5,10 @@
       
     </div>
 
-    <div class="col-sm-12">
-      
-      <label type="text" [ngModel]="usuario.nome"  required #nome="ngModel"></label>
-      
-      <label for="nome" class="control-label">Cliente</label>
-      
-      <ng-select [items]="clientes" bindLabel="nome" required #searchBar (change)="searchBar.blur()" 
+    <div class="col-sm-10">
+            <label type="text" [ngModel]="usuario.nome"  required #nome="ngModel"></label>
+           <label for="nome" class="control-label">Cliente</label>
+            <ng-select [items]="clientes" bindLabel="nome" required #searchBar (change)="searchBar.blur()" 
       (change)="setCliente($event,f)"></ng-select>
 
       <app-campo-control-erro 
@@ -19,6 +16,14 @@
         msgErro="Nome é obrigatório.">
       </app-campo-control-erro>
      </div>
+
+     <br><br>
+     <div class="col-md-1 text-center"> 
+      <button type="button" class="btn btn-primary" (click)="salvarCliente(f)">Salvar</button>
+    </div>
+     <div class="col-md-1 text-center"> 
+      <button type="button" class="btn btn-primary" (click)="limparCliente(f)">Limpar</button>
+    </div>
   </div>
 
   <div ngModelGroup="endereco">
@@ -31,7 +36,7 @@
         name="nomeCliente" ngModel #nomeCliente="ngModel">
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-5">
       <label for="rua" class="control-label">Rua</label>
       <input type="text" class="form-control" id="rua" 
         name="rua" ngModel #rua="ngModel">
@@ -41,6 +46,12 @@
       <label for="numero" class="control-label">Número</label>
       <input type="text" class="form-control" id="numero" 
         name="numero" ngModel #numero="ngModel">
+    </div>
+
+    <div class="col-md-1">
+      <label for="clienteID" class="control-label">ClienteID</label>
+      <input type="text" class="form-control" id="clienteID" 
+        name="clienteID" ngModel #numero="ngModel" readonly>
     </div>
 
     
@@ -56,7 +67,7 @@
     <div class="col-md-2">
       <label for="telefone" class="control-label">Telefone</label>
       <input type="text" class="form-control" id="telefone" 
-        name="telefone" ngModel #telefone="ngModel">
+        name="telefone" ngModel #telefone="ngModel" [textMask]="{mask: maskPhone}" placeholder="(99) 9 9999-9999">
     </div>
 
     <div class="col-md-7">

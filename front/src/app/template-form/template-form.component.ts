@@ -11,6 +11,7 @@ import { DropdownService } from '../shared/services/dropdown.service';
 })
 export class TemplateFormComponent implements OnInit {
 
+  private baseUrl = 'http://localhost:8080/produto';
 
   public items:Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
   'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
@@ -65,7 +66,7 @@ public refreshValue(value:any):void {
   };
 
   onSubmit(formulario) {
-    this.dropdownServide.addCliente(formulario.value.endereco);
+    console.log(formulario)
   }
 
   constructor(
@@ -101,6 +102,7 @@ public refreshValue(value:any):void {
   populaDadosForm(dados, formulario) {
     formulario.form.patchValue({
       endereco: {
+        clienteID: dados.id,
         nomeCliente: dados.nome,
         rua: dados.rua,
         numero: dados.numCasa,
@@ -120,9 +122,25 @@ public refreshValue(value:any):void {
     batataCheddar*6.00 + refrigerante*2.00 + 1).toFixed(2);
   }
 
-  resetaDadosForm(formulario) {
+  salvarCliente(formulario) {
+    let valueSubmit = Object.assign({}, formulario.value.endereco);
+   
+    this.dropdownServide.addCliente(JSON.stringify(valueSubmit));
+
+    if (valueSubmit.clienteID === null || valueSubmit.clienteID === "") {
+      let json = JSON.stringify(valueSubmit);
+      console.log(json.valueOf);
+      console.log(this.http.post<any>(`${this.baseUrl}/add`, json));
+    } else {
+      console.log("não cadastra")
+    }
+   }
+
+   limparCliente(formulario) {
     formulario.form.patchValue({
       endereco: {
+        clienteID: null,
+        nomeCliente: null,
         rua: null,
         numero: null,
         bairro: null,
@@ -130,6 +148,8 @@ public refreshValue(value:any):void {
         pontoReferencia: null
       }
     });
-  }
+   }
+
+   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
 }

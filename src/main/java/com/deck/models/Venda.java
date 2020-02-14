@@ -1,6 +1,8 @@
 package com.deck.models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,17 @@ public class Venda implements Serializable {
 		
 	@ManyToOne
 	private Cliente cliente;
+	
+	private Date data;
+
+	public String getData() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm:ss");   
+		return formatter.format(data);
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
 
 	public Cliente getCliente() {
 		return cliente;

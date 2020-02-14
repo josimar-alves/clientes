@@ -27,6 +27,18 @@ public class ItemVenda {
 		return produto;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Double getValorTotalItem() {
+		return produto.getPreco()*quantidade;
+	}
+
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}

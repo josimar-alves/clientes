@@ -1,5 +1,6 @@
 package com.deck.resources;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,85 +21,105 @@ import com.deck.models.Venda;
 import com.deck.repository.ItemVendaRepository;
 import com.deck.repository.ProdutoRepository;
 import com.deck.repository.VendaRepository;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @RestController
-@RequestMapping(value="/venda")
+@RequestMapping(value = "/venda")
 public class VendaResource {
-	
+
 	@Autowired
 	VendaRepository vendaRepository;
 	ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	private ItemVendaRepository itemVendaRepository;
-	
+
 	@GetMapping("/getAll")
 	public List<Venda> listaClitentes() {
 		return vendaRepository.findAll();
 	}
-	
+
 	@GetMapping("/get/{id}")
-	public Venda getVenda (@PathVariable(value="id") long id) {
+	public Venda getVenda(@PathVariable(value = "id") long id) {
 		return vendaRepository.findByid(id);
 	}
-	
+
 	@PostMapping("/add")
-	public Venda addVenda (@RequestBody List<Produto> lista) {
+	public Venda addVenda(@RequestBody List<Produto> lista) {
 		List<Produto> produtos = new LinkedList<Produto>();
 		Venda venda = new Venda();
-				
+
 		for (Produto p : lista) {
 			produtos.add(produtoRepository.findByid(p.getId()));
 		}
-		
-//		venda.setListaDeCompra(produtos);
+
+		// venda.setListaDeCompra(produtos);
 		return vendaRepository.save(venda);
 	}
-	
+
 	@PutMapping("/modify")
-	public Venda modifyVenda (@RequestBody Venda venda) {
+	public Venda modifyVenda(@RequestBody Venda venda) {
 		return vendaRepository.save(venda);
 	}
-	
+
 	@DeleteMapping("/delete")
-	public void removeVenda (@RequestBody Venda venda) {
+	public void removeVenda(@RequestBody Venda venda) {
 		vendaRepository.delete(venda);
 	}
-	
-	
-	
-	
-	
+
 	@PostMapping("/addTest")
-	public Venda addVendaTest (@RequestBody VendaDTO dto) {
+	public Venda addVendaTest(@RequestBody VendaDTO dto) {
 		Venda venda = dto.getVenda();
+		venda.setData(new Date());
 		venda = vendaRepository.save(venda);
-		
-		for(ItemVenda item: dto.getItems()) {
+
+		for (ItemVenda item : dto.getItems()) {
 			item.setVenda(venda);
 			itemVendaRepository.save(item);
 		}
-		
+
 		return venda;
 	}
-	
+
 	@GetMapping("/getTest/{id}")
-	public VendaDTO getVendaTest (@PathVariable(value="id") long id) {
+	public VendaDTO getVendaTest(@PathVariable(value = "id") long id) {
 		List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(id);
 		VendaDTO vendaDTO = new VendaDTO();
 		vendaDTO.setVenda(items.get(0).getVenda());
-		
+
 		List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
-		for(ItemVenda i: items) {
+		for (ItemVenda i : items) {
 			i.setVenda(null);
 			itemsAux.add(i);
 		}
-		
+
 		vendaDTO.setItems(itemsAux);
 		return vendaDTO;
 	}
-	
-	
-	
+
+
+	@GetMapping("/getAllTest")
+	public List<VendaDTO> getAllVendas() {
+
+		List<VendaDTO> allVendas = new LinkedList<VendaDTO>();
+
+		for (Venda v : vendaRepository.findAll()) {
+			List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(v.getId());
+			VendaDTO vendaDTO = new VendaDTO();
+			vendaDTO.setVenda(items.get(0).getVenda());
+
+			List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+			for (ItemVenda i : items) {
+				i.setVenda(null);
+				itemsAux.add(i);
+			}
+			vendaDTO.setItems(itemsAux);
+			allVendas.add(vendaDTO);
+		}
+
+		return allVendas;
+	}
+
 	
 }

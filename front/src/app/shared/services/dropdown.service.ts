@@ -20,9 +20,11 @@ export class DropdownService {
   }
 
   addCliente(cliente: Object) {
+    this.cliente.bairro = "lol";
+    this.cliente.nome = "lol";
     this.cliente.bairro = cliente.toLocaleString();
-    console.log("Em baixo");
-    this.http.post('http://localhost:8080/cliente/add', this.cliente,);
+    console.log(this.cliente);
+    console.log(this.http.post('http://localhost:8080/cliente/add', this.cliente));
     console.log("Em cima");
   }
 

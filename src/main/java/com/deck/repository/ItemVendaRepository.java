@@ -10,6 +10,5 @@ import com.deck.models.ItemVenda;
 public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
 
 	@Query(nativeQuery = true, value = "select * from tb_item_venda as iv where iv.venda_id = ?1")
-	List<ItemVenda> findItemVendaByVenda(Long idVenda);
-	
+	List<ItemVenda> findItemVendaByVenda(Long idVenda);	
 }

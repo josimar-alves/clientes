@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.deck.repository.ItemVendaRepository;
 import com.deck.repository.ProdutoRepository;
 import com.deck.repository.VendaRepository;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/venda")
 public class VendaResource {
@@ -73,8 +75,10 @@ public class VendaResource {
 		venda = vendaRepository.save(venda);
 
 		for (ItemVenda item : dto.getItems()) {
-			item.setVenda(venda);
-			itemVendaRepository.save(item);
+			if (item.getQuantidade() != null && item.getQuantidade() != 0) {
+				item.setVenda(venda);
+				itemVendaRepository.save(item);
+			}
 		}
 
 		return venda;

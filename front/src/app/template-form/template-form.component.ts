@@ -122,7 +122,7 @@ public refreshValue(value:any):void {
         console.log(this.populaDadosForm(data, formulario));
       });
     } else {
-      console.log("não cadastra")
+      console.log("Não cadastrou");
     }
    }
 
@@ -140,40 +140,8 @@ public refreshValue(value:any):void {
     });
    }
 
-   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   public maskNumber = [/[0-9]/, /\d/, /\d/, /\d/, /\d/];
-
-
-  salvarVenda(formulario) {
-
-
-    var venda = 
-    {
-        "name": name
-    };
-
-
-
-    let valueSubmit = Object.assign({}, formulario.value.itemsVenda);
-    let json = JSON.parse((JSON.stringify(valueSubmit)));
-    console.log(json.tradicional)
-
-
-    json.forEach(element => {
-      console.log(element)
-    });
-
-
-    if (valueSubmit.clienteID === null || valueSubmit.clienteID === "") {
-      let json = JSON.stringify(valueSubmit);
-      let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
-      this.http.post(`${this.baseUrl}/add`, json, {headers}).toPromise().then((data:any) => {
-        console.log(this.populaDadosForm(data, formulario));
-      });
-    } else {
-      console.log("não cadastra")
-    }
-   }
 
    limparVenda(formulario) {
     formulario.form.patchValue({
@@ -196,9 +164,79 @@ public refreshValue(value:any):void {
    }
 
 
+   salvarVenda2(formulario) {
 
+    var venda = 
+    {
+        "items": [
+          {
+            "produto": {
+              "id": 1
+            },
+            "quantidade": formulario.value.itemsVenda.tradicional
+          }, {
+            "produto": {
+              "id": 2
+            },
+            "quantidade": formulario.value.itemsVenda.canadense
+          }, {
+            "produto": {
+              "id": 3
+            },
+            "quantidade": formulario.value.itemsVenda.original
+          }, {
+            "produto": {
+              "id": 4
+            },
+            "quantidade": formulario.value.itemsVenda.australiano
+          }, {
+            "produto": {
+              "id": 5
+            },
+            "quantidade": formulario.value.itemsVenda.cheddarSimples
+          }, {
+            "produto": {
+              "id": 6
+            },
+            "quantidade": formulario.value.itemsVenda.cheddarDuplo
+          }
+        ],
+        "venda": {
+          "cliente": {
+            "id": formulario.value.cliente.clienteID
+          },
+          "observacoes": formulario.value.itemsVenda.obs
+        }
+    };
 
+    if (formulario.value.cliente.clienteID !== null && formulario.value.cliente.clienteID !== "" && this.validaVenda(formulario) === true) {
+      let jsonVenda = (JSON.stringify(venda));
+      let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
+      this.http.post('http://localhost:8080/venda/addTest', jsonVenda, {headers}).toPromise().then((data:any) => {
+        console.log("Vendeu");
+      });
+    } else {
+      console.log("Não Vendeu");
+    }
 
+    
+  
+   }
 
-
+   validaVenda(formulario) {
+     if (formulario.value.itemsVenda.tradicional >= 1) {
+      return true
+     } else if (formulario.value.itemsVenda.canadense >= 1){
+      return true;
+     } else if (formulario.value.itemsVenda.original >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.australiano >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.cheddarSimples >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.cheddarDuplo >= 1){
+      return true;
+    }
+    return false;
+   }
 }

@@ -4,15 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { Ng2SmartTableModule } from 'ng2-smart-table'; 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
+import { VendasComponent } from './vendas/vendas.component';
+import { VendasService } from './vendas/venda.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    VendasComponent
   ],
   imports: [
     BrowserModule,
@@ -23,9 +26,10 @@ import { CommonModule } from '@angular/common';
     TemplateFormModule,
     DataFormModule,
     NgSelectModule,
-    CommonModule
+    CommonModule,
+    Ng2SmartTableModule
   ],
-  providers: [],
+  providers: [VendasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

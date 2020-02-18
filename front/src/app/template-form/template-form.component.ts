@@ -4,6 +4,7 @@ import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { Cliente } from '../shared/models/cliente';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { Validators } from '@angular/forms';
+declare var $: any;
 
 @Component({
   selector: 'app-template-form',
@@ -95,7 +96,7 @@ public refreshValue(value:any):void {
         clienteID: dados.id,
         nome: dados.nome,
         rua: dados.rua,
-        numero: dados.numCasa,
+        numCasa: dados.numCasa,
         bairro: dados.bairro,
         telefone: dados.telefone, 
         pontoReferencia: dados.pontoReferencia
@@ -114,15 +115,18 @@ public refreshValue(value:any):void {
 
   salvarCliente(formulario) {
     let valueSubmit = Object.assign({}, formulario.value.cliente);
-     
     if (valueSubmit.clienteID === null || valueSubmit.clienteID === "") {
-      let json = JSON.stringify(valueSubmit);
-      let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
-      this.http.post(`${this.baseUrl}/add`, json, {headers}).toPromise().then((data:any) => {
-        console.log(this.populaDadosForm(data, formulario));
-      });
+      if (confirm("Confirmar cadastro de usuário")) {
+        let json = JSON.stringify(valueSubmit);
+        let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
+        this.http.post(`${this.baseUrl}/add`, json, {headers}).toPromise().then((data:any) => {
+          console.log(this.populaDadosForm(data, formulario));
+        });
+        this.ngOnInit();
+        this.openSnackbar("snackClienteAdicionado");
+      }
     } else {
-      console.log("Não cadastrou");
+      this.openSnackbar("snackbarClienteExistente");
     }
    }
 
@@ -132,7 +136,7 @@ public refreshValue(value:any):void {
         clienteID: null,
         nome: null,
         rua: null,
-        numero: null,
+        numCasa: null,
         bairro: null,
         telefone: null, 
         pontoReferencia: null
@@ -162,7 +166,6 @@ public refreshValue(value:any):void {
       }
     });
    }
-
 
    salvarVenda2(formulario) {
 
@@ -199,6 +202,36 @@ public refreshValue(value:any):void {
               "id": 6
             },
             "quantidade": formulario.value.itemsVenda.cheddarDuplo
+          }, {
+            "produto": {
+              "id": 7
+            },
+            "quantidade": formulario.value.itemsVenda.onions
+          }, {
+            "produto": {
+              "id": 8
+            },
+            "quantidade": formulario.value.itemsVenda.comboRefri
+          }, {
+            "produto": {
+              "id": 9
+            },
+            "quantidade": formulario.value.itemsVenda.comboCerveja
+          }, {
+            "produto": {
+              "id": 10
+            },
+            "quantidade": formulario.value.itemsVenda.batata
+          }, {
+            "produto": {
+              "id": 11
+            },
+            "quantidade": formulario.value.itemsVenda.batataCheddar
+          }, {
+            "produto": {
+              "id": 12
+            },
+            "quantidade": formulario.value.itemsVenda.refrigerante
           }
         ],
         "venda": {
@@ -209,18 +242,31 @@ public refreshValue(value:any):void {
         }
     };
 
-    if (formulario.value.cliente.clienteID !== null && formulario.value.cliente.clienteID !== "" && this.validaVenda(formulario) === true) {
-      let jsonVenda = (JSON.stringify(venda));
-      let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
-      this.http.post('http://localhost:8080/venda/addTest', jsonVenda, {headers}).toPromise().then((data:any) => {
-        console.log("Vendeu");
-      });
+    if (this.validaVenda(formulario) === true) {
+      if (formulario.value.cliente.clienteID !== null && formulario.value.cliente.clienteID !== "") {
+        if (confirm("Confirmar venda")) {
+          let jsonVenda = (JSON.stringify(venda));
+          let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
+          this.http.post('http://localhost:8080/venda/addTest', jsonVenda, {headers}).toPromise().then((data:any) => {         
+            this.openSnackbar("snackbarVendaFeita");
+          });
+        }else {
+          this.openSnackbar("snackbarClienteInexistente");
+        }
+      }
     } else {
-      console.log("Não Vendeu");
+      this.openSnackbar("snackbarErroVenda");
     }
 
-    
-  
+
+
+    this.openSnackbar("snackbarClienteInexistente");
+   }
+
+   openSnackbar(textID) {
+    var x = document.getElementById(textID);
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
    }
 
    validaVenda(formulario) {
@@ -235,6 +281,18 @@ public refreshValue(value:any):void {
     } else if (formulario.value.itemsVenda.cheddarSimples >= 1){
       return true;
     } else if (formulario.value.itemsVenda.cheddarDuplo >= 1){
+      return true;
+    }else if (formulario.value.itemsVenda.onions >= 1){
+      return true;
+     } else if (formulario.value.itemsVenda.comboRefri >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.comboCerveja >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.batata >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.batataCheddar >= 1){
+      return true;
+    } else if (formulario.value.itemsVenda.refrigerante >= 1){
       return true;
     }
     return false;

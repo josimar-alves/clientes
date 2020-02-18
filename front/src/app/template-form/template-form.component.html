@@ -1,4 +1,5 @@
 <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+
   <div class="form-group" [ngClass]="aplicaCssErro(nome)">
 
     <div class="col-sm-12">
@@ -28,7 +29,7 @@
     <div class="col-md-5">
       <label for="nome" class="control-label">Nome Cliente*</label>
       <input type="text" class="form-control" id="nome" 
-        name="nome" ngModel #nome="ngModel" required>
+        name="nome" ngModel #nome="ngModel" required maxlength="255">
         <app-campo-control-erro 
         [mostrarErro]="verificaValidTouched(nome)" 
         msgErro="Nome é obrigatório.">
@@ -38,7 +39,7 @@
     <div class="col-md-5">
       <label for="rua" class="control-label">Rua*</label>
       <input type="text" class="form-control" id="rua" 
-        name="rua" ngModel #rua="ngModel" required>
+        name="rua" ngModel #rua="ngModel" required maxlength="255">
         <app-campo-control-erro 
         [mostrarErro]="verificaValidTouched(rua)" 
         msgErro="Rua é obrigatório.">
@@ -46,9 +47,9 @@
     </div>
 
     <div class="col-md-1">
-      <label for="numero" class="control-label">Número</label>
-      <input type="text" class="form-control" id="numero" 
-        name="numero" ngModel #numero="ngModel" [textMask]="{mask: maskNumber}">
+      <label for="numCasa" class="control-label">Número</label>
+      <input type="text" class="form-control" id="numCasa" 
+        name="numCasa" ngModel #numCasa="ngModel" maxlength="5">
     </div>
 
     <div class="col-md-1">
@@ -62,7 +63,7 @@
     <div class="col-md-3">
       <label for="bairro" class="control-label">Bairro</label>
       <input type="text" class="form-control" id="bairro" 
-        name="bairro" ngModel #bairro="ngModel">
+        name="bairro" ngModel #bairro="ngModel" maxlength="255">
     </div>
 
     <div class="col-md-2">
@@ -79,7 +80,7 @@
     <div class="col-md-7">
       <label for="pontoReferencia" class="control-label">Ponto de Referência</label>
       <input type="text" class="form-control" id="pontoReferencia" 
-        name="pontoReferencia" ngModel #pontoReferencia="ngModel">
+        name="pontoReferencia" ngModel #pontoReferencia="ngModel" maxlength="255">
     </div>
   </div>
 </div>
@@ -181,14 +182,9 @@
 </div>
 
 </div>
-
-
-
-<app-form-debug [form]="f"></app-form-debug>
-
-
 <font size="1">
 ******* CUPOM NÃO-FISCAL *******
+
 <br>
 ********* DECK DELIVERY **********
 <br>
@@ -201,7 +197,7 @@
 <br>
 <b>Rua:</b> {{rua.value}}
 <br>
-<b>Nº:</b> {{numero.value}}
+<b>Nº:</b> {{numCasa.value}}
 <br>
 <b>Bairro:</b> {{bairro.value}}
 <br>
@@ -228,3 +224,12 @@
 </font>
 <b>TOTAL:</b> R$ {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
 </form>
+
+
+<div id="snackbarClienteExistente">Cliente já existe!</div>
+<div id="snackbarClienteInexistente">Cliente não cadastrado no sistema!</div>
+<div id="snackbarErroVenda">Adicione pelo menos um item na venda!</div>
+<div id="snackClienteAdicionado">Cliente Criado com Sucesso!</div>
+<div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>
+
+<app-form-debug [form]="f"></app-form-debug>

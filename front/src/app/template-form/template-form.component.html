@@ -6,26 +6,32 @@
       
     </div>
 
+    <div class="row">
     <div class="col-sm-10">
             <label type="text" [ngModel]="usuario.nome"  required #nome="ngModel"></label>
+            <br>
            <label for="nome" class="control-label">Cliente</label>
             <ng-select [items]="clientes" bindLabel="nome" required #searchBar (change)="searchBar.blur()" 
       (change)="setCliente($event,f)"></ng-select>
      </div>
 
-     <br><br>
      <div class="col-md-1 text-center"> 
+      <br><br><br>
       <button type="button" class="btn btn-primary" (click)="salvarCliente(f)" [disabled]="!f.valid">Salvar</button>
     </div>
      <div class="col-md-1 text-center"> 
+      <br><br><br>
       <button type="button" class="btn btn-primary" (click)="limparCliente(f)">Limpar</button>
     </div>
+  </div>
   </div>
 
   <div ngModelGroup="cliente">
 
   <div class="form-group">
+</div>
 
+<div class="row">
     <div class="col-md-5">
       <label for="nome" class="control-label">Nome Cliente*</label>
       <input type="text" class="form-control" id="nome" 
@@ -35,7 +41,6 @@
         msgErro="Nome é obrigatório.">
       </app-campo-control-erro>
     </div>
-
     <div class="col-md-5">
       <label for="rua" class="control-label">Rua*</label>
       <input type="text" class="form-control" id="rua" 
@@ -57,9 +62,10 @@
       <input type="text" class="form-control" id="clienteID" 
         name="clienteID" ngModel #numero="ngModel" readonly>
     </div>   
-  </div>
-  
+</div>
+
   <div class="form-group">
+    <div class="row">
     <div class="col-md-3">
       <label for="bairro" class="control-label">Bairro</label>
       <input type="text" class="form-control" id="bairro" 
@@ -84,12 +90,14 @@
     </div>
   </div>
 </div>
+</div>
 <font size="1">*Campos Obrigatórios</font>
 <hr>
 <hr>
 
 <div ngModelGroup="itemsVenda">
 <div class="form-group">
+  <div class="row">
   <div class="col-md-2">
     <label for="tradicional" class="control-label">Deck Tradicional</label>
     <input type="number" class="form-control" id="tradicional" min="0" value="0" placeholder="0"
@@ -126,8 +134,10 @@
       name="cheddarDuplo" ngModel #cheddarDuplo="ngModel">
   </div>
 </div>
+</div>
 
 <div class="form-group">
+  <div class="row">
   <div class="col-md-2">
     <label for="onions" class="control-label">Onions</label>
     <input type="number" class="form-control" id="onions" min="0" value="0" placeholder="0"
@@ -135,7 +145,7 @@
   </div>
 
   <div class="col-md-2">
-    <label for="comboRefri" class="control-label">Combo de Refrigerante</label>
+    <label for="comboRefri" class="control-label">Combo de Refri</label>
     <input type="number" class="form-control" id="comboRefri" min="0" value="0" placeholder="0"
       name="comboRefri" ngModel #comboRefri="ngModel">
   </div>
@@ -164,8 +174,9 @@
       name="refrigerante" ngModel #refrigerante="ngModel">
   </div>
 </div>
-
+</div>
 <div class="form-group">
+  <div class="row">
   <div class="col-md-10">
     <label for="obs" class="control-label">Observações</label>
     <input type="text" class="form-control" id="obs" 
@@ -174,10 +185,13 @@
 
   <br>
 <div class="col-md-1 text-center"> 
- <button type="button" class="btn btn-primary" (click)="salvarVenda2(f)" [disabled]="!f.valid">Vender</button>
+  <br>
+ <button type="button" class="btn btn-primary align-bottom" (click)="salvarVenda2(f)" [disabled]="!f.valid">Vender</button>
 </div>
 <div class="col-md-1 text-center"> 
+  <br>
  <button type="button" class="btn btn-primary" (click)="limparVenda(f)">Limpar</button>
+</div>
 </div>
 </div>
 
@@ -186,6 +200,7 @@
 ******* CUPOM NÃO-FISCAL *******
 
 <br>
+
 ********* DECK DELIVERY **********
 <br>
 <br>
@@ -231,5 +246,3 @@
 <div id="snackbarErroVenda">Adicione pelo menos um item na venda!</div>
 <div id="snackClienteAdicionado">Cliente Criado com Sucesso!</div>
 <div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>
-
-<app-form-debug [form]="f"></app-form-debug>

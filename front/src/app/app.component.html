@@ -1,24 +1,29 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-
-    <div class="navbar-header">
-      <a class="navbar-brand" routerLink="">Deck System</a>
-    </div>
-
-    <ul class="nav navbar-nav">
-        <li routerLinkActive="active">
-          <a routerLink="/templateForm">Realizar Venda</a>
-        </li>
-        <li routerLinkActive="active">
-          <a routerLink="/vendas">Visualizar Vendas</a>
-        </li>
-        <li routerLinkActive="active">
-          <a routerLink="/dataForm">Data Form</a>
-        </li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Deck System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li routerLinkActive="active">
+        <a routerLink="/templateForm" class="text-light"><strong>Vender</strong></a>
+      </li>
+      <li>
+        <strong><a class="text-light"> | </a></strong>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/vendas" class="text-light"><strong>Visualizar Vendas</strong></a>
+      </li>
+      <li>
+        <strong><a class="text-light">{{' '}} | {{' '}}</a></strong>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/dataForm" class="text-light"><strong>Data Form</strong></a>
+      </li>
     </ul>
   </div>
 </nav>
-
 <div class="container">
   <router-outlet></router-outlet>
 </div>

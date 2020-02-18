@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VendasService } from './venda.service';
 import { Venda } from './venda';
+import { Observable, empty, of, Subject } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vendas',
@@ -9,25 +11,37 @@ import { Venda } from './venda';
 })
 export class VendasComponent implements OnInit {
 
-  characters: Venda[];
+  vendas$: Observable<Venda[]>;
+  error$ = new Subject<boolean>();
 
-  constructor(private vendaService: VendasService) { }
+  constructor(private service: VendasService) { }
 
   ngOnInit() {
-    this.vendaService.getCharacters().subscribe((data: Venda[]) => {
-      this.characters = data;
-    });
+    this.onRefresh();
   }
 
-  settings = {
-    columns: {
-      id: {
-        title: 'ID'
-      },
-      cliente: {
-        title: 'Nome'
-      }
+  onRefresh() {
+    this.vendas$ = this.service.list()
+    .pipe(
+      // map(),
+      // tap(),
+      // switchMap(),
+      catchError(error => {
+        console.error(error);
+        this.error$.next(true);
+        return empty();
+      })
+    );
+
+  this.service.list()
+  .pipe(
+    catchError(error => empty())
+  )
+  .subscribe(
+    dados => {
+      console.log(dados);
     }
-  }
+  );
+}
 
 }

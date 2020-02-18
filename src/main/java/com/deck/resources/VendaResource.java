@@ -119,7 +119,6 @@ public class VendaResource {
 			vendaDTO.setItems(itemsAux);
 			allVendas.add(vendaDTO);
 		}
-
 		return allVendas;
 	}
 

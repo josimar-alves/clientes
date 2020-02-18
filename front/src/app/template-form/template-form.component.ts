@@ -122,7 +122,7 @@ public refreshValue(value:any):void {
         this.http.post(`${this.baseUrl}/add`, json, {headers}).toPromise().then((data:any) => {
           console.log(this.populaDadosForm(data, formulario));
         });
-        this.ngOnInit();
+        setTimeout(() => {this.ngOnInit();}, 250);
         this.openSnackbar("snackClienteAdicionado");
       }
     } else {

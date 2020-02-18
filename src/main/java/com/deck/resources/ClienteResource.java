@@ -23,7 +23,7 @@ public class ClienteResource {
 	
 	@Autowired
 	ClienteRepository clienteRepository;
-	
+
 	@GetMapping("/getAll")
 	public List<Cliente> listaClitentes() {
 		return clienteRepository.findAll();

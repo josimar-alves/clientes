@@ -154,7 +154,7 @@ public class VendaResource {
 		pedido.setPedido(pedidosToString(venda.getItems()));
 		pedido.setObs(venda.getVenda().getObs());
 		pedido.setData(venda.getVenda().getData());
-		pedido.setTotal("R$ " + venda.getTotal());
+		pedido.setTotal("" + venda.getTotal());
 		pedido.setTroco("Troco");
 		
 		return pedido;

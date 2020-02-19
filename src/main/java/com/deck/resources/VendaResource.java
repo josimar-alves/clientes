@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deck.dto.PedidoDTO;
 import com.deck.dto.VendaDTO;
 import com.deck.models.ItemVenda;
 import com.deck.models.Produto;
@@ -120,6 +121,53 @@ public class VendaResource {
 			allVendas.add(vendaDTO);
 		}
 		return allVendas;
+	}
+	
+	
+	@GetMapping("/getAllPedidos")
+	public List<PedidoDTO> getAllPedidos() {
+
+		List<PedidoDTO> allPedidos = new LinkedList<PedidoDTO>();
+
+		for (Venda v : vendaRepository.findAll()) {
+			List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(v.getId());
+			VendaDTO vendaDTO = new VendaDTO();
+			vendaDTO.setVenda(items.get(0).getVenda());
+
+			List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+			for (ItemVenda i : items) {
+				i.setVenda(null);
+				itemsAux.add(i);
+			}
+			vendaDTO.setItems(itemsAux);
+			allPedidos.add(this.getPedido(vendaDTO));
+		}
+		return allPedidos;
+	}
+	
+	private PedidoDTO getPedido (VendaDTO venda) {
+		PedidoDTO pedido = new PedidoDTO();
+		
+		pedido.setIDVenda("" + venda.getVenda().getId());
+		pedido.setNome(venda.getVenda().getCliente().getNome());
+		pedido.setTelefone(venda.getVenda().getCliente().getTelefone());
+		pedido.setPedido(pedidosToString(venda.getItems()));
+		pedido.setObs(venda.getVenda().getObs());
+		pedido.setData(venda.getVenda().getData());
+		pedido.setTotal("R$ " + venda.getTotal());
+		pedido.setTroco("Troco");
+		
+		return pedido;
+	}
+	
+	private String pedidosToString(List<ItemVenda> vendas) {
+		String str = "";
+		
+		for (ItemVenda itemVenda : vendas) {
+			str += itemVenda.itemToString() + "; ";
+		}
+			
+		return str.substring(0, str.length()-2);
 	}
 
 	

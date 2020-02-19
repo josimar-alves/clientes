@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VendasService } from './venda.service';
-import { Venda } from './venda';
+import { DadosVenda } from './dados-venda';
 import { Observable, empty, of, Subject } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 })
 export class VendasComponent implements OnInit {
 
-  vendas$: Observable<Venda[]>;
+  vendas$: Observable<DadosVenda[]>;
   error$ = new Subject<boolean>();
 
   constructor(private service: VendasService) { }

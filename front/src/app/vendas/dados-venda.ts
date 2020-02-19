@@ -1,8 +1,10 @@
-import { Cliente } from './cliente';
-
 export interface DadosVenda {
-    id : Number;
-    cliente : Cliente;
-    data : Date;
-    obs : String;
+    nome : String,
+    telefone : String,
+    pedido : String,
+    obs : String,
+    data : String,
+    total : String,
+    troco : String,
+    idvenda : String
 }

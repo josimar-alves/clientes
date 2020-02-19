@@ -1,51 +1,48 @@
 <div class="card mt-3">
     <div class="card-header">
       <div class="float-left">
-        <h4>Cursos</h4>
+        <h4>Lista de Pedidos</h4>
       </div>
       <div class="float-right">
-        <button type="button" class="btn btn-primary" [routerLink]="['novo']">Novo Curso</button>
-        <button type="button" class="btn btn-secondary" (click)="onRefresh()" >Atualizar</button>
+        <button type="button" class="btn btn-secondary" (click)="onRefresh()" >Atualizar Lista</button>
       </div>
     </div>
     <div class="card-body">
-      <table class="table table-hover" *ngIf="vendas$ | async as vendas; else loadingError" >
+      <table class="table table-hover table-bordered" *ngIf="vendas$ | async as vendas; else loadingError" >
         <thead>
           <tr>
-            <th>#</th>
-            <th>Curso</th>
-            <th></th>
+            <th style="text-align:center">#</th>
+            <th style="text-align:center">Cliente</th>
+            <th style="text-align:center">Telefone</th>
+            <th style="text-align:center">Pedido</th>
+            <th style="text-align:center">Observações</th>
+            <th style="text-align:center">Data</th>
+            <th style="text-align:center">Total</th>
+            <th style="text-align:center">Troco</th>
           </tr>
-          
         </thead>
 
         <tbody>
           <tr *ngFor="let venda of vendas" >
-            <td>{{ venda.items[0].id }}</td>
-            <td>{{ venda.venda.cliente.nome }}</td>
-            <td>
-              <span class="float-right">
-                <button class="btn btn-outline-warning mb-1 btn-sm">
-                  Atualizar
-                </button>
-  
-                <button class="btn btn-outline-danger mb-1 btn-sm">
-                  Remover
-                </button>
-              </span>
-            </td>
+            <td style="width:1%">{{ venda.idvenda }}</td>
+            <td style="width:10%">{{ venda.nome }}</td>
+            <td style="width:17%">{{ venda.telefone }}</td>
+            <td style="width:30%">{{ venda.pedido }}</td>
+            <td style="width:15%">{{ venda.obs }}</td>
+            <td style="width:9%">{{ venda.data }}</td>
+            <td style="width:8%">{{ venda.total }}</td>
+            <td style="width:8%">{{ venda.troco }}</td>
           </tr>
         </tbody>
       </table>
   
       <ng-template #loadingError>
         <div *ngIf="error$ | async; else loading" >
-          Erro ao carregar cursos. Tente novamente mais tarde.
+          Erro ao carregar pedidos. Tente novamente mais tarde.
         </div>
         <ng-template #loading>
-            <span>Carregando Cursos...</span>
+            <span>Carregando Pedidos...</span>
         </ng-template>
       </ng-template>
     </div>
   </div>
-  

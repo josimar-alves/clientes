@@ -58,5 +58,9 @@ public class ItemVenda {
 	public void setVenda(Venda venda) {
 		this.venda = venda;
 	}
+	
+	public String itemToString() {
+		return this.quantidade + "x " + this.produto.getNome();
+	}
 
 }

@@ -238,7 +238,7 @@ public refreshValue(value:any):void {
           "cliente": {
             "id": formulario.value.cliente.clienteID
           },
-          "observacoes": formulario.value.itemsVenda.obs
+          "obs": formulario.value.itemsVenda.obs
         }
     };
 
@@ -246,20 +246,19 @@ public refreshValue(value:any):void {
       if (formulario.value.cliente.clienteID !== null && formulario.value.cliente.clienteID !== "") {
         if (confirm("Confirmar venda")) {
           let jsonVenda = (JSON.stringify(venda));
+          console.log(jsonVenda);
           let headers = new HttpHeaders({'Content-Type': 'application/json'}); 
-          this.http.post('http://localhost:8080/venda/addTest', jsonVenda, {headers}).toPromise().then((data:any) => {         
+          this.http.post('http://localhost:8080/venda/addTest', jsonVenda, {headers}).toPromise().then((data:any) => {     
+            console.log(data);
             this.openSnackbar("snackbarVendaFeita");
           });
-        }else {
+        } else {
           this.openSnackbar("snackbarClienteInexistente");
         }
       }
     } else {
       this.openSnackbar("snackbarErroVenda");
     }
-
-
-
     this.openSnackbar("snackbarClienteInexistente");
    }
 
@@ -284,7 +283,7 @@ public refreshValue(value:any):void {
       return true;
     }else if (formulario.value.itemsVenda.onions >= 1){
       return true;
-     } else if (formulario.value.itemsVenda.comboRefri >= 1){
+    } else if (formulario.value.itemsVenda.comboRefri >= 1){
       return true;
     } else if (formulario.value.itemsVenda.comboCerveja >= 1){
       return true;
@@ -298,3 +297,5 @@ public refreshValue(value:any):void {
     return false;
    }
 }
+
+

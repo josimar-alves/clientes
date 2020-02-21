@@ -1,253 +1,256 @@
-<form #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
-
-  <div class="form-group" [ngClass]="aplicaCssErro(nome)">
-
-    <div class="col-sm-12">
-      
+<div class="card">
+  <div class="card-header">
+    <div class="float-left">
+      <h4>Realizar Pedidos</h4>
     </div>
+  </div>
+  <div class="card-body">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+      <div class="form-group" [ngClass]="aplicaCssErro(nome)">
+        <div class="col-sm-12">
+        </div>
+        <div class="row">
+          <div class="col-sm-10">
+            <ng-select placeholder="Cliente" [items]="clientes" bindLabel="nome" required #searchBar
+              (change)="searchBar.blur()" (change)="setCliente($event,f)"></ng-select>
+          </div>
 
-    <div class="row">
-    <div class="col-sm-10">
-            <label type="text" [ngModel]="usuario.nome"  required #nome="ngModel"></label>
+          <div class="col-md-1 text-center">
             <br>
-           <label for="nome" class="control-label">Cliente</label>
-            <ng-select [items]="clientes" bindLabel="nome" required #searchBar (change)="searchBar.blur()" 
-      (change)="setCliente($event,f)"></ng-select>
-     </div>
+            <button type="button" class="btn btn-success" (click)="salvarCliente(f)"
+              [disabled]="!f.valid">Salvar</button>
+          </div>
+          <div class="col-md-1 text-center">
+            <br>
+            <button type="button" class="btn btn-secondary" (click)="limparCliente(f)">Limpar</button>
+          </div>
+        </div>
+      </div>
 
-     <div class="col-md-1 text-center"> 
-      <br><br><br>
-      <button type="button" class="btn btn-success" (click)="salvarCliente(f)" [disabled]="!f.valid">Salvar</button>
-    </div>
-     <div class="col-md-1 text-center"> 
-      <br><br><br>
-      <button type="button" class="btn btn-secondary" (click)="limparCliente(f)">Limpar</button>
-    </div>
+      <div ngModelGroup="cliente">
+
+        <div class="form-group">
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <label for="nome" class="control-label">Nome Cliente*</label>
+            <input type="text" class="form-control" id="nome" name="nome" ngModel #nome="ngModel" required
+              maxlength="255">
+            <app-campo-control-erro [mostrarErro]="verificaValidTouched(nome)" msgErro="Nome é obrigatório.">
+            </app-campo-control-erro>
+          </div>
+          <div class="col-md-5">
+            <label for="rua" class="control-label">Rua*</label>
+            <input type="text" class="form-control" id="rua" name="rua" ngModel #rua="ngModel" required maxlength="255">
+            <app-campo-control-erro [mostrarErro]="verificaValidTouched(rua)" msgErro="Rua é obrigatório.">
+            </app-campo-control-erro>
+          </div>
+
+          <div class="col-md-1">
+            <label for="numCasa" class="control-label">Número</label>
+            <input type="text" class="form-control" id="numCasa" name="numCasa" ngModel #numCasa="ngModel"
+              maxlength="5">
+          </div>
+
+          <div class="col-md-1">
+            <label for="clienteID" class="control-label">ClienteID</label>
+            <input type="text" class="form-control" id="clienteID" name="clienteID" ngModel #numero="ngModel" readonly>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3">
+              <label for="bairro" class="control-label">Bairro</label>
+              <input type="text" class="form-control" id="bairro" name="bairro" ngModel #bairro="ngModel"
+                maxlength="255">
+            </div>
+
+            <div class="col-md-2">
+              <label for="telefone" class="control-label">Telefone*</label>
+              <input type="text" class="form-control" id="telefone" name="telefone" ngModel #telefone="ngModel"
+                [textMask]="{mask: maskPhone}" placeholder="(99) 9 9999-9999" required>
+
+              <app-campo-control-erro [mostrarErro]="verificaValidTouched(telefone)" msgErro="Tel. obrigatório.">
+              </app-campo-control-erro>
+            </div>
+
+            <div class="col-md-7">
+              <label for="pontoReferencia" class="control-label">Ponto de Referência</label>
+              <input type="text" class="form-control" id="pontoReferencia" name="pontoReferencia" ngModel
+                #pontoReferencia="ngModel" maxlength="255">
+            </div>
+          </div>
+        </div>
+      </div>
+      <font size="1">*Campos Obrigatórios</font>
+      <hr>
+      <font size="4">
+        <b>TOTAL:</b> R$
+        {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
+      </font>
+      <hr>
+
+      <div ngModelGroup="itemsVenda">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="tradicional" class="control-label">Deck Tradicional</label>
+              <input type="number" class="form-control" id="tradicional" min="0" value="0" placeholder="0"
+                name="tradicional" ngModel #tradicional="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="canadense" class="control-label">Deck Canadense</label>
+              <input type="number" class="form-control" id="canadense" min="0" value="0" placeholder="0"
+                name="canadense" ngModel #canadense="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="original" class="control-label">Deck Original</label>
+              <input type="number" class="form-control" id="original" min="0" value="0" placeholder="0" name="original"
+                ngModel #original="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="australiano" class="control-label">Deck Australiano</label>
+              <input type="number" class="form-control" id="australiano" min="0" value="0" placeholder="0"
+                name="australiano" ngModel #australiano="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="cheddarSimples" class="control-label">Deck Cheddar Simples</label>
+              <input type="number" class="form-control" id="cheddarSimples" min="0" value="0" placeholder="0"
+                name="cheddarSimples" ngModel #cheddarSimples="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="cheddarDuplo" class="control-label">Deck Cheddar Duplo</label>
+              <input type="number" class="form-control" id="cheddarDuplo" min="0" value="0" placeholder="0"
+                name="cheddarDuplo" ngModel #cheddarDuplo="ngModel">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="onions" class="control-label">Onions</label>
+              <input type="number" class="form-control" id="onions" min="0" value="0" placeholder="0" name="onions"
+                ngModel #onions="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="comboRefri" class="control-label">Combo de Refri</label>
+              <input type="number" class="form-control" id="comboRefri" min="0" value="0" placeholder="0"
+                name="comboRefri" ngModel #comboRefri="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="comboCerveja" class="control-label">Combo de Cerveja</label>
+              <input type="number" class="form-control" id="comboCerveja" min="0" value="0" placeholder="0"
+                name="comboCerveja" ngModel #comboCerveja="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="batata" class="control-label">Batatinha Normal</label>
+              <input type="number" class="form-control" id="batata" min="0" value="0" placeholder="0" name="batata"
+                ngModel #batata="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="batataCheddar" class="control-label">Batata Cheddar Bacon</label>
+              <input type="number" class="form-control" id="batataCheddar" min="0" value="0" placeholder="0"
+                name="batataCheddar" ngModel #batataCheddar="ngModel">
+            </div>
+
+            <div class="col-md-2">
+              <label for="refrigerante" class="control-label">Refrigerante</label>
+              <input type="number" class="form-control" id="refrigerante" min="0" value="0" placeholder="0"
+                name="refrigerante" ngModel #refrigerante="ngModel">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-8">
+              <label for="obs" class="control-label">Observações</label>
+              <input type="text" class="form-control" id="obs" name="obs" ngModel #obs="ngModel">
+            </div>
+            <div class="col-md-2">
+              <label for="troco" class="control-label">Troco</label>
+              <input type="number" class="form-control" id="troco" name="troco" ngModel #troco="ngModel">
+            </div>
+
+            <br>
+            <div class="col-md-1 text-center">
+              <br>
+              <button type="button" class="btn btn-success align-bottom" (click)="salvarVenda2(f)"
+                [disabled]="!f.valid">Vender</button>
+            </div>
+            <div class="col-md-1 text-center">
+              <br>
+              <button type="button" class="btn btn-secondary" (click)="limparVenda(f)">Limpar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="printPedido">
+        <font size="3">
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+          ******** CUPOM NÃO-FISCAL ********
+          <br><br>
+                           <img src="\..\favicon.ico" height="100" width="100">
+          <br><br>
+          ----------- Dados do Cliente -----------
+          <br><br>
+          <b>Nome:</b> {{nome.value}}
+          <br>
+          <b>Telefone:</b> {{telefone.value}}
+          <br>
+          <b>Rua:</b> {{rua.value}}
+          <br>
+          <b>Nº:</b> {{numCasa.value}}
+          <br>
+          <b>Bairro:</b> {{bairro.value}}
+          <br>
+          <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
+          <br><br>
+          ---------------- Pedido -----------------
+          <br><br>
+          <div *ngIf="tradicional.value > 0"><b>Deck Tradicional:</b> R$ 10.00 x {{tradicional.value}} uni.</div>
+          <div *ngIf="canadense.value > 0"><b>Deck Canadense:</b> R$ 12.00 x {{canadense.value}} uni.</div>
+          <div *ngIf="original.value > 0"><b>Deck Original:</b> R$ 12,00 x {{original.value}} uni.</div>
+          <div *ngIf="australiano.value > 0"><b>Deck Australiano:</b> R$ 12.00 x {{australiano.value}} uni.</div>
+          <div *ngIf="cheddarSimples.value > 0"><b>Deck Cheddar Simples:</b> R$ 12.00 x {{cheddarSimples.value}} uni.
+          </div>
+          <div *ngIf="cheddarDuplo.value > 0"><b>Deck Cheddar Duplo:</b> R$ 14.00 x {{cheddarDuplo.value}} uni.</div>
+          <div *ngIf="onions.value > 0"><b>Onions:</b> R$ 7.00 x {{onions.value}} uni.</div>
+          <div *ngIf="comboRefri.value > 0"><b>Combo 1 (refri):</b> R$ 5.00 x {{comboRefri.value}} uni.</div>
+          <div *ngIf="comboCerveja.value > 0"><b>Combo 2 (Cerveja):</b> R$ 7.00 x {{comboCerveja.value}} uni.</div>
+          <div *ngIf="batata.value > 0"><b>Batata Frita:</b> R$ 3.50 x {{batata.value}} uni.</div>
+          <div *ngIf="batataCheddar.value > 0"><b>Batata Cheddar Bacon:</b> R$ 6.00 x {{batataCheddar.value}} uni.</div>
+          <div *ngIf="refrigerante.value > 0"><b>Refrigerante (250 ml):</b> R$ 2.00 x {{refrigerante.value}} uni.</div>
+          <b>Entrega:</b> R$ 1.00
+          <br><br>
+          <div *ngIf="obs.value !== ''"><b>*Obs:</b> {{obs.value}}</div>
+          <br>
+        </font>
+        <font size="4">
+          <b>TOTAL:</b> R$
+          {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
+        </font>
+      </div>
+    </form>
+
+
+    <div id="snackbarClienteExistente">Cliente já existe!</div>
+    <div id="snackbarClienteInexistente">Cliente não cadastrado no sistema!</div>
+    <div id="snackbarErroVenda">Adicione pelo menos um item na venda!</div>
+    <div id="snackClienteAdicionado">Cliente Criado com Sucesso!</div>
+    <div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>
   </div>
-  </div>
-
-  <div ngModelGroup="cliente">
-
-  <div class="form-group">
 </div>
-
-<div class="row">
-    <div class="col-md-5">
-      <label for="nome" class="control-label">Nome Cliente*</label>
-      <input type="text" class="form-control" id="nome" 
-        name="nome" ngModel #nome="ngModel" required maxlength="255">
-        <app-campo-control-erro 
-        [mostrarErro]="verificaValidTouched(nome)" 
-        msgErro="Nome é obrigatório.">
-      </app-campo-control-erro>
-    </div>
-    <div class="col-md-5">
-      <label for="rua" class="control-label">Rua*</label>
-      <input type="text" class="form-control" id="rua" 
-        name="rua" ngModel #rua="ngModel" required maxlength="255">
-        <app-campo-control-erro 
-        [mostrarErro]="verificaValidTouched(rua)" 
-        msgErro="Rua é obrigatório.">
-      </app-campo-control-erro>
-    </div>
-
-    <div class="col-md-1">
-      <label for="numCasa" class="control-label">Número</label>
-      <input type="text" class="form-control" id="numCasa" 
-        name="numCasa" ngModel #numCasa="ngModel" maxlength="5">
-    </div>
-
-    <div class="col-md-1">
-      <label for="clienteID" class="control-label">ClienteID</label>
-      <input type="text" class="form-control" id="clienteID" 
-        name="clienteID" ngModel #numero="ngModel" readonly>
-    </div>   
-</div>
-
-  <div class="form-group">
-    <div class="row">
-    <div class="col-md-3">
-      <label for="bairro" class="control-label">Bairro</label>
-      <input type="text" class="form-control" id="bairro" 
-        name="bairro" ngModel #bairro="ngModel" maxlength="255">
-    </div>
-
-    <div class="col-md-2">
-      <label for="telefone" class="control-label">Telefone*</label>
-      <input type="text" class="form-control" id="telefone" 
-        name="telefone" ngModel #telefone="ngModel" [textMask]="{mask: maskPhone}" placeholder="(99) 9 9999-9999" required>
-
-        <app-campo-control-erro 
-        [mostrarErro]="verificaValidTouched(telefone)" 
-        msgErro="Tel. obrigatório.">
-      </app-campo-control-erro>
-    </div>
-
-    <div class="col-md-7">
-      <label for="pontoReferencia" class="control-label">Ponto de Referência</label>
-      <input type="text" class="form-control" id="pontoReferencia" 
-        name="pontoReferencia" ngModel #pontoReferencia="ngModel" maxlength="255">
-    </div>
-  </div>
-</div>
-</div>
-<font size="1">*Campos Obrigatórios</font>
-<hr>
-<hr>
-
-<div ngModelGroup="itemsVenda">
-<div class="form-group">
-  <div class="row">
-  <div class="col-md-2">
-    <label for="tradicional" class="control-label">Deck Tradicional</label>
-    <input type="number" class="form-control" id="tradicional" min="0" value="0" placeholder="0"
-      name="tradicional" ngModel #tradicional="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="canadense" class="control-label">Deck Canadense</label>
-    <input type="number" class="form-control" id="canadense" min="0" value="0" placeholder="0"
-      name="canadense" ngModel #canadense="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="original" class="control-label">Deck Original</label>
-    <input type="number" class="form-control" id="original" min="0" value="0" placeholder="0"
-      name="original" ngModel #original="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="australiano" class="control-label">Deck Australiano</label>
-    <input type="number" class="form-control" id="australiano" min="0" value="0" placeholder="0"
-      name="australiano" ngModel #australiano="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="cheddarSimples" class="control-label">Deck Cheddar Simples</label>
-    <input type="number" class="form-control" id="cheddarSimples" min="0" value="0" placeholder="0"
-      name="cheddarSimples" ngModel #cheddarSimples="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="cheddarDuplo" class="control-label">Deck Cheddar Duplo</label>
-    <input type="number" class="form-control" id="cheddarDuplo" min="0" value="0" placeholder="0"
-      name="cheddarDuplo" ngModel #cheddarDuplo="ngModel">
-  </div>
-</div>
-</div>
-
-<div class="form-group">
-  <div class="row">
-  <div class="col-md-2">
-    <label for="onions" class="control-label">Onions</label>
-    <input type="number" class="form-control" id="onions" min="0" value="0" placeholder="0"
-      name="onions" ngModel #onions="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="comboRefri" class="control-label">Combo de Refri</label>
-    <input type="number" class="form-control" id="comboRefri" min="0" value="0" placeholder="0"
-      name="comboRefri" ngModel #comboRefri="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="comboCerveja" class="control-label">Combo de Cerveja</label>
-    <input type="number" class="form-control" id="comboCerveja" min="0" value="0" placeholder="0"
-      name="comboCerveja" ngModel #comboCerveja="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="batata" class="control-label">Batatinha Normal</label>
-    <input type="number" class="form-control" id="batata" min="0" value="0" placeholder="0"
-      name="batata" ngModel #batata="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="batataCheddar" class="control-label">Batata Cheddar Bacon</label>
-    <input type="number" class="form-control" id="batataCheddar" min="0" value="0" placeholder="0"
-      name="batataCheddar" ngModel #batataCheddar="ngModel">
-  </div>
-
-  <div class="col-md-2">
-    <label for="refrigerante" class="control-label">Refrigerante</label>
-    <input type="number" class="form-control" id="refrigerante" min="0" value="0" placeholder="0"
-      name="refrigerante" ngModel #refrigerante="ngModel">
-  </div>
-</div>
-</div>
-<div class="form-group">
-  <div class="row">
-  <div class="col-md-8">
-    <label for="obs" class="control-label">Observações</label>
-    <input type="text" class="form-control" id="obs" 
-      name="obs" ngModel #obs="ngModel">
-  </div>
-  <div class="col-md-2">
-    <label for="troco" class="control-label">Troco</label>
-    <input type="number" class="form-control" id="troco" 
-      name="troco" ngModel #troco="ngModel">
-  </div>
-
-  <br>
-<div class="col-md-1 text-center"> 
-  <br>
- <button type="button" class="btn btn-success align-bottom" (click)="salvarVenda2(f)" [disabled]="!f.valid">Vender</button>
-</div>
-<div class="col-md-1 text-center"> 
-  <br>
- <button type="button" class="btn btn-secondary" (click)="limparVenda(f)">Limpar</button>
-</div>
-</div>
-</div>
-
-</div>
-<font size="1">
-******* CUPOM NÃO-FISCAL *******
-
-<br>
-
-********* DECK DELIVERY **********
-<br>
-<br>
------------- Dados do Cliente ------------
-<br><br>
-<b>Nome:</b> {{nome.value}}
-<br>
-<b>Telefone:</b> {{telefone.value}}
-<br>
-<b>Rua:</b> {{rua.value}}
-<br>
-<b>Nº:</b> {{numCasa.value}}
-<br>
-<b>Bairro:</b> {{bairro.value}}
-<br>
-<b>Ponto de Ref.:</b> {{pontoReferencia.value}}
-<br><br>
------------------- Pedido ------------------
-<br><br>
-<div *ngIf="tradicional.value > 0"><b>Deck Tradicional:</b> R$ 10.00 x {{tradicional.value}} uni.</div>
-<div *ngIf="canadense.value > 0"><b>Deck Canadense:</b> R$ 12.00 x {{canadense.value}} uni.</div>
-<div *ngIf="original.value > 0"><b>Deck Original:</b> R$ 12,00 x {{original.value}} uni.</div>
-<div *ngIf="australiano.value > 0"><b>Deck Australiano:</b> R$ 12.00 x {{australiano.value}} uni.</div>
-<div *ngIf="cheddarSimples.value > 0"><b>Deck Cheddar Simples:</b> R$ 12.00 x {{cheddarSimples.value}} uni.</div>
-<div *ngIf="cheddarDuplo.value > 0"><b>Deck Cheddar Duplo:</b> R$ 14.00 x {{cheddarDuplo.value}} uni.</div>
-<div *ngIf="onions.value > 0"><b>Onions:</b> R$ 7.00 x {{onions.value}} uni.</div>
-<div *ngIf="comboRefri.value > 0"><b>Combo 1 (refri):</b> R$ 5.00 x {{comboRefri.value}} uni.</div>
-<div *ngIf="comboCerveja.value > 0"><b>Combo 2 (Cerveja):</b> R$ 7.00 x {{comboCerveja.value}} uni.</div>
-<div *ngIf="batata.value > 0"><b>Batata Frita:</b> R$ 3.50 x {{batata.value}} uni.</div>
-<div *ngIf="batataCheddar.value > 0"><b>Batata Cheddar Bacon:</b> R$ 6.00 x {{batataCheddar.value}} uni.</div>
-<div *ngIf="refrigerante.value > 0"><b>Refrigerante (250 ml):</b> R$ 2.00 x {{refrigerante.value}} uni.</div>
-<b>Entrega:</b> R$ 1.00
-<br><br>
-<div *ngIf="obs.value !== ''"><b>*Obs:</b> {{obs.value}}</div>
-<br><br>
-</font>
-<b>TOTAL:</b> R$ {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
-</form>
-
-
-<div id="snackbarClienteExistente">Cliente já existe!</div>
-<div id="snackbarClienteInexistente">Cliente não cadastrado no sistema!</div>
-<div id="snackbarErroVenda">Adicione pelo menos um item na venda!</div>
-<div id="snackClienteAdicionado">Cliente Criado com Sucesso!</div>
-<div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>

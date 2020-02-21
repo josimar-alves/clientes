@@ -11,11 +11,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { VendasComponent } from './vendas/vendas.component';
 import { VendasService } from './vendas/venda.service';
+import { ProdutosComponent } from './produtos/produtos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VendasComponent
+    VendasComponent,
+    ProdutosComponent
   ],
   imports: [
     BrowserModule,

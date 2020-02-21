@@ -1,0 +1,12 @@
+
+body {
+    background-color: #ededed;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 1.5%;
+    margin-left: 1.5%;
+  }

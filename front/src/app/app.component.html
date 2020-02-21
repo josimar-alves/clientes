@@ -7,16 +7,28 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li routerLinkActive="active">
-        <a routerLink="/templateForm" class="text-light"><strong>Vender</strong></a>
+        <a routerLink="/templateForm" class="text-light"><strong>Realizar Venda</strong></a>
       </li>
       <li>
-        <strong><a class="text-light"> | </a></strong>
+        <strong><a class="text-light">  |  </a></strong>
       </li>
       <li routerLinkActive="active">
-        <a routerLink="/vendas" class="text-light"><strong>Visualizar Vendas</strong></a>
+        <a routerLink="/dataForm" class="text-light"><strong>Produtos</strong></a>
       </li>
       <li>
-        <strong><a class="text-light">{{' '}} | {{' '}}</a></strong>
+        <strong><a class="text-light">  |  </a></strong>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/dataForm" class="text-light"><strong>Clientes</strong></a>
+      </li>
+      <li>
+        <strong><a class="text-light">  |  </a></strong>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/vendas" class="text-light"><strong>Vendas</strong></a>
+      </li>
+      <li>
+        <strong><a class="text-light">  |  </a></strong>
       </li>
       <li routerLinkActive="active">
         <a routerLink="/dataForm" class="text-light"><strong>Data Form</strong></a>
@@ -24,6 +36,10 @@
     </ul>
   </div>
 </nav>
+<body>
 <div class="container">
-  <router-outlet></router-outlet>
+   
+    <router-outlet></router-outlet>
+     
 </div>
+</body>

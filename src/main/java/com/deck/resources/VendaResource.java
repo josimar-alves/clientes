@@ -101,7 +101,6 @@ public class VendaResource {
 		return vendaDTO;
 	}
 
-
 	@GetMapping("/getAllTest")
 	public List<VendaDTO> getAllVendas() {
 
@@ -122,8 +121,7 @@ public class VendaResource {
 		}
 		return allVendas;
 	}
-	
-	
+
 	@GetMapping("/getAllPedidos")
 	public List<PedidoDTO> getAllPedidos() {
 
@@ -144,10 +142,10 @@ public class VendaResource {
 		}
 		return allPedidos;
 	}
-	
-	private PedidoDTO getPedido (VendaDTO venda) {
+
+	private PedidoDTO getPedido(VendaDTO venda) {
 		PedidoDTO pedido = new PedidoDTO();
-		
+
 		pedido.setIDVenda("" + venda.getVenda().getId());
 		pedido.setNome(venda.getVenda().getCliente().getNome());
 		pedido.setTelefone(venda.getVenda().getCliente().getTelefone());
@@ -156,19 +154,17 @@ public class VendaResource {
 		pedido.setData(venda.getVenda().getData());
 		pedido.setTotal("" + venda.getTotal());
 		pedido.setTroco("Troco");
-		
+
 		return pedido;
 	}
-	
+
 	private String pedidosToString(List<ItemVenda> vendas) {
 		String str = "";
-		
+
 		for (ItemVenda itemVenda : vendas) {
 			str += itemVenda.itemToString() + "; ";
 		}
-			
-		return str.substring(0, str.length()-2);
+		return str.substring(0, str.length() - 2);
 	}
 
-	
 }

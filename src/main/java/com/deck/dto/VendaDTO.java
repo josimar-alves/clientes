@@ -28,13 +28,4 @@ public class VendaDTO {
 	public void setVenda(Venda venda) {
 		this.venda = venda;
 	}
-	
-	public double getTotal() {
-		double total = 0.0;
-		for (ItemVenda itemVenda : items) {
-			total += itemVenda.getValorTotalItem();
-		}
-		return total;
-	}
-
 }

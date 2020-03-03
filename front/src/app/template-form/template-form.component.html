@@ -11,14 +11,14 @@
         </div>
         <div class="row">
           <div class="col-sm-10">
-            <ng-select placeholder="Cliente" [items]="clientes" bindLabel="nome" required #searchBar
+            <ng-select placeholder="Cliente" id="clientes" [items]="clientes" bindLabel="nome" required #searchBar
               (change)="searchBar.blur()" (change)="setCliente($event,f)"></ng-select>
           </div>
 
           <div class="col-md-1 text-center">
             <br>
-            <button type="button" class="btn btn-success" (click)="salvarCliente(f)"
-              [disabled]="!f.valid">Salvar</button>
+            <button type="button" class="btn btn-success" (click)="clienteAction(f)"
+              [disabled]="!f.valid">{{buttonNameClienteAction}}</button>
           </div>
           <div class="col-md-1 text-center">
             <br>
@@ -54,8 +54,8 @@
           </div>
 
           <div class="col-md-1">
-            <label for="clienteID" class="control-label">ClienteID</label>
-            <input type="text" class="form-control" id="clienteID" name="clienteID" ngModel #numero="ngModel" readonly>
+            <label for="id" class="control-label">ClienteID</label>
+            <input type="text" class="form-control" id="id" name="id" ngModel #numero="ngModel" readonly>
           </div>
         </div>
 
@@ -68,9 +68,9 @@
             </div>
 
             <div class="col-md-2">
-              <label for="telefone" class="control-label">Telefone*</label>
+              <label for="telefone" class="control-label">Telefone</label>
               <input type="text" class="form-control" id="telefone" name="telefone" ngModel #telefone="ngModel"
-                [textMask]="{mask: maskPhone}" placeholder="(99) 9 9999-9999" required>
+                [textMask]="{mask: maskPhone}" placeholder="(99) 9 9999-9999">
 
               <app-campo-control-erro [mostrarErro]="verificaValidTouched(telefone)" msgErro="Tel. obrigatório.">
               </app-campo-control-erro>
@@ -88,7 +88,7 @@
       <hr>
       <font size="4">
         <b>TOTAL:</b> R$
-        {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
+          <label id="total">{{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}</label>
       </font>
       <hr>
 
@@ -178,15 +178,19 @@
               <label for="obs" class="control-label">Observações</label>
               <input type="text" class="form-control" id="obs" name="obs" ngModel #obs="ngModel">
             </div>
-            <div class="col-md-2">
-              <label for="troco" class="control-label">Troco</label>
-              <input type="number" class="form-control" id="troco" name="troco" ngModel #troco="ngModel">
+            <div class="col-md-1">
+              <label for="troco" class="control-label">Troco Para</label>
+              <input type="number" class="form-control" id="troco" name="troco" min="0" ngModel #troco="ngModel">
+            </div>
+            <div class="col-md-1">
+              <label for="vendaID" class="control-label">VendaID</label>
+              <input type="number" class="form-control" id="vendaID" name="vendaID" ngModel #vendaID="ngModel" readonly>
             </div>
 
             <br>
             <div class="col-md-1 text-center">
               <br>
-              <button type="button" class="btn btn-success align-bottom" (click)="salvarVenda2(f)"
+              <button type="button" class="btn btn-success align-bottom" (click)="salvarVenda(f)"
                 [disabled]="!f.valid">Vender</button>
             </div>
             <div class="col-md-1 text-center">
@@ -197,15 +201,15 @@
         </div>
       </div>
 
-      <div id="printPedido">
+      <div id="printPedidos">
         <font size="3">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-          ******** CUPOM NÃO-FISCAL ********
+           CUPOM NÃO-FISCAL
           <br><br>
-                           <img src="\..\favicon.ico" height="100" width="100">
+                  <img src="\..\favicon.ico" height="100" width="100">
           <br><br>
-          ----------- Dados do Cliente -----------
+          ---- Dados do Cliente ----
           <br><br>
           <b>Nome:</b> {{nome.value}}
           <br>
@@ -219,7 +223,7 @@
           <br>
           <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
           <br><br>
-          ---------------- Pedido -----------------
+          --------- Pedido ---------
           <br><br>
           <div *ngIf="tradicional.value > 0"><b>Deck Tradicional:</b> R$ 10.00 x {{tradicional.value}} uni.</div>
           <div *ngIf="canadense.value > 0"><b>Deck Canadense:</b> R$ 12.00 x {{canadense.value}} uni.</div>
@@ -243,6 +247,9 @@
           <b>TOTAL:</b> R$
           {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
         </font>
+        <br><br>
+        <div *ngIf="troco.value > 0"><b>Troco Para:</b> R$ {{troco.value.toFixed(2)}}</div>
+        <div *ngIf="troco.value > 0"><b>Troco (R$):</b> R$ {{getTroco(troco.value)}}</div>
       </div>
     </form>
 
@@ -251,6 +258,12 @@
     <div id="snackbarClienteInexistente">Cliente não cadastrado no sistema!</div>
     <div id="snackbarErroVenda">Adicione pelo menos um item na venda!</div>
     <div id="snackClienteAdicionado">Cliente Criado com Sucesso!</div>
+    <div id="snackClienteModificado">Cliente Modificado com Sucesso!</div>
     <div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>
+
+
+
   </div>
+ <!-- comment -->
+ <!-- <app-form-debug [form]="f"></app-form-debug> -->
 </div>

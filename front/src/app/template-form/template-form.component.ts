@@ -18,6 +18,7 @@ export class TemplateFormComponent implements OnInit {
   private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
+  private buttonNameClienteAction: String = "Salvar";
 
   private get disabledV(): string {
     return this._disabledV;
@@ -82,18 +83,27 @@ export class TemplateFormComponent implements OnInit {
       'has-feedback': this.verificaValidTouched(campo)
     };
   }
-
-
+  
   setCliente(cliente, form) {
     if (cliente != null && cliente !== '') {
-      this.populaDadosForm(cliente, form);
+      this.populaClienteForm(cliente, form);
     }
   }
 
-  populaDadosForm(dados, formulario) {
+  setVendaID(venda, formulario) {
+    formulario.form.patchValue({
+      itemsVenda: {
+        vendaID: venda.id
+      }
+    });
+    this.buttonNameClienteAction = "Modificar";
+  }
+
+
+  populaClienteForm(dados, formulario) {
     formulario.form.patchValue({
       cliente: {
-        clienteID: dados.id,
+        id: dados.id,
         nome: dados.nome,
         rua: dados.rua,
         numCasa: dados.numCasa,
@@ -102,7 +112,7 @@ export class TemplateFormComponent implements OnInit {
         pontoReferencia: dados.pontoReferencia
       }
     });
-
+    this.buttonNameClienteAction = "Modificar";
     // console.log(form);
   }
 
@@ -113,14 +123,31 @@ export class TemplateFormComponent implements OnInit {
       batataCheddar * 6.00 + refrigerante * 2.00 + 1).toFixed(2);
   }
 
+  getTroco(valor) {
+    console.log(document.getElementById("clientes").textContent);
+    document.getElementById("clientes").removeAttribute;
+    var x = document.getElementById("total").textContent;
+    return (valor-parseFloat(x)).toFixed(2);
+  }
+
+  clienteAction(formulario) {
+    let valueSubmit = Object.assign({}, formulario.value.cliente);
+    if(valueSubmit.id === null || valueSubmit.id === "") {
+      this.salvarCliente(formulario);
+      this.buttonNameClienteAction = "Modificar";
+    } else {
+      this.modificarCliente(formulario);
+    }
+  }
+
   salvarCliente(formulario) {
     let valueSubmit = Object.assign({}, formulario.value.cliente);
-    if (valueSubmit.clienteID === null || valueSubmit.clienteID === "") {
+    if (valueSubmit.id === null || valueSubmit.id === "") {
       if (confirm("Confirmar cadastro de usuário")) {
         let json = JSON.stringify(valueSubmit);
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         this.http.post(`${this.baseUrl}/add`, json, { headers }).toPromise().then((data: any) => {
-          console.log(this.populaDadosForm(data, formulario));
+          console.log(this.populaClienteForm(data, formulario));
         });
         setTimeout(() => { this.ngOnInit(); }, 250);
         this.openSnackbar("snackClienteAdicionado");
@@ -130,10 +157,24 @@ export class TemplateFormComponent implements OnInit {
     }
   }
 
+  modificarCliente(formulario) {
+    let valueSubmit = Object.assign({}, formulario.value.cliente);
+
+    if (confirm("Confirmar modificação de usuário")) {
+      let json = JSON.stringify(valueSubmit);
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      this.http.put(`${this.baseUrl}/modify`, json, { headers }).toPromise().then((data: any) => {
+        console.log(this.populaClienteForm(data, formulario));
+      });
+      this.openSnackbar("snackClienteModificado");
+      setTimeout(() => { this.ngOnInit(); }, 250);
+    }
+  }
+
   limparCliente(formulario) {
     formulario.form.patchValue({
-      cliente: {
-        clienteID: null,
+       cliente: {
+        id: null,
         nome: null,
         rua: null,
         numCasa: null,
@@ -142,6 +183,7 @@ export class TemplateFormComponent implements OnInit {
         pontoReferencia: null
       }
     });
+    this.buttonNameClienteAction = "Salvar"
   }
 
   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -162,13 +204,14 @@ export class TemplateFormComponent implements OnInit {
         batata: null,
         batataCheddar: null,
         refrigerante: null,
-        observacoes: null
+        observacoes: null,
+        troco: null,
+        vendaID: null
       }
     });
   }
 
-  salvarVenda2(formulario) {
-
+  salvarVenda(formulario) {
     var venda =
     {
       "items": [
@@ -236,20 +279,22 @@ export class TemplateFormComponent implements OnInit {
       ],
       "venda": {
         "cliente": {
-          "id": formulario.value.cliente.clienteID
+          "id": formulario.value.cliente.id
         },
-        "obs": formulario.value.itemsVenda.obs
+        "obs": formulario.value.itemsVenda.obs,
+        "troco": formulario.value.itemsVenda.troco,
+        "total": document.getElementById("total").textContent
       }
     };
 
     if (this.validaVenda(formulario) === true) {
-      if (formulario.value.cliente.clienteID !== null && formulario.value.cliente.clienteID !== "") {
+      if (formulario.value.cliente.id !== null && formulario.value.cliente.id !== "") {
         if (confirm("Confirmar venda")) {
           let jsonVenda = (JSON.stringify(venda));
-          console.log(jsonVenda);
           let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
           this.http.post('http://localhost:8080/venda/addTest', jsonVenda, { headers }).toPromise().then((data: any) => {
             console.log(data);
+            this.setVendaID(data, formulario);
             this.openSnackbar("snackbarVendaFeita");
             this.printPedido();
           });
@@ -266,7 +311,7 @@ export class TemplateFormComponent implements OnInit {
   openSnackbar(textID) {
     var x = document.getElementById(textID);
     x.className = "show";
-    setTimeout(function () { x.className = x.className.replace("show", ""); }, 5000);
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
   }
 
   validaVenda(formulario) {

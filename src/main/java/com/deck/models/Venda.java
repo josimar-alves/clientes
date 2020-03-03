@@ -24,9 +24,30 @@ public class Venda implements Serializable {
 	@ManyToOne
 	private Cliente cliente;
 	
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public double getTroco() {
+		return troco;
+	}
+	
+
+	public void setTroco(double troco) {
+		this.troco = troco;
+	}
+
 	private Date data;
 	
 	private String obs;
+	
+	private double total;
+	
+	private double troco;
 
 	public String getObs() {
 		return obs;

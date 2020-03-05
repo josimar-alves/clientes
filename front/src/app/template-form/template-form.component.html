@@ -87,9 +87,25 @@
       <font size="1">*Campos Obrigatórios</font>
       <hr>
       <font size="4">
-        <b>TOTAL:</b> R$
-          <label id="total">{{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}</label>
-      </font>
+      <div class="row">
+        <div class="col-md-2">
+          
+            <b>TOTAL:</b> R$
+            <label
+              id="total">{{setTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}</label>         
+        </div>
+
+        <div class="col-md-8">
+          <b>Entrega:  </b>         
+          <input type="radio" id="cidade" name="entrega" value="Cidade" checked (click)="setEntrega(1)"> 
+          <label for="cidade">Cidade (R$ 1,00)</label>   |   
+          <input type="radio" id="zonaRural" name="entrega" value="Zona Rural" (click)="setEntrega(2)"> 
+          <label for="zonaRural">Zona Rural (R$ 2,00)</label>   |   
+          <input type="radio" id="gratis" name="entrega" value="Grátis" (click)="setEntrega(0)"> 
+          <label for="gratis">Grátis</label>
+        </div>        
+      </div>
+    </font>
       <hr>
 
       <div ngModelGroup="itemsVenda">
@@ -174,13 +190,13 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-7">
               <label for="obs" class="control-label">Observações</label>
               <input type="text" class="form-control" id="obs" name="obs" ngModel #obs="ngModel">
             </div>
             <div class="col-md-1">
               <label for="troco" class="control-label">Troco Para</label>
-              <input type="number" class="form-control" id="troco" name="troco" min="0" ngModel #troco="ngModel">
+              <input type="number" class="form-control" id="troco" name="troco" min="{{getTotal()}}" ngModel #troco="ngModel">
             </div>
             <div class="col-md-1">
               <label for="vendaID" class="control-label">VendaID</label>
@@ -190,8 +206,12 @@
             <br>
             <div class="col-md-1 text-center">
               <br>
-              <button type="button" class="btn btn-success align-bottom" (click)="salvarVenda(f)"
-                [disabled]="!f.valid">Vender</button>
+              <button type="button" class="btn btn-success align-bottom" (click)="vendaAction(f)"
+                [disabled]="!f.valid">{{buttonNameVendaAction}}</button>
+            </div>
+            <div class="col-md-1 text-center">
+              <br>
+              <button type="button" class="btn btn-info" (click)="imprimir(f)">Imprimir</button>
             </div>
             <div class="col-md-1 text-center">
               <br>
@@ -201,7 +221,7 @@
         </div>
       </div>
 
-      <div id="printPedidos">
+      <div id="printPedido">
         <font size="3">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
@@ -238,14 +258,15 @@
           <div *ngIf="batata.value > 0"><b>Batata Frita:</b> R$ 3.50 x {{batata.value}} uni.</div>
           <div *ngIf="batataCheddar.value > 0"><b>Batata Cheddar Bacon:</b> R$ 6.00 x {{batataCheddar.value}} uni.</div>
           <div *ngIf="refrigerante.value > 0"><b>Refrigerante (250 ml):</b> R$ 2.00 x {{refrigerante.value}} uni.</div>
-          <b>Entrega:</b> R$ 1.00
+          <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega()}}</div>
+          <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
           <br><br>
           <div *ngIf="obs.value !== ''"><b>*Obs:</b> {{obs.value}}</div>
           <br>
         </font>
         <font size="4">
           <b>TOTAL:</b> R$
-          {{getTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
+          {{setTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
         </font>
         <br><br>
         <div *ngIf="troco.value > 0"><b>Troco Para:</b> R$ {{troco.value.toFixed(2)}}</div>
@@ -253,17 +274,16 @@
       </div>
     </form>
 
-
     <div id="snackbarClienteExistente">Cliente já existe!</div>
-    <div id="snackbarClienteInexistente">Cliente não cadastrado no sistema!</div>
+    <div id="snackbarClienteInexistente">Para vender, cadastre o Cliente no sistema!</div>
     <div id="snackbarErroVenda">Adicione pelo menos um item na venda!</div>
     <div id="snackClienteAdicionado">Cliente Criado com Sucesso!</div>
     <div id="snackClienteModificado">Cliente Modificado com Sucesso!</div>
     <div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>
-
-
-
+    <div id="snackbarErroImprimir">Para imprimir, salve a Venda!</div>
+    <div id="snackbarVendaModificada">Venda Modificada com Sucesso!</div>
+    
   </div>
- <!-- comment -->
- <!-- <app-form-debug [form]="f"></app-form-debug> -->
+  <!-- comment
+   <app-form-debug [form]="f"></app-form-debug> -->
 </div>

@@ -11,4 +11,7 @@ public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
 
 	@Query(nativeQuery = true, value = "select * from tb_item_venda as iv where iv.venda_id = ?1")
 	List<ItemVenda> findItemVendaByVenda(Long idVenda);	
+	
+	@Query(nativeQuery = true, value = "delete from tb_item_venda as iv where iv.venda_id = ?1")
+	void deleteItemsVendas(Long idVenda);
 }

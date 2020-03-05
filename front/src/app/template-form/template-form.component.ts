@@ -4,7 +4,7 @@ import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { Cliente } from '../shared/models/cliente';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { Validators } from '@angular/forms';
-declare var $: any;
+
 
 @Component({
   selector: 'app-template-form',
@@ -19,6 +19,9 @@ export class TemplateFormComponent implements OnInit {
   private _disabledV: string = '0';
   private disabled: boolean = false;
   private buttonNameClienteAction: String = "Salvar";
+  private buttonNameVendaAction: String = "Salvar";
+  private entrega: any = 1;
+  private total: any = 0;
 
   private get disabledV(): string {
     return this._disabledV;
@@ -83,7 +86,7 @@ export class TemplateFormComponent implements OnInit {
       'has-feedback': this.verificaValidTouched(campo)
     };
   }
-  
+
   setCliente(cliente, form) {
     if (cliente != null && cliente !== '') {
       this.populaClienteForm(cliente, form);
@@ -96,9 +99,8 @@ export class TemplateFormComponent implements OnInit {
         vendaID: venda.id
       }
     });
-    this.buttonNameClienteAction = "Modificar";
+    this.buttonNameVendaAction = "Modificar";
   }
-
 
   populaClienteForm(dados, formulario) {
     formulario.form.patchValue({
@@ -116,27 +118,47 @@ export class TemplateFormComponent implements OnInit {
     // console.log(form);
   }
 
-  getTotal(tradicional, canadense, original, australiano, cheddarSimples, cheddarDuplo, onions, comboRefri, comboCerveja, batata, batataCheddar, refrigerante) {
+  getTotal() {
+    return this.total;
+  }
 
-    return (tradicional * 10.00 + canadense * 12.00 + original * 12.00 + australiano * 12.00 + cheddarSimples * 12.00 +
+  setTotal(tradicional, canadense, original, australiano, cheddarSimples, cheddarDuplo, onions, comboRefri, comboCerveja, batata, batataCheddar, refrigerante) {
+    this.total = (tradicional * 10.00 + canadense * 12.00 + original * 12.00 + australiano * 12.00 + cheddarSimples * 12.00 +
       cheddarDuplo * 14.00 + onions * 7.00 + comboRefri * 5.00 + comboCerveja * 7.00 + batata * 3.50 +
-      batataCheddar * 6.00 + refrigerante * 2.00 + 1).toFixed(2);
+      batataCheddar * 6.00 + refrigerante * 2.00 + this.entrega).toFixed(2);
+    return this.total;
   }
 
   getTroco(valor) {
     console.log(document.getElementById("clientes").textContent);
     document.getElementById("clientes").removeAttribute;
     var x = document.getElementById("total").textContent;
-    return (valor-parseFloat(x)).toFixed(2);
+    return (valor - parseFloat(x)).toFixed(2);
+  }
+
+  setEntrega(value) {
+    this.entrega = value;
+  }
+
+  getEntrega() {
+    return this.entrega.toFixed(2);
   }
 
   clienteAction(formulario) {
     let valueSubmit = Object.assign({}, formulario.value.cliente);
-    if(valueSubmit.id === null || valueSubmit.id === "") {
+    if (valueSubmit.id === null || valueSubmit.id === "") {
       this.salvarCliente(formulario);
-      this.buttonNameClienteAction = "Modificar";
     } else {
       this.modificarCliente(formulario);
+    }
+  }
+
+  vendaAction(formulario) {
+    let valueSubmit = Object.assign({}, formulario.value.itemsVenda);
+    if (valueSubmit.vendaID === null || valueSubmit.vendaID === "") {
+      this.salvarVenda(formulario);
+    } else {
+      this.modificarVenda(formulario);
     }
   }
 
@@ -147,7 +169,8 @@ export class TemplateFormComponent implements OnInit {
         let json = JSON.stringify(valueSubmit);
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         this.http.post(`${this.baseUrl}/add`, json, { headers }).toPromise().then((data: any) => {
-          console.log(this.populaClienteForm(data, formulario));
+          this.populaClienteForm(data, formulario);
+          this.buttonNameClienteAction = "Modificar";
         });
         setTimeout(() => { this.ngOnInit(); }, 250);
         this.openSnackbar("snackClienteAdicionado");
@@ -173,7 +196,7 @@ export class TemplateFormComponent implements OnInit {
 
   limparCliente(formulario) {
     formulario.form.patchValue({
-       cliente: {
+      cliente: {
         id: null,
         nome: null,
         rua: null,
@@ -293,19 +316,118 @@ export class TemplateFormComponent implements OnInit {
           let jsonVenda = (JSON.stringify(venda));
           let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
           this.http.post('http://localhost:8080/venda/addTest', jsonVenda, { headers }).toPromise().then((data: any) => {
-            console.log(data);
             this.setVendaID(data, formulario);
             this.openSnackbar("snackbarVendaFeita");
-            this.printPedido();
           });
-        } else {
-          this.openSnackbar("snackbarClienteInexistente");
         }
+      } else {
+        this.openSnackbar("snackbarClienteInexistente");
       }
     } else {
       this.openSnackbar("snackbarErroVenda");
     }
-    this.openSnackbar("snackbarClienteInexistente");
+  }
+
+
+  modificarVenda(formulario) {
+    var venda =
+    {
+      "items": [
+        {
+          "produto": {
+            "id": 1
+          },
+          "quantidade": formulario.value.itemsVenda.tradicional
+        }, {
+          "produto": {
+            "id": 2
+          },
+          "quantidade": formulario.value.itemsVenda.canadense
+        }, {
+          "produto": {
+            "id": 3
+          },
+          "quantidade": formulario.value.itemsVenda.original
+        }, {
+          "produto": {
+            "id": 4
+          },
+          "quantidade": formulario.value.itemsVenda.australiano
+        }, {
+          "produto": {
+            "id": 5
+          },
+          "quantidade": formulario.value.itemsVenda.cheddarSimples
+        }, {
+          "produto": {
+            "id": 6
+          },
+          "quantidade": formulario.value.itemsVenda.cheddarDuplo
+        }, {
+          "produto": {
+            "id": 7
+          },
+          "quantidade": formulario.value.itemsVenda.onions
+        }, {
+          "produto": {
+            "id": 8
+          },
+          "quantidade": formulario.value.itemsVenda.comboRefri
+        }, {
+          "produto": {
+            "id": 9
+          },
+          "quantidade": formulario.value.itemsVenda.comboCerveja
+        }, {
+          "produto": {
+            "id": 10
+          },
+          "quantidade": formulario.value.itemsVenda.batata
+        }, {
+          "produto": {
+            "id": 11
+          },
+          "quantidade": formulario.value.itemsVenda.batataCheddar
+        }, {
+          "produto": {
+            "id": 12
+          },
+          "quantidade": formulario.value.itemsVenda.refrigerante
+        }
+      ],
+      "venda": {
+        "cliente": {
+          "id": formulario.value.cliente.id
+        },
+        "id": formulario.value.itemsVenda.vendaID,
+        "obs": formulario.value.itemsVenda.obs,
+        "troco": formulario.value.itemsVenda.troco,
+        "total": document.getElementById("total").textContent
+      }
+    };
+
+    if (this.validaVenda(formulario) === true) {
+      if (formulario.value.cliente.id !== null && formulario.value.cliente.id !== "") {
+        if (confirm("Confirmar Modificação da Venda")) {
+          let jsonVenda = (JSON.stringify(venda));
+          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+
+          this.http.delete("http://localhost:8080/venda/deleteItems"+formulario.value.cliente.id, { headers }).toPromise().then((data: any) => {
+            this.openSnackbar("snackbarVendaModificada");
+          });
+
+
+          this.http.put('http://localhost:8080/venda/modifyTest', jsonVenda, { headers }).toPromise().then((data: any) => {
+            this.openSnackbar("snackbarVendaModificada");
+          });
+        }
+      } else {
+        this.openSnackbar("snackbarClienteInexistente");
+      }
+    } else {
+      this.openSnackbar("snackbarErroVenda");
+    }
   }
 
   openSnackbar(textID) {
@@ -341,6 +463,14 @@ export class TemplateFormComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  imprimir(formulario) {
+    if (formulario.value.itemsVenda.vendaID != '' && formulario.value.itemsVenda.vendaID != null) {
+      this.printPedido();
+    } else {
+      this.openSnackbar("snackbarErroImprimir");
+    }
   }
 
   printPedido() {

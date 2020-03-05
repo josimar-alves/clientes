@@ -81,8 +81,31 @@ public class VendaResource {
 				itemVendaRepository.save(item);
 			}
 		}
-
 		return venda;
+	}
+	
+	@PutMapping("/modifyTest")
+	public Venda modifyVendaTest(@RequestBody VendaDTO dto) {
+		Venda venda = dto.getVenda();
+		venda.setData(new Date());
+		venda = vendaRepository.save(venda);
+		System.out.println("Aqui1");
+		System.out.println(venda.getId());
+
+//		itemVendaRepository.deleteItemsVendas(venda.getId());
+		System.out.println("Aqui2");
+		for (ItemVenda item : dto.getItems()) {
+			if (item.getQuantidade() != null && item.getQuantidade() != 0) {
+				item.setVenda(venda);
+				itemVendaRepository.save(item);
+			}
+		}
+		return venda;
+	}
+	
+	@DeleteMapping("/deleteItems/{id}")
+	public void deleteItemsVenda(@PathVariable(value = "id") long id) {
+		itemVendaRepository.deleteItemsVendas(id);
 	}
 
 	@GetMapping("/getTest/{id}")
@@ -100,7 +123,7 @@ public class VendaResource {
 		vendaDTO.setItems(itemsAux);
 		return vendaDTO;
 	}
-
+	
 	@GetMapping("/getAllTest")
 	public List<VendaDTO> getAllVendas() {
 
@@ -142,7 +165,7 @@ public class VendaResource {
 		}
 		return allPedidos;
 	}
-
+	
 	private PedidoDTO getPedido(VendaDTO venda) {
 		PedidoDTO pedido = new PedidoDTO();
 

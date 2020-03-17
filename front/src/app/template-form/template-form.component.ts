@@ -22,6 +22,7 @@ export class TemplateFormComponent implements OnInit {
   private buttonNameVendaAction: String = "Salvar";
   private entrega: any = 1;
   private total: any = 0;
+  private cartao: boolean = false;
 
   private get disabledV(): string {
     return this._disabledV;
@@ -130,7 +131,6 @@ export class TemplateFormComponent implements OnInit {
   }
 
   getTroco(valor) {
-    console.log(document.getElementById("clientes").textContent);
     document.getElementById("clientes").removeAttribute;
     var x = document.getElementById("total").textContent;
     return (valor - parseFloat(x)).toFixed(2);
@@ -142,6 +142,18 @@ export class TemplateFormComponent implements OnInit {
 
   getEntrega() {
     return this.entrega.toFixed(2);
+  }
+
+  checkCartao() {
+    if (this.cartao == true) {
+      this.cartao = false;
+    } else {
+      this.cartao = true;
+    }
+  }
+
+  getCartao(){
+    return this.cartao;
   }
 
   clienteAction(formulario) {
@@ -206,11 +218,11 @@ export class TemplateFormComponent implements OnInit {
         pontoReferencia: null
       }
     });
-    this.buttonNameClienteAction = "Salvar"
+    this.buttonNameClienteAction = "Salvar";
   }
 
   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-  public maskNumber = [/[0-9]/, /\d/, /\d/, /\d/, /\d/];
+  public maskNumber = [/[0-9]/, /\d/, /\d/, /\d/];
 
   limparVenda(formulario) {
     formulario.form.patchValue({
@@ -227,11 +239,12 @@ export class TemplateFormComponent implements OnInit {
         batata: null,
         batataCheddar: null,
         refrigerante: null,
-        observacoes: null,
+        obs: null,
         troco: null,
         vendaID: null
       }
     });
+    this.buttonNameVendaAction = "Salvar"
   }
 
   salvarVenda(formulario) {
@@ -412,11 +425,9 @@ export class TemplateFormComponent implements OnInit {
           let jsonVenda = (JSON.stringify(venda));
           let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-
-          this.http.delete("http://localhost:8080/venda/deleteItems"+formulario.value.cliente.id, { headers }).toPromise().then((data: any) => {
-            this.openSnackbar("snackbarVendaModificada");
+          this.http.delete("http://localhost:8080/venda/deleteItems/"+formulario.value.itemsVenda.vendaID, { headers }).toPromise().then((data: any) => {
+            console.log("Apagou " + formulario.value.itemsVenda.vendaID);
           });
-
 
           this.http.put('http://localhost:8080/venda/modifyTest', jsonVenda, { headers }).toPromise().then((data: any) => {
             this.openSnackbar("snackbarVendaModificada");

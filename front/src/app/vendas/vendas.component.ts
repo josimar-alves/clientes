@@ -44,4 +44,13 @@ export class VendasComponent implements OnInit {
   );
 }
 
+printVenda(id) {
+  console.log("Imprimiu!");
+}
+
+deleteVenda(id) {
+  this.service.delete(id);
+  this.onRefresh();
+}
+
 }

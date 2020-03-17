@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
 <div class="card">
     <div class="card-header">
       <div class="float-left">
@@ -19,12 +21,14 @@
             <th style="text-align:center">Data</th>
             <th style="text-align:center">Total</th>
             <th style="text-align:center">Troco</th>
+            <th style="text-align:center"></th>
+            <th style="text-align:center"></th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let venda of vendas" >
-            <td style="width:1%">{{ venda.idvenda }}</td>
+            <td style="width:1%"><b>{{ venda.idvenda }}</b></td>
             <td style="width:15%">{{ venda.nome }}</td>
             <td style="width:13%">{{ venda.telefone }}</td>
             <td style="width:25%">{{ venda.pedido }}</td>
@@ -32,10 +36,16 @@
             <td style="width:10%">{{ venda.data }}</td>
             <td style="width:8%">R$ {{ venda.total }}0</td>
             <td style="width:8%">R$ {{ venda.troco }}0</td>
+            <td><button type="button" class="btn btn-danger" (click)="deleteVenda(venda.idvenda)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button></td>
+            <td><button type="button" class="btn btn-primary" (click)="printVenda(venda.idvenda)">
+              <span class="glyphicon glyphicon-print"></span>
+            </button></td>
           </tr>
         </tbody>
       </table>
-  
+
       <ng-template #loadingError>
         <div *ngIf="error$ | async; else loading" >
           Erro ao carregar pedidos. Tente novamente mais tarde.

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -89,11 +91,7 @@ public class VendaResource {
 		Venda venda = dto.getVenda();
 		venda.setData(new Date());
 		venda = vendaRepository.save(venda);
-		System.out.println("Aqui1");
-		System.out.println(venda.getId());
-
-//		itemVendaRepository.deleteItemsVendas(venda.getId());
-		System.out.println("Aqui2");
+	
 		for (ItemVenda item : dto.getItems()) {
 			if (item.getQuantidade() != null && item.getQuantidade() != 0) {
 				item.setVenda(venda);
@@ -103,9 +101,17 @@ public class VendaResource {
 		return venda;
 	}
 	
+	@Transactional
 	@DeleteMapping("/deleteItems/{id}")
 	public void deleteItemsVenda(@PathVariable(value = "id") long id) {
 		itemVendaRepository.deleteItemsVendas(id);
+	}
+	
+	@Transactional
+	@DeleteMapping("/deleteVenda/{id}")
+	public void deleteVenda(@PathVariable(value = "id") long id) {
+		itemVendaRepository.deleteItemsVendas(id);
+		vendaRepository.deleteVenda(id);
 	}
 
 	@GetMapping("/getTest/{id}")
@@ -113,20 +119,18 @@ public class VendaResource {
 		List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(id);
 		VendaDTO vendaDTO = new VendaDTO();
 		vendaDTO.setVenda(items.get(0).getVenda());
-
 		List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+		
 		for (ItemVenda i : items) {
 			i.setVenda(null);
 			itemsAux.add(i);
 		}
-
 		vendaDTO.setItems(itemsAux);
 		return vendaDTO;
 	}
 	
 	@GetMapping("/getAllTest")
 	public List<VendaDTO> getAllVendas() {
-
 		List<VendaDTO> allVendas = new LinkedList<VendaDTO>();
 
 		for (Venda v : vendaRepository.findAll()) {

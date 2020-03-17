@@ -95,15 +95,30 @@
               id="total">{{setTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}</label>         
         </div>
 
-        <div class="col-md-8">
-          <b>Entrega:  </b>         
+        <div class="col-md-1" style="border-right: 1px solid">
+        
+        </div>
+
+        <div class="col-md-6">
+             <b>Entrega:  </b>         
           <input type="radio" id="cidade" name="entrega" value="Cidade" checked (click)="setEntrega(1)"> 
-          <label for="cidade">Cidade (R$ 1,00)</label>   |   
+          <label for="cidade">Cidade (R$ 1,00)</label>   -   
           <input type="radio" id="zonaRural" name="entrega" value="Zona Rural" (click)="setEntrega(2)"> 
-          <label for="zonaRural">Zona Rural (R$ 2,00)</label>   |   
+          <label for="zonaRural">Zona Rural (R$ 2,00)</label>   -   
           <input type="radio" id="gratis" name="entrega" value="Grátis" (click)="setEntrega(0)"> 
           <label for="gratis">Grátis</label>
         </div>        
+
+        <div class="col-md-1" style="border-left: 1px solid">
+
+        </div>
+
+        <div class="col-md-2">
+          <div class="form-check">
+            <input type="checkbox" style="margin-top: .5rem;" class="form-check-input" id="checkCartao" (click)="checkCartao()">
+            <label class="form-check-label" for="checkCartao">Cartão</label>
+          </div>  
+        </div>
       </div>
     </font>
       <hr>
@@ -196,7 +211,7 @@
             </div>
             <div class="col-md-1">
               <label for="troco" class="control-label">Troco Para</label>
-              <input type="number" class="form-control" id="troco" name="troco" min="{{getTotal()}}" ngModel #troco="ngModel">
+              <input type="number" class="form-control" id="troco" name="troco" max="999" min="{{getTotal()}}" ngModel #troco="ngModel">
             </div>
             <div class="col-md-1">
               <label for="vendaID" class="control-label">VendaID</label>
@@ -222,14 +237,14 @@
       </div>
 
       <div id="printPedido">
-        <font size="3">
+        <font size="4">
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-           CUPOM NÃO-FISCAL
+                    CUPOM NÃO-FISCAL
           <br><br>
-                  <img src="\..\favicon.ico" height="100" width="100">
+                        <img src="\..\favicon.ico" height="100" width="100"> 
           <br><br>
-          ---- Dados do Cliente ----
+          -------- Dados do Cliente --------
           <br><br>
           <b>Nome:</b> {{nome.value}}
           <br>
@@ -243,34 +258,35 @@
           <br>
           <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
           <br><br>
-          --------- Pedido ---------
+          ------------- Pedido -------------
           <br><br>
-          <div *ngIf="tradicional.value > 0"><b>Deck Tradicional:</b> R$ 10.00 x {{tradicional.value}} uni.</div>
-          <div *ngIf="canadense.value > 0"><b>Deck Canadense:</b> R$ 12.00 x {{canadense.value}} uni.</div>
-          <div *ngIf="original.value > 0"><b>Deck Original:</b> R$ 12,00 x {{original.value}} uni.</div>
-          <div *ngIf="australiano.value > 0"><b>Deck Australiano:</b> R$ 12.00 x {{australiano.value}} uni.</div>
-          <div *ngIf="cheddarSimples.value > 0"><b>Deck Cheddar Simples:</b> R$ 12.00 x {{cheddarSimples.value}} uni.
+          <div *ngIf="tradicional.value > 0"><b>{{tradicional.value}}x Deck Tradicional:</b> R$ 10,00</div>
+          <div *ngIf="canadense.value > 0"><b>{{canadense.value}}x Deck Canadense:</b> R$ 12,00</div>
+          <div *ngIf="original.value > 0"><b>{{original.value}}x Deck Original:</b> R$ 12,00</div>
+          <div *ngIf="australiano.value > 0"><b>{{australiano.value}}x Deck Australiano:</b> R$ 12.00</div>
+          <div *ngIf="cheddarSimples.value > 0"><b>{{cheddarSimples.value}}x Deck Cheddar Simples:</b> R$ 12.00
           </div>
-          <div *ngIf="cheddarDuplo.value > 0"><b>Deck Cheddar Duplo:</b> R$ 14.00 x {{cheddarDuplo.value}} uni.</div>
-          <div *ngIf="onions.value > 0"><b>Onions:</b> R$ 7.00 x {{onions.value}} uni.</div>
-          <div *ngIf="comboRefri.value > 0"><b>Combo 1 (refri):</b> R$ 5.00 x {{comboRefri.value}} uni.</div>
-          <div *ngIf="comboCerveja.value > 0"><b>Combo 2 (Cerveja):</b> R$ 7.00 x {{comboCerveja.value}} uni.</div>
-          <div *ngIf="batata.value > 0"><b>Batata Frita:</b> R$ 3.50 x {{batata.value}} uni.</div>
-          <div *ngIf="batataCheddar.value > 0"><b>Batata Cheddar Bacon:</b> R$ 6.00 x {{batataCheddar.value}} uni.</div>
-          <div *ngIf="refrigerante.value > 0"><b>Refrigerante (250 ml):</b> R$ 2.00 x {{refrigerante.value}} uni.</div>
+          <div *ngIf="cheddarDuplo.value > 0"><b>{{cheddarDuplo.value}}x Deck Cheddar Duplo:</b> R$ 14,00</div>
+          <div *ngIf="onions.value > 0"><b>{{onions.value}}x Onions:</b> R$ 7,00</div>
+          <div *ngIf="comboRefri.value > 0"><b>{{comboRefri.value}}x Combo 1 (refri):</b> R$ 5,00</div>
+          <div *ngIf="comboCerveja.value > 0"><b>{{comboCerveja.value}}x Combo 2 (Cerveja):</b> R$ 7,00</div>
+          <div *ngIf="batata.value > 0"><b>{{batata.value}}x Batata Frita:</b> R$ 3,50 </div>
+          <div *ngIf="batataCheddar.value > 0"><b>{{batataCheddar.value}}x Batata Cheddar Bacon:</b> R$ 6,00</div>
+          <div *ngIf="refrigerante.value > 0"><b>{{refrigerante.value}}x Refrigerante (250 ml):</b> R$ 2,00</div>
           <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega()}}</div>
           <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
-          <br><br>
-          <div *ngIf="obs.value !== ''"><b>*Obs:</b> {{obs.value}}</div>
+          <div *ngIf="obs.value !== ''"><br><b>*Obs:</b> {{obs.value}}</div>
           <br>
         </font>
-        <font size="4">
+        <font size="5">
           <b>TOTAL:</b> R$
           {{setTotal(tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}
         </font>
         <br><br>
+        <div *ngIf="troco.value == 0"><b>Troco:</b> Não</div>
         <div *ngIf="troco.value > 0"><b>Troco Para:</b> R$ {{troco.value.toFixed(2)}}</div>
         <div *ngIf="troco.value > 0"><b>Troco (R$):</b> R$ {{getTroco(troco.value)}}</div>
+        <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
       </div>
     </form>
 

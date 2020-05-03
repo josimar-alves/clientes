@@ -1,10 +1,14 @@
 package com.deck.resources;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.xml.crypto.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -85,13 +89,13 @@ public class VendaResource {
 		}
 		return venda;
 	}
-	
+
 	@PutMapping("/modifyTest")
 	public Venda modifyVendaTest(@RequestBody VendaDTO dto) {
 		Venda venda = dto.getVenda();
 		venda.setData(new Date());
 		venda = vendaRepository.save(venda);
-	
+
 		for (ItemVenda item : dto.getItems()) {
 			if (item.getQuantidade() != null && item.getQuantidade() != 0) {
 				item.setVenda(venda);
@@ -100,13 +104,13 @@ public class VendaResource {
 		}
 		return venda;
 	}
-	
+
 	@Transactional
 	@DeleteMapping("/deleteItems/{id}")
 	public void deleteItemsVenda(@PathVariable(value = "id") long id) {
 		itemVendaRepository.deleteItemsVendas(id);
 	}
-	
+
 	@Transactional
 	@DeleteMapping("/deleteVenda/{id}")
 	public void deleteVenda(@PathVariable(value = "id") long id) {
@@ -120,7 +124,7 @@ public class VendaResource {
 		VendaDTO vendaDTO = new VendaDTO();
 		vendaDTO.setVenda(items.get(0).getVenda());
 		List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
-		
+
 		for (ItemVenda i : items) {
 			i.setVenda(null);
 			itemsAux.add(i);
@@ -128,7 +132,7 @@ public class VendaResource {
 		vendaDTO.setItems(itemsAux);
 		return vendaDTO;
 	}
-	
+
 	@GetMapping("/getAllTest")
 	public List<VendaDTO> getAllVendas() {
 		List<VendaDTO> allVendas = new LinkedList<VendaDTO>();
@@ -169,7 +173,32 @@ public class VendaResource {
 		}
 		return allPedidos;
 	}
-	
+
+	@GetMapping("/getAllPedidosWithDate/{date}")
+	public List<PedidoDTO> getAllPedidosWithDate(@PathVariable(value = "date") String date) throws ParseException {
+
+		List<PedidoDTO> allPedidos = new LinkedList<PedidoDTO>();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dataInicio = sdf.parse(date);
+		Date dataFim = new Date(dataInicio.getTime()+(24*60*60*1000)-1);
+		
+		for (Venda v : vendaRepository.findAllWithData(dataInicio, dataFim)) {
+			List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(v.getId());
+			VendaDTO vendaDTO = new VendaDTO();
+			vendaDTO.setVenda(items.get(0).getVenda());
+
+			List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+			for (ItemVenda i : items) {
+				i.setVenda(null);
+				itemsAux.add(i);
+			}
+			vendaDTO.setItems(itemsAux);
+			allPedidos.add(this.getPedido(vendaDTO));
+		}
+		return allPedidos;
+	}
+
 	private PedidoDTO getPedido(VendaDTO venda) {
 		PedidoDTO pedido = new PedidoDTO();
 

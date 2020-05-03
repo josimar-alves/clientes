@@ -14,7 +14,15 @@ import { tap, delay } from 'rxjs/operators';
       return this.http.get<DadosVenda[]>(this.API+"getAllPedidos")
         .pipe(
           delay(2000),
-          tap(console.log)
+          tap()
+        );
+    }
+
+    listByDate(date) {
+      return this.http.get<DadosVenda[]>(this.API+"getAllPedidosWithDate/"+date)
+        .pipe(
+          delay(2000),
+          tap()
         );
     }
 

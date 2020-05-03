@@ -1,4 +1,4 @@
-import { Produto } from '../produtos/produto';
+import { Produto } from '../shared/models/produto';
 
 export interface Item {
     id : Number;

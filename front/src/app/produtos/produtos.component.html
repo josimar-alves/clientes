@@ -8,30 +8,20 @@
       </div>
     </div>
     <div class="card-body">
-      <table class="table table-hover table-bordered" *ngIf="vendas$ | async as vendas; else loadingError" >
+      <table class="table table-hover table-bordered" *ngIf="produto$ | async as produtos; else loadingError" >
         <thead>
           <tr>
             <th style="text-align:center">#</th>
-            <th style="text-align:center">Cliente</th>
-            <th style="text-align:center">Telefone</th>
-            <th style="text-align:center">Pedido</th>
-            <th style="text-align:center">Observações</th>
-            <th style="text-align:center">Data</th>
-            <th style="text-align:center">Total</th>
-            <th style="text-align:center">Troco</th>
+            <th style="text-align:center">Produto</th>
+            <th style="text-align:center">Valor</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let venda of vendas" >
-            <td style="width:1%">{{ venda.idvenda }}</td>
-            <td style="width:10%">{{ venda.nome }}</td>
-            <td style="width:17%">{{ venda.telefone }}</td>
-            <td style="width:30%">{{ venda.pedido }}</td>
-            <td style="width:15%">{{ venda.obs }}</td>
-            <td style="width:9%">{{ venda.data }}</td>
-            <td style="width:8%">{{ venda.total }}</td>
-            <td style="width:8%">{{ venda.troco }}</td>
+          <tr *ngFor="let produto of produtos" >
+            <td style="width:1%">{{ produto.id }}</td>
+            <td style="width:10%">{{ produto.nome }}</td>
+            <td style="width:17%">{{ produto.preco }}</td>
           </tr>
         </tbody>
       </table>

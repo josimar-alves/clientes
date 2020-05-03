@@ -2,11 +2,21 @@
 
 <div class="card">
     <div class="card-header">
-      <div class="float-left">
+      <div class="col-md-4">
         <h4>Lista de Pedidos</h4>
       </div>
+
+      <div class="col-md-3">
+        <b>Total:</b> R$ {{getTotal()}}
+      </div>
+
+      <div class="col-md-2">
+        <input id="dateFilter" type="date" name="dateFilter" ngModel #dateFilter="ngModel">
+        <button id="dateFilterButton" name="dateFilterButton" ngModel #dateFilterButton="ngModel" type="button" class="btn btn-info" (click)="filterByDate(dateFilter.value)">Filtrar</button>
+      </div>
+      
       <div class="float-right">
-        <button type="button" class="btn btn-secondary" (click)="onRefresh()" >Atualizar Lista</button>
+        <button type="button" class="btn btn-secondary" (click)="onRefresh()" id="refreshButton" name="refreshButton" ngModel #refreshButton="ngModel">Atualizar Lista</button>
       </div>
     </div>
     <div class="card-body">
@@ -19,8 +29,9 @@
             <th style="text-align:center">Pedido</th>
             <th style="text-align:center">Observações</th>
             <th style="text-align:center">Data</th>
-            <th style="text-align:center">Total</th>
-            <th style="text-align:center">Troco</th>
+            <th style="text-align:center">Total (R$)</th>
+            <th style="text-align:center">Troco (R$)</th>
+            <th style="text-align:center"></th>
             <th style="text-align:center"></th>
             <th style="text-align:center"></th>
           </tr>
@@ -34,8 +45,11 @@
             <td style="width:25%">{{ venda.pedido }}</td>
             <td style="width:20%">{{ venda.obs }}</td>
             <td style="width:10%">{{ venda.data }}</td>
-            <td style="width:8%">R$ {{ venda.total }}0</td>
-            <td style="width:8%">R$ {{ venda.troco }}0</td>
+            <td style="width:8%; text-align:center">{{ venda.total.replace('.',',') }}0</td>
+            <td style="width:8%; text-align:center">{{ venda.troco.replace('.',',') }}0</td>
+            <td><button type="button" class="btn btn-secondary" (click)="editarVenda(venda.idvenda)">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button></td>
             <td><button type="button" class="btn btn-danger" (click)="deleteVenda(venda.idvenda)">
               <span class="glyphicon glyphicon-trash"></span>
             </button></td>
@@ -47,11 +61,11 @@
       </table>
 
       <ng-template #loadingError>
-        <div *ngIf="error$ | async; else loading" >
+        <div id="erroLoading" *ngIf="error$ | async; else loading" >
           Erro ao carregar pedidos. Tente novamente mais tarde.
         </div>
         <ng-template #loading>
-            <span>Carregando Pedidos...</span>
+            <span id="carregandoPedidos">Carregando Pedidos...</span>
         </ng-template>
       </ng-template>
     </div>

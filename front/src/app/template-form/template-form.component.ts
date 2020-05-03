@@ -4,6 +4,8 @@ import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { Cliente } from '../shared/models/cliente';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import {NgForm} from '@angular/forms';
 
 
 @Component({
@@ -62,19 +64,25 @@ export class TemplateFormComponent implements OnInit {
   };
 
   onSubmit(formulario) {
-    console.log(formulario)
   }
 
   constructor(
     private http: HttpClient,
-    private cepService: ConsultaCepService,
-    private dropdownServide: DropdownService
+    private dropdownServide: DropdownService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
-
+ 
   ngOnInit() {
     this.dropdownServide.getClientes().subscribe(dados => {
       this.clientes = dados;
-    })
+    });
+    
+    this.route.queryParams.subscribe(params => {
+      if (params['venda'] != null) {
+        console.log("1: " + params['venda']  || 0);
+      }
+    });
   }
 
   verificaValidTouched(campo) {
@@ -90,6 +98,7 @@ export class TemplateFormComponent implements OnInit {
 
   setCliente(cliente, form) {
     if (cliente != null && cliente !== '') {
+      console.log(form);
       this.populaClienteForm(cliente, form);
     }
   }
@@ -123,10 +132,10 @@ export class TemplateFormComponent implements OnInit {
     return this.total;
   }
 
-  setTotal(tradicional, canadense, original, australiano, cheddarSimples, cheddarDuplo, onions, comboRefri, comboCerveja, batata, batataCheddar, refrigerante) {
-    this.total = (tradicional * 10.00 + canadense * 12.00 + original * 12.00 + australiano * 12.00 + cheddarSimples * 12.00 +
-      cheddarDuplo * 14.00 + onions * 7.00 + comboRefri * 5.00 + comboCerveja * 7.00 + batata * 3.50 +
-      batataCheddar * 6.00 + refrigerante * 2.00 + this.entrega).toFixed(2);
+  setTotal(adicional, crispy, cheddarMelt, prime, tradicional, canadense, original, australiano, cheddarSimples, cheddarDuplo, onions, comboRefri, comboCerveja, batata, batataCheddar, refrigerante) {
+    this.total = (adicional * 1 + crispy * 10.00 + cheddarMelt * 10.00 + prime * 10.00 + tradicional * 10.00 + canadense * 12.00 + original * 12.00 + australiano * 12.00 + cheddarSimples * 12.00 +
+      cheddarDuplo * 14.00 + onions * 7.00 + comboRefri * 6.00 + comboCerveja * 8.00 + batata * 4.00 +
+      batataCheddar * 6.00 + refrigerante * 2.50 + this.entrega).toFixed(2);
     return this.total;
   }
 
@@ -227,6 +236,10 @@ export class TemplateFormComponent implements OnInit {
   limparVenda(formulario) {
     formulario.form.patchValue({
       itemsVenda: {
+        adicional: null,
+        crispy: null,
+        cheddarMelt: null,
+        prime: null,
         tradicional: null,
         canadense: null,
         original: null,
@@ -244,7 +257,26 @@ export class TemplateFormComponent implements OnInit {
         vendaID: null
       }
     });
-    this.buttonNameVendaAction = "Salvar"
+    (<HTMLInputElement> document.getElementById("checkCartao")).checked = false;
+    (<HTMLInputElement> document.getElementById("cidade")).checked = true;
+    this.setEntrega(1);
+    this.cartao = false;
+    this.buttonNameVendaAction = "Salvar";
+  }
+
+  novaVenda(formulario){
+    this.limparCliente(formulario);
+    this.limparVenda(formulario);
+  }
+
+  getVenda(id, form) {
+    this.dropdownServide.getVenda(id).subscribe(venda => {
+      this.setCliente(venda['venda']['cliente'], form);
+    });
+  }
+
+  getForm(){
+    return "implementar retorno de form";
   }
 
   salvarVenda(formulario) {
@@ -311,6 +343,26 @@ export class TemplateFormComponent implements OnInit {
             "id": 12
           },
           "quantidade": formulario.value.itemsVenda.refrigerante
+        }, {
+          "produto": {
+            "id": 13
+          },
+          "quantidade": formulario.value.itemsVenda.crispy
+        }, {
+          "produto": {
+            "id": 14
+          },
+          "quantidade": formulario.value.itemsVenda.cheddarMelt
+        }, {
+          "produto": {
+            "id": 15
+          },
+          "quantidade": formulario.value.itemsVenda.prime
+        }, {
+          "produto": {
+            "id": 16
+          },
+          "quantidade": formulario.value.itemsVenda.adicional
         }
       ],
       "venda": {
@@ -406,6 +458,26 @@ export class TemplateFormComponent implements OnInit {
             "id": 12
           },
           "quantidade": formulario.value.itemsVenda.refrigerante
+        }, {
+          "produto": {
+            "id": 13
+          },
+          "quantidade": formulario.value.itemsVenda.crispy
+        }, {
+          "produto": {
+            "id": 14
+          },
+          "quantidade": formulario.value.itemsVenda.cheddarMelt
+        }, {
+          "produto": {
+            "id": 15
+          },
+          "quantidade": formulario.value.itemsVenda.prime
+        }, {
+          "produto": {
+            "id": 16
+          },
+          "quantidade": formulario.value.itemsVenda.adicional
         }
       ],
       "venda": {
@@ -472,11 +544,20 @@ export class TemplateFormComponent implements OnInit {
       return true;
     } else if (formulario.value.itemsVenda.refrigerante >= 1) {
       return true;
+    } else if (formulario.value.itemsVenda.crispy >= 1) {
+      return true;
+    } else if (formulario.value.itemsVenda.cheddarMelt >= 1) {
+      return true;
+    } else if (formulario.value.itemsVenda.prime >= 1) {
+      return true;
+    } else if (formulario.value.itemsVenda.adicional >= 1) {
+      return true;
     }
     return false;
   }
 
   imprimir(formulario) {
+    /*this.printPedido();*/
     if (formulario.value.itemsVenda.vendaID != '' && formulario.value.itemsVenda.vendaID != null) {
       this.printPedido();
     } else {
@@ -485,13 +566,17 @@ export class TemplateFormComponent implements OnInit {
   }
 
   printPedido() {
-    var conteudo = document.getElementById('printPedido').innerHTML;
+    this.print('printPedido');
+    this.print('pedidoCozinha');
+  };
+
+  print(pedido) {
+    var conteudo = document.getElementById(pedido).innerHTML;
     var tela_impressao = window.open('about:blank');
     tela_impressao.document.write('<div style="max-width: 280px; margin: 0">' + conteudo);
     setTimeout(() => { tela_impressao.window.print(); }, 250);
     setTimeout(() => { tela_impressao.window.close(); }, 250);
-  };
-
+  }
 
 }
 

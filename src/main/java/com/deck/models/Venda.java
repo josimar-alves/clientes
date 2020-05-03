@@ -36,7 +36,6 @@ public class Venda implements Serializable {
 		return troco;
 	}
 	
-
 	public void setTroco(double troco) {
 		this.troco = troco;
 	}

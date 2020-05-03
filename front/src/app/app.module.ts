@@ -1,4 +1,3 @@
-import { DataFormModule } from './data-form/data-form.module';
 import { TemplateFormModule } from './template-form/template-form.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -26,7 +25,6 @@ import { ProdutosComponent } from './produtos/produtos.component';
     HttpClientModule,
     AppRoutingModule,
     TemplateFormModule,
-    DataFormModule,
     NgSelectModule,
     CommonModule,
     Ng2SmartTableModule

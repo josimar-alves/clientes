@@ -1,5 +1,6 @@
 package com.deck.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,7 @@ public interface VendaRepository extends JpaRepository <Venda, Long> {
 	@Modifying
 	@Query(nativeQuery = true, value = "delete from tb_venda as iv where iv.id = ?1")
 	void deleteVenda(Long idVenda);
+	
+	@Query(nativeQuery = true, value = "select * from tb_venda WHERE data BETWEEN ?1 AND ?2 ORDER BY data DESC")
+	List<Venda> findAllWithData(Date dataInicio, Date dataFim);	
 }

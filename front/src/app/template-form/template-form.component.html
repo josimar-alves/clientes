@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="card-body">
-    <form id="f" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+    <form id="f" #f="ngForm" ngForm (ngSubmit)="onSubmit(f)" class="form-horizontal">
       <div class="form-group" [ngClass]="aplicaCssErro(nome)">
         <div class="col-sm-12">
         </div>
@@ -90,14 +90,7 @@
         <div class="col-md-5"></div>
         <div class="col-md-4">
           <button type="button" class="btn btn-primary" (click)="novaVenda(f)">Realizar Nova Venda</button>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" id="IDEiditarVenda" name="IDEiditarVenda" ngModel #IDEiditarVenda="ngModel"
-              maxlength="5" placeholder="Venda ID">
-        </div>
-        <div class="col-md-1">
-          <button type="button" class="btn btn-info" (click)="getVenda(IDEiditarVenda.value, f)">Buscar</button>
-        </div>
+        </div>        
       </div>
       <hr>
       <font size="4">
@@ -262,7 +255,7 @@
             </div>
             <div class="col-md-1">
               <label for="vendaID" class="control-label">VendaID</label>
-              <input type="number" class="form-control" id="vendaID" name="vendaID" ngModel #vendaID="ngModel" readonly>
+              <input type="number" class="form-control" id="vendaID" name="vendaID" ngModel #vendaID="ngModel" (click)="getVenda(f)" readonly>
             </div>
 
             <br>

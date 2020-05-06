@@ -9,3 +9,7 @@ body {
 .card {
   width: 115%;
 }
+
+th, td {
+  text-align: left;
+}

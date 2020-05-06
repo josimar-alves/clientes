@@ -1,5 +1,6 @@
 package com.deck.resources;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deck.dto.ProdutoDTO;
 import com.deck.models.Produto;
 import com.deck.repository.ProdutoRepository;
 
@@ -21,15 +23,20 @@ import com.deck.repository.ProdutoRepository;
 @RequestMapping(value="/produto")
 public class ProdutoResource {
 	
-	public ProdutoResource() {
-	}
-	
 	@Autowired
 	ProdutoRepository produtoRepository;
 	
 	@GetMapping("/getAll")
-	public List<Produto> getAllProduto() {
-		return produtoRepository.findAll();
+	public List<ProdutoDTO> getAllProduto() {
+		List<ProdutoDTO> listProdutoDTO = new LinkedList<ProdutoDTO>();
+		int posicao = 0;
+		for (Produto p : produtoRepository.findAll()) {
+			ProdutoDTO pDTO = new ProdutoDTO(p);
+			pDTO.setPosicao(posicao);
+			listProdutoDTO.add(pDTO);
+			posicao += 1;
+		}
+		return listProdutoDTO;
 	}
 	
 	@GetMapping("/get/{id}")

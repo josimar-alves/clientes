@@ -6,7 +6,7 @@ import { tap, delay } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
   })
-  export class VendasService {
+  export class ProdutoService {
     private readonly API = `http://localhost:8080/produto/`;
     constructor(private http: HttpClient) { }
   

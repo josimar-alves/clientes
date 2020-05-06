@@ -1,72 +1,82 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+  crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <div class="card">
-    <div class="card-header">
-      <div class="col-md-4">
-        <h4>Lista de Pedidos</h4>
-      </div>
-
-      <div class="col-md-3">
-        <b>Total:</b> R$ {{getTotal()}}
-      </div>
-
-      <div class="col-md-2">
-        <input id="dateFilter" type="date" name="dateFilter" ngModel #dateFilter="ngModel">
-        <button id="dateFilterButton" name="dateFilterButton" ngModel #dateFilterButton="ngModel" type="button" class="btn btn-info" (click)="filterByDate(dateFilter.value)">Filtrar</button>
-      </div>
-      
-      <div class="float-right">
-        <button type="button" class="btn btn-secondary" (click)="onRefresh()" id="refreshButton" name="refreshButton" ngModel #refreshButton="ngModel">Atualizar Lista</button>
-      </div>
+  <div class="card-header">
+    <div class="col-md-4">
+      <h4>Lista de Pedidos</h4>
     </div>
-    <div class="card-body">
-      <table class="table table-hover table-bordered" *ngIf="vendas$ | async as vendas; else loadingError" >
-        <thead>
-          <tr>
-            <th style="text-align:center">#</th>
-            <th style="text-align:center">Cliente</th>
-            <th style="text-align:center">Telefone</th>
-            <th style="text-align:center">Pedido</th>
-            <th style="text-align:center">Observações</th>
-            <th style="text-align:center">Data</th>
-            <th style="text-align:center">Total (R$)</th>
-            <th style="text-align:center">Troco (R$)</th>
-            <th style="text-align:center"></th>
-            <th style="text-align:center"></th>
-            <th style="text-align:center"></th>
-          </tr>
-        </thead>
 
-        <tbody>
-          <tr *ngFor="let venda of vendas" >
-            <td style="width:1%"><b>{{ venda.idvenda }}</b></td>
-            <td style="width:15%">{{ venda.nome }}</td>
-            <td style="width:13%">{{ venda.telefone }}</td>
-            <td style="width:25%">{{ venda.pedido }}</td>
-            <td style="width:20%">{{ venda.obs }}</td>
-            <td style="width:10%">{{ venda.data }}</td>
-            <td style="width:8%; text-align:center">{{ venda.total.replace('.',',') }}0</td>
-            <td style="width:8%; text-align:center">{{ venda.troco.replace('.',',') }}0</td>
-            <td><button type="button" class="btn btn-secondary" (click)="editarVenda(venda.idvenda)">
-              <span class="glyphicon glyphicon-pencil"></span>
-            </button></td>
-            <td><button type="button" class="btn btn-danger" (click)="deleteVenda(venda.idvenda)">
-              <span class="glyphicon glyphicon-trash"></span>
-            </button></td>
-            <td><button type="button" class="btn btn-primary" (click)="printVenda(venda.idvenda)">
-              <span class="glyphicon glyphicon-print"></span>
-            </button></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col-md-3">
+      <b>Total:</b> R$ {{getTotal()}}
+    </div>
 
-      <ng-template #loadingError>
-        <div id="erroLoading" *ngIf="error$ | async; else loading" >
-          Erro ao carregar pedidos. Tente novamente mais tarde.
-        </div>
-        <ng-template #loading>
-            <span id="carregandoPedidos">Carregando Pedidos...</span>
-        </ng-template>
-      </ng-template>
+    <div class="col-md-2">
+      <input id="dateFilter" type="date" name="dateFilter" ngModel #dateFilter="ngModel">
+      <button id="dateFilterButton" name="dateFilterButton" ngModel #dateFilterButton="ngModel" type="button"
+        class="btn btn-info" (click)="filterByDate(dateFilter.value)">Filtrar</button>
+    </div>
+
+    <div class="float-right">
+      <button type="button" class="btn btn-secondary" (click)="onRefresh()" id="refreshButton" name="refreshButton"
+        ngModel #refreshButton="ngModel">Atualizar Lista</button>
     </div>
   </div>
+  <div class="card-body">
+    <table class="table table-hover table-bordered" *ngIf="vendas$ | async as vendas; else loadingError">
+      <thead>
+        <tr>
+          <th style="text-align:center">#</th>
+          <th style="text-align:center">Cliente</th>
+          <th style="text-align:center">Telefone</th>
+          <th style="text-align:center">Pedido</th>
+          <th style="text-align:center">Observações</th>
+          <th style="text-align:center">Data</th>
+          <th style="text-align:center">Total (R$)</th>
+          <th style="text-align:center">Troco (R$)</th>
+          <th style="text-align:center"></th>
+          <th style="text-align:center"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let venda of vendas | paginate: { itemsPerPage: contador, currentPage: pag }">
+          <td style="width:1%"><b>{{ venda.idvenda }}</b></td>
+          <td style="width:15%">{{ venda.nome }}</td>
+          <td style="width:13%">{{ venda.telefone }}</td>
+          <td style="width:25%">{{ venda.pedido }}</td>
+          <td style="width:20%">{{ venda.obs }}</td>
+          <td style="width:10%">{{ venda.data }}</td>
+          <td style="width:8%; text-align:center">{{ venda.total.replace('.',',') }}0</td>
+          <td style="width:8%; text-align:center">{{ venda.troco.replace('.',',') }}0</td>
+          <td><button type="button" class="btn btn-secondary" (click)="editarVenda(venda.idvenda)">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button></td>
+          <td><button type="button" class="btn btn-danger" (click)="deleteVenda(venda.idvenda)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #loadingError>
+      <div id="erroLoading" *ngIf="error$ | async; else loading">
+        Erro ao carregar pedidos. Tente novamente mais tarde.
+      </div>
+      <ng-template #loading>
+        <span id="carregandoPedidos">Carregando Pedidos...</span>
+      </ng-template>
+    </ng-template>
+  </div>
+
+  <div class="text-right">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+</div>

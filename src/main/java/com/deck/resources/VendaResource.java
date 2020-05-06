@@ -121,16 +121,20 @@ public class VendaResource {
 	@GetMapping("/getTest/{id}")
 	public VendaDTO getVendaTest(@PathVariable(value = "id") long id) {
 		List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(id);
-		VendaDTO vendaDTO = new VendaDTO();
-		vendaDTO.setVenda(items.get(0).getVenda());
-		List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
-
-		for (ItemVenda i : items) {
-			i.setVenda(null);
-			itemsAux.add(i);
+		if (items.size() > 0) {
+			VendaDTO vendaDTO = new VendaDTO();
+			vendaDTO.setVenda(items.get(0).getVenda());
+			List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+	
+			for (ItemVenda i : items) {
+				i.setVenda(null);
+				itemsAux.add(i);
+			}
+			vendaDTO.setItems(itemsAux);
+			return vendaDTO;
+		} else {
+			return null;
 		}
-		vendaDTO.setItems(itemsAux);
-		return vendaDTO;
 	}
 
 	@GetMapping("/getAllTest")

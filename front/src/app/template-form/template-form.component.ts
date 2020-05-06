@@ -5,8 +5,8 @@ import { Cliente } from '../shared/models/cliente';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {NgForm} from '@angular/forms';
-
+import { NgForm } from '@angular/forms';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-template-form',
@@ -25,6 +25,7 @@ export class TemplateFormComponent implements OnInit {
   private entrega: any = 1;
   private total: any = 0;
   private cartao: boolean = false;
+  private vendaID: number = 0;
 
   private get disabledV(): string {
     return this._disabledV;
@@ -72,15 +73,18 @@ export class TemplateFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) { }
- 
+
   ngOnInit() {
     this.dropdownServide.getClientes().subscribe(dados => {
       this.clientes = dados;
     });
-    
+
     this.route.queryParams.subscribe(params => {
       if (params['venda'] != null) {
-        console.log("1: " + params['venda']  || 0);
+        this.vendaID = params['venda'];
+        setTimeout(() => {
+          (<HTMLInputElement>document.getElementById("vendaID")).click();
+        }, 100);
       }
     });
   }
@@ -98,7 +102,6 @@ export class TemplateFormComponent implements OnInit {
 
   setCliente(cliente, form) {
     if (cliente != null && cliente !== '') {
-      console.log(form);
       this.populaClienteForm(cliente, form);
     }
   }
@@ -126,6 +129,83 @@ export class TemplateFormComponent implements OnInit {
     });
     this.buttonNameClienteAction = "Modificar";
     // console.log(form);
+  }
+
+  populaVendaForm(dados, formulario) {
+    dados.forEach(element => {
+      if (element[0] == 1) {
+        formulario.form.patchValue({itemsVenda: {tradicional: element[1]}});
+      } else if (element[0] == 2) {
+        formulario.form.patchValue({itemsVenda: {canadense: element[1]}});
+      } else if (element[0] == 3) {
+        formulario.form.patchValue({itemsVenda: {original: element[1]}});
+      } else if (element[0] == 4) {
+        formulario.form.patchValue({itemsVenda: {australiano: element[1]}});
+      } else if (element[0] == 5) {
+        formulario.form.patchValue({itemsVenda: {cheddarSimples: element[1]}});
+      } else if (element[0] == 6) {
+        formulario.form.patchValue({itemsVenda: {cheddarDuplo: element[1]}});
+      } else if (element[0] == 7) {
+        formulario.form.patchValue({itemsVenda: {onions: element[1]}});
+      } else if (element[0] == 8) {
+        formulario.form.patchValue({itemsVenda: {comboRefri: element[1]}});
+      } else if (element[0] == 9) {
+        formulario.form.patchValue({itemsVenda: {comboCerveja: element[1]}});
+      } else if (element[0] == 10) {
+        formulario.form.patchValue({itemsVenda: {batata: element[1]}});
+      } else if (element[0] == 11) {
+        formulario.form.patchValue({itemsVenda: {batataCheddar: element[1]}});
+      } else if (element[0] == 12) {
+        formulario.form.patchValue({itemsVenda: {refrigerante: element[1]}});
+      } else if (element[0] == 13) {
+        formulario.form.patchValue({itemsVenda: {crispy: element[1]}});
+      } else if (element[0] == 14) {
+        formulario.form.patchValue({itemsVenda: {cheddarMelt: element[1]}});
+      } else if (element[0] == 15) {
+        formulario.form.patchValue({itemsVenda: {prime: element[1]}});
+      } else if (element[0] == 16) {
+        formulario.form.patchValue({itemsVenda: {adicional: element[1]}});
+      }
+    });
+    this.buttonNameVendaAction = "Modificar";
+  }
+
+  getVenda(form) {
+    if (this.vendaID > 0 && form.value.itemsVenda.vendaID === '') {
+      this.dropdownServide.getVenda(this.vendaID).subscribe(venda => {
+        if (venda != null) {
+          this.setCliente(venda['venda']['cliente'], form);
+          form.form.patchValue({
+            itemsVenda: {
+              vendaID: this.vendaID,
+              obs: venda['venda']['obs'],
+              troco: venda['venda']['troco']
+            }
+          });
+        }
+        var items = [];
+  
+        for (var i = 0; i < venda['items'].length; i++) {
+          items[i] = [venda['items'][i]['produto']['id'], venda['items'][i]['quantidade']];
+        }
+        this.populaVendaForm(items, form);
+
+        setTimeout(() => {
+          var valorEntrega = venda['venda']['total'] - this.getTotal() + 1;
+          if (valorEntrega == 0) {
+            (<HTMLInputElement>document.getElementById("gratis")).click();
+          } else if (valorEntrega == 2) {
+            (<HTMLInputElement>document.getElementById("zonaRural")).click();
+          } else {
+            (<HTMLInputElement>document.getElementById("cidade")).click();
+          }
+        }, 500);
+      });
+    }
+  }
+
+  getForm() {
+    return "implementar retorno de form";
   }
 
   getTotal() {
@@ -161,7 +241,7 @@ export class TemplateFormComponent implements OnInit {
     }
   }
 
-  getCartao(){
+  getCartao() {
     return this.cartao;
   }
 
@@ -257,26 +337,16 @@ export class TemplateFormComponent implements OnInit {
         vendaID: null
       }
     });
-    (<HTMLInputElement> document.getElementById("checkCartao")).checked = false;
-    (<HTMLInputElement> document.getElementById("cidade")).checked = true;
+    (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
+    (<HTMLInputElement>document.getElementById("cidade")).checked = true;
     this.setEntrega(1);
     this.cartao = false;
     this.buttonNameVendaAction = "Salvar";
   }
 
-  novaVenda(formulario){
+  novaVenda(formulario) {
     this.limparCliente(formulario);
     this.limparVenda(formulario);
-  }
-
-  getVenda(id, form) {
-    this.dropdownServide.getVenda(id).subscribe(venda => {
-      this.setCliente(venda['venda']['cliente'], form);
-    });
-  }
-
-  getForm(){
-    return "implementar retorno de form";
   }
 
   salvarVenda(formulario) {
@@ -497,7 +567,7 @@ export class TemplateFormComponent implements OnInit {
           let jsonVenda = (JSON.stringify(venda));
           let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-          this.http.delete("http://localhost:8080/venda/deleteItems/"+formulario.value.itemsVenda.vendaID, { headers }).toPromise().then((data: any) => {
+          this.http.delete("http://localhost:8080/venda/deleteItems/" + formulario.value.itemsVenda.vendaID, { headers }).toPromise().then((data: any) => {
             console.log("Apagou " + formulario.value.itemsVenda.vendaID);
           });
 

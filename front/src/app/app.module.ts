@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { VendasComponent } from './vendas/vendas.component';
 import { VendasService } from './vendas/venda.service';
 import { ProdutosComponent } from './produtos/produtos.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ProdutosComponent } from './produtos/produtos.component';
     TemplateFormModule,
     NgSelectModule,
     CommonModule,
+    NgxPaginationModule,
     Ng2SmartTableModule
   ],
   providers: [VendasService],

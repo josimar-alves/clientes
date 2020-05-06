@@ -2,5 +2,7 @@ export interface DadosProduto {
     id : Number,
     nome : String,
     descricao : String,
-    preco : Number
+    preco : Number,
+    quantidade: Number,
+    posicao: Number
 }

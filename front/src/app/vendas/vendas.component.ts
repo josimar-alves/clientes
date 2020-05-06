@@ -4,7 +4,7 @@ import { DadosVenda } from './dados-venda';
 import { Observable, empty, of, Subject, Subscriber } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Input } from '@angular/compiler/src/core';
-import {Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vendas',
@@ -16,6 +16,8 @@ export class VendasComponent implements OnInit {
   vendas$: Observable<DadosVenda[]>;
   error$ = new Subject<boolean>();
   private totalVendas: number = 0;
+  pag : Number = 1 ;
+  contador : Number = 10;
 
   constructor(private service: VendasService, private router: Router) { }
 

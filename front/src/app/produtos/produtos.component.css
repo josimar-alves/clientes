@@ -1,7 +1,27 @@
 table {
-    width: 100%;
-  }
+  width: 100%;
+}
 
-  body {
-    background-color: black
+body {
+  background-color: black !important;
+}
+
+th, td {
+  text-align: left;
+}
+
+.notbold {
+  font-weight:normal;
+}
+
+.card {
+  width: 115%;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }

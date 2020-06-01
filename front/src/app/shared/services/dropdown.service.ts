@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EstadoBr } from './../models/estado-br.model';
-import { Cidade } from '../models/cidade';
 import { Cliente } from '../models/cliente';
-import { Produto } from '../models/produto';
-import { map } from '../../../../node_modules/rxjs/operators';
+import { DadosProduto } from '../../produtos/dados-produto';
 
 @Injectable()
 export class DropdownService {
@@ -13,7 +10,7 @@ export class DropdownService {
   constructor(private http: HttpClient) {}
 
   getProdutos() {
-    return this.http.get<Produto[]>('http://localhost:8080/produto/getAll')
+    return this.http.get<DadosProduto[]>('http://localhost:8080/produto/getAll')
   }
 
   getClientes() {

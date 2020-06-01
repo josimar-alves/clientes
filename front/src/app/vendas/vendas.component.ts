@@ -17,7 +17,7 @@ export class VendasComponent implements OnInit {
   error$ = new Subject<boolean>();
   private totalVendas: number = 0;
   pag : Number = 1 ;
-  contador : Number = 10;
+  contador : Number = 50;
 
   constructor(private service: VendasService, private router: Router) { }
 
@@ -70,12 +70,17 @@ export class VendasComponent implements OnInit {
     this.totalVendas = 0;
     this.vendas$.subscribe(val => {
       var x= 0;
-      while(x < val.length) {
-        this.totalVendas += Number(val[x].total);
-        x += 1;
-        if (x === val.length) {
-          filterButton.disabled = false;
-          refreshButton.disabled = false;
+      if (val.length == 0) {
+        filterButton.disabled = false;
+        refreshButton.disabled = false;
+      } else {
+        while(x < val.length) {
+          this.totalVendas += Number(val[x].total);
+          x += 1;
+          if (x === val.length) {
+            filterButton.disabled = false;
+            refreshButton.disabled = false;
+          }
         }
       }
     });

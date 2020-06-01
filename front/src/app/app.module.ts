@@ -12,12 +12,14 @@ import { VendasComponent } from './vendas/vendas.component';
 import { VendasService } from './vendas/venda.service';
 import { ProdutosComponent } from './produtos/produtos.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PrintComponent } from './print/print.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VendasComponent,
-    ProdutosComponent
+    ProdutosComponent,
+    PrintComponent
   ],
   imports: [
     BrowserModule,

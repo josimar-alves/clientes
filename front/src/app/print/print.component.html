@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-header">
+      <div class="float-left">
+        <h4>Imprimir Mensagem</h4>
+      </div>
+      <div class="float-right">
+        <button type="button" class="btn btn-info" (click)="print()" id="printButton" name="printButton"
+          ngModel #printButton="ngModel">Imprimir</button>
+      </div>
+    </div>
+    <div class="card-body">
+
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg1" name="msg1" ngModel #msg1="ngModel">
+          </div>
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg2" name="msg2" ngModel #msg2="ngModel">
+          </div>
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg3" name="msg3" ngModel #msg3="ngModel">
+          </div>
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg4" name="msg4" ngModel #msg4="ngModel">
+          </div>
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg5" name="msg5" ngModel #msg5="ngModel">
+          </div>
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg6" name="msg6" ngModel #msg6="ngModel">
+          </div>
+          <div class="form-group">
+            <input class="form-control rounded-0" id="msg7" name="msg7" ngModel #msg7="ngModel">
+          </div>
+          <div class="form-group">
+            <label for="msg8" class="control-label">Negrito</label>
+            <input class="form-control rounded-0" id="msg8" name="msg8" ngModel #msg8="ngModel">
+          </div>
+    </div>
+
+    <div id="print">
+      <br>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+                   <img src="\..\favicon.ico" height="100" width="100">
+                      
+        <div *ngIf="msg1.value != ''"><br>{{msg1.value}}</div>
+        <div *ngIf="msg2.value != ''"><br>{{msg2.value}}</div>
+        <div *ngIf="msg3.value != ''"><br>{{msg3.value}}</div>
+        <div *ngIf="msg4.value != ''"><br>{{msg4.value}}</div>
+        <div *ngIf="msg5.value != ''"><br>{{msg5.value}}</div>
+        <div *ngIf="msg6.value != ''"><br>{{msg6.value}}</div>
+        <div *ngIf="msg7.value != ''"><br>{{msg7.value}}</div>
+        <div *ngIf="msg8.value != ''"><br><b>{{msg8.value}}</b></div>
+  </div>
+  </div>

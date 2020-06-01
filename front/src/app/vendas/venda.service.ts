@@ -12,18 +12,12 @@ import { tap, delay } from 'rxjs/operators';
   
     list() {
       return this.http.get<DadosVenda[]>(this.API+"getAllPedidos")
-        .pipe(
-          delay(2000),
-          tap()
-        );
+        .pipe();
     }
 
     listByDate(date) {
       return this.http.get<DadosVenda[]>(this.API+"getAllPedidosWithDate/"+date)
-        .pipe(
-          delay(2000),
-          tap()
-        );
+        .pipe();
     }
 
     delete(id){

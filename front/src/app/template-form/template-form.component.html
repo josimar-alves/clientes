@@ -90,7 +90,7 @@
         <div class="col-md-5"></div>
         <div class="col-md-4">
           <button type="button" class="btn btn-primary" (click)="novaVenda(f)">Realizar Nova Venda</button>
-        </div>        
+        </div>
       </div>
       <hr>
       <font size="4">
@@ -255,7 +255,8 @@
             </div>
             <div class="col-md-1">
               <label for="vendaID" class="control-label">VendaID</label>
-              <input type="number" class="form-control" id="vendaID" name="vendaID" ngModel #vendaID="ngModel" (click)="getVenda(f)" readonly>
+              <input type="number" class="form-control" id="vendaID" name="vendaID" ngModel #vendaID="ngModel"
+                (click)="getVenda(f)" readonly>
             </div>
 
             <br>
@@ -275,6 +276,144 @@
           </div>
         </div>
       </div>
+
+      <!-- /////////////////////   ///////////////////// -->
+
+      <table class="table table-hover table-bordered table-sm" *ngIf="produtos$ | async as produtos; else loadingError">
+        <th class="notbold" style="width:25%;">
+          <thead>
+
+            <tr>
+              <th style="text-align:center">Produto</th>
+              <th style="text-align:center" colspan="2">Qtd</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let produto of listProdutosCol1">
+              <td style="width:54%;">{{ produto.nome }}</td>
+              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
+              <td style="width:27%; text-align:center">
+                <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
+                <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
+              </td>
+            </tr>
+        </th>
+        <th class="notbold" style="width:25%;">
+          <thead>
+
+            <tr>
+              <th style="text-align:center">Produto</th>
+              <th style="text-align:center" colspan="2">Qtd</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let produto of listProdutosCol2">
+              <td style="width:54%;">{{ produto.nome }}</td>
+              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
+              <td style="width:27%; text-align:center">
+                <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
+                <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
+              </td>
+            </tr>
+        </th>
+        <th class="notbold" style="width:25%;">
+          <thead>
+
+            <tr>
+              <th style="text-align:center">Produto</th>
+              <th style="text-align:center" colspan="2">Qtd</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let produto of listProdutosCol3">
+              <td style="width:54%;">{{ produto.nome }}</td>
+              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
+              <td style="width:27%; text-align:center">
+                <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
+                <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
+              </td>
+            </tr>
+          </tbody>
+        </th>
+        <th class="notbold" style="width:25%;">
+          <thead>
+
+            <tr>
+              <th style="text-align:center">Produto</th>
+              <th style="text-align:center" colspan="2">Qtd</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let produto of listProdutosCol4">
+              <td style="width:54%;">{{ produto.nome }}</td>
+              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
+              <td style="width:27%; text-align:center">
+                <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
+                <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
+              </td>
+            </tr>
+          </tbody>
+        </th>
+      </table>
+
+      <ng-template #loadingError>
+        <div *ngIf="error$ | async; else loading">
+          Erro ao carregar pedidos. Tente novamente mais tarde.
+        </div>
+        <ng-template #loading>
+          <span>Carregando Pedidos...</span>
+        </ng-template>
+      </ng-template>
+
+
+      
+
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-5">
+            <label for="newObs" class="control-label">Observações</label>
+            <input type="text" class="form-control" id="newObs" name="newObs" ngModel #newObs="ngModel">
+          </div>
+          <div class="col-md-2">
+            <label for="newAdicional" class="control-label">Valor Adicional</label>
+            <input type="number" class="form-control" id="newAdicional" min="0" value="0" placeholder="0"
+              name="newAdicional" ngModel #newAdicional="ngModel">
+          </div>
+          <div class="col-md-1">
+            <label for="newTroco" class="control-label">Troco Para</label>
+            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999" min="{{getTotal()}}" ngModel
+              #newTroco="ngModel">
+          </div>
+          <div class="col-md-1">
+            <label for="newVendaID" class="control-label">VendaID</label>
+            <input type="number" class="form-control" id="newVendaID" name="newVendaID" ngModel #newVendaID="ngModel"
+              (click)="getVenda(f)" readonly>
+          </div>
+          <div class="col-md-1 text-center">
+            <br>
+            <button type="button" class="btn btn-success" [disabled]="!f.valid" (click)="newSave(f)">Salvar</button>
+          </div>
+          <div class="col-md-1 text-center">
+            <br>
+            <button type="button" class="btn btn-info" (click)="newPrint(f)">Imprimir</button>
+          </div>
+          <div class="col-md-1 text-center">
+            <br>
+            <button type="button" class="btn btn-secondary" (click)="newClean(f)">Limpar</button>
+          </div>
+        </div>
+      </div>
+
+
+      <b>Teste:</b>
+      {{newGet()}}
+
+      <!-- /////////////////////   ///////////////////// -->
 
       <div id="printPedido">
         <font size="4">

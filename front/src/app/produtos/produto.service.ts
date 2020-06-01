@@ -11,11 +11,7 @@ import { tap, delay } from 'rxjs/operators';
     constructor(private http: HttpClient) { }
   
     list() {
-      return this.http.get<DadosProduto[]>(this.API+"getAll")
-        .pipe(
-          delay(2000),
-          tap()
-        );
+      return this.http.get<DadosProduto[]>(this.API+"getAll");
     }
   }
   

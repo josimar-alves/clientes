@@ -7,6 +7,9 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { element } from 'protractor';
+import { Observable, Subject, empty } from 'rxjs';
+import { DadosProduto } from '../produtos/dados-produto';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-template-form',
@@ -26,6 +29,17 @@ export class TemplateFormComponent implements OnInit {
   private total: any = 0;
   private cartao: boolean = false;
   private vendaID: number = 0;
+  private txt = '';
+
+
+  produtos$: Observable<DadosProduto[]>;
+  listProdutos: DadosProduto[];
+  listProdutosCol1: DadosProduto[] = [];
+  listProdutosCol2: DadosProduto[] = [];
+  listProdutosCol3: DadosProduto[] = [];
+  listProdutosCol4: DadosProduto[] = [];
+  error$ = new Subject<boolean>();
+
 
   private get disabledV(): string {
     return this._disabledV;
@@ -69,13 +83,13 @@ export class TemplateFormComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private dropdownServide: DropdownService,
+    private service: DropdownService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.dropdownServide.getClientes().subscribe(dados => {
+    this.service.getClientes().subscribe(dados => {
       this.clientes = dados;
     });
 
@@ -87,6 +101,46 @@ export class TemplateFormComponent implements OnInit {
         }, 100);
       }
     });
+
+
+    this.produtos$ = this.service.getProdutos().pipe(
+      catchError(error => {
+        console.error(error);
+        this.error$.next(true);
+        return empty();
+      })
+    );
+
+    this.service.getProdutos()
+      .pipe(
+        catchError(error => empty())
+      )
+      .subscribe(
+        dados => {
+          let i = 0;
+          let aux = 0;
+          while (i < dados.length) {
+            this.listProdutos = dados;
+            if (aux === 0) {
+              this.listProdutosCol1.push(dados[i]);
+              aux = 1;
+            } else if (aux === 1) {
+              this.listProdutosCol2.push(dados[i]);
+              aux = 2;
+            } else if (aux === 2) {
+              this.listProdutosCol3.push(dados[i]);
+              aux = 3;
+            } else {
+              this.listProdutosCol4.push(dados[i]);
+              aux = 0;
+            }
+            i += 1;
+          }
+        }
+      );
+
+
+
   }
 
   verificaValidTouched(campo) {
@@ -134,37 +188,37 @@ export class TemplateFormComponent implements OnInit {
   populaVendaForm(dados, formulario) {
     dados.forEach(element => {
       if (element[0] == 1) {
-        formulario.form.patchValue({itemsVenda: {tradicional: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { tradicional: element[1] } });
       } else if (element[0] == 2) {
-        formulario.form.patchValue({itemsVenda: {canadense: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { canadense: element[1] } });
       } else if (element[0] == 3) {
-        formulario.form.patchValue({itemsVenda: {original: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { original: element[1] } });
       } else if (element[0] == 4) {
-        formulario.form.patchValue({itemsVenda: {australiano: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { australiano: element[1] } });
       } else if (element[0] == 5) {
-        formulario.form.patchValue({itemsVenda: {cheddarSimples: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { cheddarSimples: element[1] } });
       } else if (element[0] == 6) {
-        formulario.form.patchValue({itemsVenda: {cheddarDuplo: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { cheddarDuplo: element[1] } });
       } else if (element[0] == 7) {
-        formulario.form.patchValue({itemsVenda: {onions: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { onions: element[1] } });
       } else if (element[0] == 8) {
-        formulario.form.patchValue({itemsVenda: {comboRefri: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { comboRefri: element[1] } });
       } else if (element[0] == 9) {
-        formulario.form.patchValue({itemsVenda: {comboCerveja: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { comboCerveja: element[1] } });
       } else if (element[0] == 10) {
-        formulario.form.patchValue({itemsVenda: {batata: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { batata: element[1] } });
       } else if (element[0] == 11) {
-        formulario.form.patchValue({itemsVenda: {batataCheddar: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { batataCheddar: element[1] } });
       } else if (element[0] == 12) {
-        formulario.form.patchValue({itemsVenda: {refrigerante: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { refrigerante: element[1] } });
       } else if (element[0] == 13) {
-        formulario.form.patchValue({itemsVenda: {crispy: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { crispy: element[1] } });
       } else if (element[0] == 14) {
-        formulario.form.patchValue({itemsVenda: {cheddarMelt: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { cheddarMelt: element[1] } });
       } else if (element[0] == 15) {
-        formulario.form.patchValue({itemsVenda: {prime: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { prime: element[1] } });
       } else if (element[0] == 16) {
-        formulario.form.patchValue({itemsVenda: {adicional: element[1]}});
+        formulario.form.patchValue({ itemsVenda: { adicional: element[1] } });
       }
     });
     this.buttonNameVendaAction = "Modificar";
@@ -172,7 +226,7 @@ export class TemplateFormComponent implements OnInit {
 
   getVenda(form) {
     if (this.vendaID > 0 && form.value.itemsVenda.vendaID === '') {
-      this.dropdownServide.getVenda(this.vendaID).subscribe(venda => {
+      this.service.getVenda(this.vendaID).subscribe(venda => {
         if (venda != null) {
           this.setCliente(venda['venda']['cliente'], form);
           form.form.patchValue({
@@ -184,7 +238,7 @@ export class TemplateFormComponent implements OnInit {
           });
         }
         var items = [];
-  
+
         for (var i = 0; i < venda['items'].length; i++) {
           items[i] = [venda['items'][i]['produto']['id'], venda['items'][i]['quantidade']];
         }
@@ -647,6 +701,89 @@ export class TemplateFormComponent implements OnInit {
     setTimeout(() => { tela_impressao.window.print(); }, 250);
     setTimeout(() => { tela_impressao.window.close(); }, 250);
   }
+
+
+
+  ///////////////////////////////
+
+  somar(produto) {
+    if (produto.quantidade < 99) {
+      produto.quantidade += 1;
+      this.listProdutos[produto.posicao].quantidade = produto.quantidade;
+    }
+  }
+
+  subtrair(produto) {
+    if (produto.quantidade > 0) {
+      produto.quantidade -= 1;
+      this.listProdutos[produto.posicao].quantidade = produto.quantidade;
+    }
+  }
+
+  newClean(formulario) {
+    this.listProdutos.forEach(element => {
+      element.quantidade = 0;
+    });
+
+    formulario.form.patchValue({
+      itemsVenda: {
+        obs: null,
+        troco: null,
+        vendaID: null
+      }
+    });
+    (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
+    (<HTMLInputElement>document.getElementById("cidade")).checked = true;
+    this.setEntrega(1);
+    this.cartao = false;
+    this.buttonNameVendaAction = "Salvar";
+  }
+
+  newSave(form) {
+    let produtosJson = '';
+    let temProduto = false; 
+    this.listProdutos.forEach(p => {
+      if (p.quantidade > 0) {
+        produtosJson += '{ "produto": { "id": ' + p.id + ' }, "quantidade": ' + p.quantidade + ' },';
+        temProduto = true;
+      }
+    });
+
+    let obs
+    let troco
+
+    if (temProduto) {
+      let json = '{ "items": [' + produtosJson.substr(0, produtosJson.length - 1) + ']' +
+        ', "venda": {' +
+        '"cliente": {' +
+        '"id": ' + form.value.cliente.id +
+        '},' +
+        '"obs": "' + form.value.itemsVenda.obs+'"' +
+        ', "troco": "' + form.value.itemsVenda.troco+'"' +
+        ', "total": ' + document.getElementById("total").textContent + '}}';
+
+      console.log(json)
+      console.log(JSON.parse(json));
+    } else {
+      console.log("aqui")
+      this.openSnackbar("snackbarErroVenda");
+    }
+  }
+
+  newPrint() {
+    this.txt = '';
+    this.listProdutos.forEach(p => {
+      if (p.quantidade > 0) {
+        this.txt += '<b>' + p.quantidade + 'x ' + p.nome +':</b> R$ ' + p.preco + '\n';
+      }
+    });
+  }
+
+  newGet() {
+    return this.txt;
+  }
+  
+  /////////////////////// <b>2x Deck Tradicional:</b> R$ 10,00
 
 }
 

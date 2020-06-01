@@ -14,14 +14,10 @@ export class ProdutosComponent implements OnInit {
 
   produtos$: Observable<DadosProduto[]>;
   listProdutos: DadosProduto[];
-
   listProdutosCol1: DadosProduto[] = [];
   listProdutosCol2: DadosProduto[] = [];
   listProdutosCol3: DadosProduto[] = [];
-
-
   error$ = new Subject<boolean>();
-  private totalProdutos: number = 0;
 
   constructor(private service: ProdutoService) { }
 
@@ -76,14 +72,8 @@ export class ProdutosComponent implements OnInit {
     }
   }
 
+
   vender() {
     console.log(this.listProdutos);
   }
-
-
-
-
-
-
-
 }

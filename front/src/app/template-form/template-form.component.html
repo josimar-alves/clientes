@@ -386,7 +386,7 @@
           </div>
           <div class="col-md-1">
             <label for="newTroco" class="control-label">Troco Para</label>
-            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999" min="{{getTotal()}}" ngModel
+            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999" min="{{getNewTotal()}}" ngModel
               #newTroco="ngModel">
           </div>
           <div class="col-md-1">
@@ -408,10 +408,6 @@
           </div>
         </div>
       </div>
-
-
-      <b>Teste:</b>
-      {{newGet()}}
 
       <!-- /////////////////////   ///////////////////// -->
 
@@ -449,13 +445,13 @@
           <div *ngIf="canadense.value > 0"><b>{{canadense.value}}x Deck Canadense:</b> R$ 12,00</div>
           <div *ngIf="original.value > 0"><b>{{original.value}}x Deck Original:</b> R$ 12,00</div>
           <div *ngIf="australiano.value > 0"><b>{{australiano.value}}x Deck Australiano:</b> R$ 12,00</div>
-          <div *ngIf="cheddarSimples.value > 0"><b>{{cheddarSimples.value}}x Deck Cheddar Simples:</b> R$ 12,00</div>
-          <div *ngIf="cheddarDuplo.value > 0"><b>{{cheddarDuplo.value}}x Deck Cheddar Duplo:</b> R$ 14,00</div>
+          <div *ngIf="cheddarSimples.value > 0"><b>{{cheddarSimples.value}}x Deck Ched. Simples:</b> R$ 12,00</div>
+          <div *ngIf="cheddarDuplo.value > 0"><b>{{cheddarDuplo.value}}x Deck Ched. Duplo:</b> R$ 14,00</div>
           <div *ngIf="onions.value > 0"><b>{{onions.value}}x Onions:</b> R$ 7,00</div>
           <div *ngIf="comboRefri.value > 0"><b>{{comboRefri.value}}x Combo 1 (refri):</b> R$ 6,00</div>
           <div *ngIf="comboCerveja.value > 0"><b>{{comboCerveja.value}}x Combo 2 (Cerveja):</b> R$ 8,00</div>
           <div *ngIf="batata.value > 0"><b>{{batata.value}}x Batata Frita:</b> R$ 4,00 </div>
-          <div *ngIf="batataCheddar.value > 0"><b>{{batataCheddar.value}}x Batata Cheddar Bacon:</b> R$ 6,00</div>
+          <div *ngIf="batataCheddar.value > 0"><b>{{batataCheddar.value}}x Batata Ched. Bacon:</b> R$ 6,00</div>
           <div *ngIf="refrigerante.value > 0"><b>{{refrigerante.value}}x Refri. (250 ml):</b> R$ 2,50</div>
           <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}</div>
           <div *ngIf="adicional.value > 0"><b>Valor Adicional:</b> R$ {{adicional.value.toFixed(2).replace('.',',')}}
@@ -493,13 +489,13 @@
           <div *ngIf="canadense.value > 0">{{canadense.value}}x Deck Canadense</div>
           <div *ngIf="original.value > 0">{{original.value}}x Deck Original</div>
           <div *ngIf="australiano.value > 0">{{australiano.value}}x Deck Australiano</div>
-          <div *ngIf="cheddarSimples.value > 0">{{cheddarSimples.value}}x Deck Cheddar Simples</div>
-          <div *ngIf="cheddarDuplo.value > 0">{{cheddarDuplo.value}}x Deck Cheddar Duplo</div>
+          <div *ngIf="cheddarSimples.value > 0">{{cheddarSimples.value}}x Deck Ched. Simples</div>
+          <div *ngIf="cheddarDuplo.value > 0">{{cheddarDuplo.value}}x Deck Ched. Duplo</div>
           <div *ngIf="onions.value > 0">{{onions.value}}x Onions</div>
           <div *ngIf="comboRefri.value > 0">{{comboRefri.value}}x Combo 1 (refri)</div>
           <div *ngIf="comboCerveja.value > 0">{{comboCerveja.value}}x Combo 2 (Cerveja)</div>
           <div *ngIf="batata.value > 0">{{batata.value}}x Batata Frita</div>
-          <div *ngIf="batataCheddar.value > 0">{{batataCheddar.value}}x Batata Cheddar Bacon</div>
+          <div *ngIf="batataCheddar.value > 0">{{batataCheddar.value}}x Batata Ched. Bacon</div>
           <div *ngIf="refrigerante.value > 0">{{refrigerante.value}}x Refri. (250 ml)</div>
           <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
         </font>
@@ -516,6 +512,75 @@
     <div id="snackbarVendaFeita">Venda Realizada com Sucesso!</div>
     <div id="snackbarErroImprimir">Para imprimir, salve a Venda!</div>
     <div id="snackbarVendaModificada">Venda Modificada com Sucesso!</div>
+
+
+
+
+<!-- \\\\\\\\\\\\\\\\\\\ -->
+
+
+
+<div id="printPedidoz">
+  <font size="4">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+              CUPOM NÃO-FISCAL
+    <br>
+                Pedido ID #{{vendaID.value}}
+    <br><br>
+                  <img src="\..\favicon.ico" height="100" width="100">
+    <br><br>
+    -------- Dados do Cliente --------
+    <br><br>
+    <b>Nome:</b> {{nome.value}}
+    <br>
+    <b>Telefone:</b> {{telefone.value}}
+    <br>
+    <b>Rua:</b> {{rua.value}}
+    <br>
+    <b>Nº:</b> {{numCasa.value}}
+    <br>
+    <b>Bairro:</b> {{bairro.value}}
+    <br>
+    <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
+    <br><br>
+    ------------- Pedido -------------
+    <br><br>
+
+    <p id="teeeeste"></p>
+    <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}</div>
+    <div *ngIf="adicional.value > 0"><b>Valor Adicional:</b> R$ {{adicional.value.toFixed(2).replace('.',',')}}
+    </div>
+    <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
+    <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
+
+    <br>
+  </font>
+  <font size="5">
+    <b>TOTAL:</b> R$
+    {{getNewTotal().replace('.',',')}}
+  </font>
+  <br><br>
+  <div *ngIf="newTroco.value == 0 || newTroco.value == '' || newTroco.value == null"><b>Troco:</b> Não</div>
+  <div *ngIf="newTroco.value > 0"><b>Troco Para:</b> R$ {{newTroco.value.toFixed(2).replace('.',',')}}</div>
+  <div *ngIf="newTroco.value > 0"><b>Troco (R$):</b> R$ {{getNewTroco(newTroco.value)}}</div>
+  <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
+</div>
+
+<div id="pedidoCozinhaz">
+  <font size="5">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+           Pedido ID #{{vendaID.value}}
+    <br><br>
+    <b>Cliente:</b> {{nome.value}}
+    <br><br>
+    <b>Pedido:</b>
+    <br>
+    <p id="teeeeste2"></p>
+    <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
+  </font>
+</div>
 
   </div>
   <!-- comment

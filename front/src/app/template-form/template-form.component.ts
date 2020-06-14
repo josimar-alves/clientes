@@ -29,7 +29,10 @@ export class TemplateFormComponent implements OnInit {
   private total: any = 0;
   private cartao: boolean = false;
   private vendaID: number = 0;
-  private txt = '';
+  private txtPrint = '';
+  private txtCozinha = '';
+  private newTotal = 0;
+  
 
 
   produtos$: Observable<DadosProduto[]>;
@@ -702,14 +705,14 @@ export class TemplateFormComponent implements OnInit {
     setTimeout(() => { tela_impressao.window.close(); }, 250);
   }
 
-
-
   ///////////////////////////////
 
   somar(produto) {
     if (produto.quantidade < 99) {
       produto.quantidade += 1;
       this.listProdutos[produto.posicao].quantidade = produto.quantidade;
+      this.newTotal += produto.preco;
+      this.newPrint();
     }
   }
 
@@ -717,6 +720,8 @@ export class TemplateFormComponent implements OnInit {
     if (produto.quantidade > 0) {
       produto.quantidade -= 1;
       this.listProdutos[produto.posicao].quantidade = produto.quantidade;
+      this.newTotal -= produto.preco;
+      this.newPrint();
     }
   }
 
@@ -737,6 +742,8 @@ export class TemplateFormComponent implements OnInit {
     this.setEntrega(1);
     this.cartao = false;
     this.buttonNameVendaAction = "Salvar";
+    this.newPrint();
+    this.newTotal = 0;
   }
 
   newSave(form) {
@@ -749,9 +756,6 @@ export class TemplateFormComponent implements OnInit {
       }
     });
 
-    let obs
-    let troco
-
     if (temProduto) {
       let json = '{ "items": [' + produtosJson.substr(0, produtosJson.length - 1) + ']' +
         ', "venda": {' +
@@ -760,31 +764,51 @@ export class TemplateFormComponent implements OnInit {
         '},' +
         '"obs": "' + form.value.itemsVenda.obs+'"' +
         ', "troco": "' + form.value.itemsVenda.troco+'"' +
-        ', "total": ' + document.getElementById("total").textContent + '}}';
+        ', "total": ' + this.getNewTotal() + '}}';
 
       console.log(json)
       console.log(JSON.parse(json));
+
+      if (confirm("Confirmar venda")) {
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        this.http.post('http://localhost:8080/venda/addTest', json, { headers }).toPromise().then((data: any) => {
+          this.setVendaID(data, form);
+          this.openSnackbar("snackbarVendaFeita");
+        });
+      }
     } else {
       console.log("aqui")
       this.openSnackbar("snackbarErroVenda");
     }
+
+
   }
 
   newPrint() {
-    this.txt = '';
+    this.txtPrint = '';
+    this.txtCozinha = '';
     this.listProdutos.forEach(p => {
       if (p.quantidade > 0) {
-        this.txt += '<b>' + p.quantidade + 'x ' + p.nome +':</b> R$ ' + p.preco + '\n';
+        this.txtPrint += '<b>' + p.quantidade + 'x ' + p.nome +':</b> R$ ' + p.preco.toFixed(2).replace('.',',') + '<br>';
+        this.txtCozinha += p.quantidade + 'x ' + p.nome + '<br>';
       }
     });
+    this.newGet();
   }
 
   newGet() {
-    return this.txt;
+    document.getElementById("teeeeste").innerHTML = this.txtPrint;
+    document.getElementById("teeeeste2").innerHTML = this.txtCozinha;
+    return this.txtPrint;
+  }
+
+  getNewTotal() {
+    return (this.newTotal + this.entrega).toFixed(2);
+  }
+
+  getNewTroco(troco) {
+    return (troco - this.getNewTotal()).toFixed(2).replace('.',',');
   }
   
   /////////////////////// <b>2x Deck Tradicional:</b> R$ 10,00
-
 }
-
-

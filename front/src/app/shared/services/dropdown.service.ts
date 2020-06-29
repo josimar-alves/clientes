@@ -21,7 +21,7 @@ export class DropdownService {
     this.cliente.bairro = "lol";
     this.cliente.nome = "lol";
     this.cliente.bairro = cliente.toLocaleString();
-    console.log(this.http.post('http://localhost:8080/cliente/add', this.cliente));
+    this.http.post('http://localhost:8080/cliente/add', this.cliente);
   }
 
   getVenda(id){

@@ -24,6 +24,14 @@ public class Venda implements Serializable {
 	@ManyToOne
 	private Cliente cliente;
 	
+	private Date data;
+	private String obs;
+	private double total;	
+	private double troco;
+	private double adicional;
+	private double entrega;
+	private boolean cartao;
+
 	public double getTotal() {
 		return total;
 	}
@@ -39,14 +47,6 @@ public class Venda implements Serializable {
 	public void setTroco(double troco) {
 		this.troco = troco;
 	}
-
-	private Date data;
-	
-	private String obs;
-	
-	private double total;
-	
-	private double troco;
 
 	public String getObs() {
 		return obs;
@@ -79,5 +79,29 @@ public class Venda implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public double getAdicional() {
+		return adicional;
+	}
+
+	public void setAdicional(double adicional) {
+		this.adicional = adicional;
+	}
+
+	public double getEntrega() {
+		return entrega;
+	}
+
+	public void setEntrega(double entrega) {
+		this.entrega = entrega;
+	}
+
+	public boolean isCartao() {
+		return cartao;
+	}
+
+	public void setCartao(boolean cartao) {
+		this.cartao = cartao;
 	}
 }

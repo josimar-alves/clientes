@@ -26,7 +26,12 @@ export class VendasComponent implements OnInit {
   }
 
   onRefresh() {
-    this.vendas$ = this.service.list().pipe(
+    var ts = new Date().toLocaleDateString();
+    var dia  = ts.split("/")[0];
+    var mes  = ts.split("/")[1];
+    var ano  = ts.split("/")[2];
+    var strDataHoje = ano + "-" + mes + "-" + dia;
+    this.vendas$ = this.service.listByDate(strDataHoje).pipe(
       // map(),
       // tap(),
       // switchMap(),
@@ -86,10 +91,24 @@ export class VendasComponent implements OnInit {
     });
   }
 
-  filterByDate(date) {
+  filterByDate (date) {
     if (date === null || date === "") {
-      this.onRefresh();
-    } else {
+      this.vendas$ = this.service.list().pipe(
+        catchError(error => {
+          console.error(error);
+          this.error$.next(true);
+          return empty();
+        })
+      );
+    
+      this.service.listByDate(date).pipe(
+        catchError (error => empty())
+      ).subscribe (
+        dados => {
+        }
+      );
+      this.setTotal();
+    } else {      
       this.vendas$ = this.service.listByDate(date).pipe(
         catchError(error => {
           console.error(error);
@@ -97,10 +116,10 @@ export class VendasComponent implements OnInit {
           return empty();
         })
       );
-
+    
       this.service.listByDate(date).pipe(
-        catchError(error => empty())
-      ).subscribe(
+        catchError (error => empty())
+      ).subscribe (
         dados => {
         }
       );
@@ -111,6 +130,7 @@ export class VendasComponent implements OnInit {
   sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
+  
 
   editarVenda(id){
     this.router.navigate(['/templateForm'], { queryParams: { venda: id } });

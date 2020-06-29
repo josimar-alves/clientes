@@ -20,7 +20,6 @@ export class TemplateFormComponent implements OnInit {
 
   private baseUrl = 'http://localhost:8080/cliente';
 
-  private value: any = {};
   private _disabledV: string = '0';
   private disabled: boolean = false;
   private buttonNameClienteAction: String = "Salvar";
@@ -31,10 +30,9 @@ export class TemplateFormComponent implements OnInit {
   private vendaID: number = 0;
   private txtPrint = '';
   private txtCozinha = '';
-  private newTotal = 0;
+  private newTotal: number = 0;
+  private refrigerante: any = '';
   
-
-
   produtos$: Observable<DadosProduto[]>;
   listProdutos: DadosProduto[];
   listProdutosCol1: DadosProduto[] = [];
@@ -53,33 +51,7 @@ export class TemplateFormComponent implements OnInit {
     this.disabled = this._disabledV === '1';
   }
 
-  public selected(value: any): void {
-    console.log('Selected value is: ', value);
-  }
-
-  public removed(value: any): void {
-    console.log('Removed value is: ', value);
-  }
-
-  public typed(value: any): void {
-    console.log('New search input: ', value);
-  }
-
-  public refreshValue(value: any): void {
-    this.value = value;
-  }
-
-
   clientes: Cliente[];
-
-  selectedCity: any = {
-    nome: null
-  };
-
-  usuario: any = {
-    nome: null,
-    email: null
-  };
 
   onSubmit(formulario) {
   }
@@ -96,15 +68,16 @@ export class TemplateFormComponent implements OnInit {
       this.clientes = dados;
     });
 
-    this.route.queryParams.subscribe(params => {
-      if (params['venda'] != null) {
-        this.vendaID = params['venda'];
-        setTimeout(() => {
-          (<HTMLInputElement>document.getElementById("vendaID")).click();
-        }, 100);
-      }
-    });
-
+    setTimeout(() => {  
+      this.route.queryParams.subscribe(params => {
+        if (params['venda'] != null) {
+          this.vendaID = params['venda'];
+          setTimeout(() => {
+            (<HTMLInputElement>document.getElementById("newVendaID")).click();
+          }, 100);
+        }
+      });
+    }, 500);
 
     this.produtos$ = this.service.getProdutos().pipe(
       catchError(error => {
@@ -122,6 +95,12 @@ export class TemplateFormComponent implements OnInit {
         dados => {
           let i = 0;
           let aux = 0;
+
+          this.listProdutosCol1 = [];
+          this.listProdutosCol2 = [];
+          this.listProdutosCol3 = [];
+          this.listProdutosCol4 = [];
+
           while (i < dados.length) {
             this.listProdutos = dados;
             if (aux === 0) {
@@ -141,9 +120,6 @@ export class TemplateFormComponent implements OnInit {
           }
         }
       );
-
-
-
   }
 
   verificaValidTouched(campo) {
@@ -165,9 +141,7 @@ export class TemplateFormComponent implements OnInit {
 
   setVendaID(venda, formulario) {
     formulario.form.patchValue({
-      itemsVenda: {
-        vendaID: venda.id
-      }
+      newVendaID: venda.id
     });
     this.buttonNameVendaAction = "Modificar";
   }
@@ -185,79 +159,56 @@ export class TemplateFormComponent implements OnInit {
       }
     });
     this.buttonNameClienteAction = "Modificar";
-    // console.log(form);
   }
 
   populaVendaForm(dados, formulario) {
     dados.forEach(element => {
-      if (element[0] == 1) {
-        formulario.form.patchValue({ itemsVenda: { tradicional: element[1] } });
-      } else if (element[0] == 2) {
-        formulario.form.patchValue({ itemsVenda: { canadense: element[1] } });
-      } else if (element[0] == 3) {
-        formulario.form.patchValue({ itemsVenda: { original: element[1] } });
-      } else if (element[0] == 4) {
-        formulario.form.patchValue({ itemsVenda: { australiano: element[1] } });
-      } else if (element[0] == 5) {
-        formulario.form.patchValue({ itemsVenda: { cheddarSimples: element[1] } });
-      } else if (element[0] == 6) {
-        formulario.form.patchValue({ itemsVenda: { cheddarDuplo: element[1] } });
-      } else if (element[0] == 7) {
-        formulario.form.patchValue({ itemsVenda: { onions: element[1] } });
-      } else if (element[0] == 8) {
-        formulario.form.patchValue({ itemsVenda: { comboRefri: element[1] } });
-      } else if (element[0] == 9) {
-        formulario.form.patchValue({ itemsVenda: { comboCerveja: element[1] } });
-      } else if (element[0] == 10) {
-        formulario.form.patchValue({ itemsVenda: { batata: element[1] } });
-      } else if (element[0] == 11) {
-        formulario.form.patchValue({ itemsVenda: { batataCheddar: element[1] } });
-      } else if (element[0] == 12) {
-        formulario.form.patchValue({ itemsVenda: { refrigerante: element[1] } });
-      } else if (element[0] == 13) {
-        formulario.form.patchValue({ itemsVenda: { crispy: element[1] } });
-      } else if (element[0] == 14) {
-        formulario.form.patchValue({ itemsVenda: { cheddarMelt: element[1] } });
-      } else if (element[0] == 15) {
-        formulario.form.patchValue({ itemsVenda: { prime: element[1] } });
-      } else if (element[0] == 16) {
-        formulario.form.patchValue({ itemsVenda: { adicional: element[1] } });
-      }
+      this.listProdutos.forEach(aux => {
+        if (aux.id == element[0]) {
+          aux.quantidade = element[1];
+          this.setPedidoTxt();
+        }
+      });
     });
     this.buttonNameVendaAction = "Modificar";
   }
 
   getVenda(form) {
-    if (this.vendaID > 0 && form.value.itemsVenda.vendaID === '') {
+    if (this.vendaID > 0 && form.value.newVendaID === '') {
       this.service.getVenda(this.vendaID).subscribe(venda => {
         if (venda != null) {
           this.setCliente(venda['venda']['cliente'], form);
+          this.newTotal = venda['venda']['total'] - venda['venda']['entrega'] - venda['venda']['adicional'];
           form.form.patchValue({
-            itemsVenda: {
-              vendaID: this.vendaID,
-              obs: venda['venda']['obs'],
-              troco: venda['venda']['troco']
-            }
+              newVendaID: this.vendaID,
+              newObs: venda['venda']['obs'],
+              newTroco: venda['venda']['troco'],
+              newAdicional: venda['venda']['adicional']
           });
         }
         var items = [];
-
+        (<HTMLInputElement>document.getElementById("checkCartao")).checked = venda['venda']['cartao'];
+        this.checkCartao();
         for (var i = 0; i < venda['items'].length; i++) {
           items[i] = [venda['items'][i]['produto']['id'], venda['items'][i]['quantidade']];
         }
-        this.populaVendaForm(items, form);
 
-        setTimeout(() => {
-          var valorEntrega = venda['venda']['total'] - this.getTotal() + 1;
-          if (valorEntrega == 0) {
-            (<HTMLInputElement>document.getElementById("gratis")).click();
-          } else if (valorEntrega == 2) {
-            (<HTMLInputElement>document.getElementById("zonaRural")).click();
-          } else {
-            (<HTMLInputElement>document.getElementById("cidade")).click();
-          }
-        }, 500);
+        this.populaVendaForm(items, form);
+        this.setTypeEntrega(venda['venda']['entrega']);
       });
+    }
+  }
+
+  setTypeEntrega(valorEntrega) {
+    if (valorEntrega == 0) {
+      this.entrega = 0;
+      (<HTMLInputElement>document.getElementById("gratis")).click();
+    } else if (valorEntrega == 3) {
+      this.entrega = 3;
+      (<HTMLInputElement>document.getElementById("zonaRural")).click();
+    } else {
+      this.entrega = 1;
+      (<HTMLInputElement>document.getElementById("cidade")).click();
     }
   }
 
@@ -266,13 +217,6 @@ export class TemplateFormComponent implements OnInit {
   }
 
   getTotal() {
-    return this.total;
-  }
-
-  setTotal(adicional, crispy, cheddarMelt, prime, tradicional, canadense, original, australiano, cheddarSimples, cheddarDuplo, onions, comboRefri, comboCerveja, batata, batataCheddar, refrigerante) {
-    this.total = (adicional * 1 + crispy * 10.00 + cheddarMelt * 10.00 + prime * 10.00 + tradicional * 10.00 + canadense * 12.00 + original * 12.00 + australiano * 12.00 + cheddarSimples * 12.00 +
-      cheddarDuplo * 14.00 + onions * 7.00 + comboRefri * 6.00 + comboCerveja * 8.00 + batata * 4.00 +
-      batataCheddar * 6.00 + refrigerante * 2.50 + this.entrega).toFixed(2);
     return this.total;
   }
 
@@ -291,10 +235,10 @@ export class TemplateFormComponent implements OnInit {
   }
 
   checkCartao() {
-    if (this.cartao == true) {
-      this.cartao = false;
-    } else {
+    if ((<HTMLInputElement> document.getElementById("checkCartao")).checked) {
       this.cartao = true;
+    } else {
+      this.cartao = false;
     }
   }
 
@@ -308,15 +252,6 @@ export class TemplateFormComponent implements OnInit {
       this.salvarCliente(formulario);
     } else {
       this.modificarCliente(formulario);
-    }
-  }
-
-  vendaAction(formulario) {
-    let valueSubmit = Object.assign({}, formulario.value.itemsVenda);
-    if (valueSubmit.vendaID === null || valueSubmit.vendaID === "") {
-      this.salvarVenda(formulario);
-    } else {
-      this.modificarVenda(formulario);
     }
   }
 
@@ -345,7 +280,7 @@ export class TemplateFormComponent implements OnInit {
       let json = JSON.stringify(valueSubmit);
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       this.http.put(`${this.baseUrl}/modify`, json, { headers }).toPromise().then((data: any) => {
-        console.log(this.populaClienteForm(data, formulario));
+        this.populaClienteForm(data, formulario);
       });
       this.openSnackbar("snackClienteModificado");
       setTimeout(() => { this.ngOnInit(); }, 250);
@@ -370,275 +305,12 @@ export class TemplateFormComponent implements OnInit {
   public maskPhone = ['(', /[0-9]/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   public maskNumber = [/[0-9]/, /\d/, /\d/, /\d/];
 
-  limparVenda(formulario) {
-    formulario.form.patchValue({
-      itemsVenda: {
-        adicional: null,
-        crispy: null,
-        cheddarMelt: null,
-        prime: null,
-        tradicional: null,
-        canadense: null,
-        original: null,
-        australiano: null,
-        cheddarSimples: null,
-        cheddarDuplo: null,
-        onions: null,
-        comboRefri: null,
-        comboCerveja: null,
-        batata: null,
-        batataCheddar: null,
-        refrigerante: null,
-        obs: null,
-        troco: null,
-        vendaID: null
-      }
-    });
-    (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
-    (<HTMLInputElement>document.getElementById("cidade")).checked = true;
-    this.setEntrega(1);
-    this.cartao = false;
-    this.buttonNameVendaAction = "Salvar";
-  }
-
+  
   novaVenda(formulario) {
     this.limparCliente(formulario);
-    this.limparVenda(formulario);
+    this.newClean(formulario);
   }
 
-  salvarVenda(formulario) {
-    var venda =
-    {
-      "items": [
-        {
-          "produto": {
-            "id": 1
-          },
-          "quantidade": formulario.value.itemsVenda.tradicional
-        }, {
-          "produto": {
-            "id": 2
-          },
-          "quantidade": formulario.value.itemsVenda.canadense
-        }, {
-          "produto": {
-            "id": 3
-          },
-          "quantidade": formulario.value.itemsVenda.original
-        }, {
-          "produto": {
-            "id": 4
-          },
-          "quantidade": formulario.value.itemsVenda.australiano
-        }, {
-          "produto": {
-            "id": 5
-          },
-          "quantidade": formulario.value.itemsVenda.cheddarSimples
-        }, {
-          "produto": {
-            "id": 6
-          },
-          "quantidade": formulario.value.itemsVenda.cheddarDuplo
-        }, {
-          "produto": {
-            "id": 7
-          },
-          "quantidade": formulario.value.itemsVenda.onions
-        }, {
-          "produto": {
-            "id": 8
-          },
-          "quantidade": formulario.value.itemsVenda.comboRefri
-        }, {
-          "produto": {
-            "id": 9
-          },
-          "quantidade": formulario.value.itemsVenda.comboCerveja
-        }, {
-          "produto": {
-            "id": 10
-          },
-          "quantidade": formulario.value.itemsVenda.batata
-        }, {
-          "produto": {
-            "id": 11
-          },
-          "quantidade": formulario.value.itemsVenda.batataCheddar
-        }, {
-          "produto": {
-            "id": 12
-          },
-          "quantidade": formulario.value.itemsVenda.refrigerante
-        }, {
-          "produto": {
-            "id": 13
-          },
-          "quantidade": formulario.value.itemsVenda.crispy
-        }, {
-          "produto": {
-            "id": 14
-          },
-          "quantidade": formulario.value.itemsVenda.cheddarMelt
-        }, {
-          "produto": {
-            "id": 15
-          },
-          "quantidade": formulario.value.itemsVenda.prime
-        }, {
-          "produto": {
-            "id": 16
-          },
-          "quantidade": formulario.value.itemsVenda.adicional
-        }
-      ],
-      "venda": {
-        "cliente": {
-          "id": formulario.value.cliente.id
-        },
-        "obs": formulario.value.itemsVenda.obs,
-        "troco": formulario.value.itemsVenda.troco,
-        "total": document.getElementById("total").textContent
-      }
-    };
-
-    if (this.validaVenda(formulario) === true) {
-      if (formulario.value.cliente.id !== null && formulario.value.cliente.id !== "") {
-        if (confirm("Confirmar venda")) {
-          let jsonVenda = (JSON.stringify(venda));
-          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-          this.http.post('http://localhost:8080/venda/addTest', jsonVenda, { headers }).toPromise().then((data: any) => {
-            this.setVendaID(data, formulario);
-            this.openSnackbar("snackbarVendaFeita");
-          });
-        }
-      } else {
-        this.openSnackbar("snackbarClienteInexistente");
-      }
-    } else {
-      this.openSnackbar("snackbarErroVenda");
-    }
-  }
-
-
-  modificarVenda(formulario) {
-    var venda =
-    {
-      "items": [
-        {
-          "produto": {
-            "id": 1
-          },
-          "quantidade": formulario.value.itemsVenda.tradicional
-        }, {
-          "produto": {
-            "id": 2
-          },
-          "quantidade": formulario.value.itemsVenda.canadense
-        }, {
-          "produto": {
-            "id": 3
-          },
-          "quantidade": formulario.value.itemsVenda.original
-        }, {
-          "produto": {
-            "id": 4
-          },
-          "quantidade": formulario.value.itemsVenda.australiano
-        }, {
-          "produto": {
-            "id": 5
-          },
-          "quantidade": formulario.value.itemsVenda.cheddarSimples
-        }, {
-          "produto": {
-            "id": 6
-          },
-          "quantidade": formulario.value.itemsVenda.cheddarDuplo
-        }, {
-          "produto": {
-            "id": 7
-          },
-          "quantidade": formulario.value.itemsVenda.onions
-        }, {
-          "produto": {
-            "id": 8
-          },
-          "quantidade": formulario.value.itemsVenda.comboRefri
-        }, {
-          "produto": {
-            "id": 9
-          },
-          "quantidade": formulario.value.itemsVenda.comboCerveja
-        }, {
-          "produto": {
-            "id": 10
-          },
-          "quantidade": formulario.value.itemsVenda.batata
-        }, {
-          "produto": {
-            "id": 11
-          },
-          "quantidade": formulario.value.itemsVenda.batataCheddar
-        }, {
-          "produto": {
-            "id": 12
-          },
-          "quantidade": formulario.value.itemsVenda.refrigerante
-        }, {
-          "produto": {
-            "id": 13
-          },
-          "quantidade": formulario.value.itemsVenda.crispy
-        }, {
-          "produto": {
-            "id": 14
-          },
-          "quantidade": formulario.value.itemsVenda.cheddarMelt
-        }, {
-          "produto": {
-            "id": 15
-          },
-          "quantidade": formulario.value.itemsVenda.prime
-        }, {
-          "produto": {
-            "id": 16
-          },
-          "quantidade": formulario.value.itemsVenda.adicional
-        }
-      ],
-      "venda": {
-        "cliente": {
-          "id": formulario.value.cliente.id
-        },
-        "id": formulario.value.itemsVenda.vendaID,
-        "obs": formulario.value.itemsVenda.obs,
-        "troco": formulario.value.itemsVenda.troco,
-        "total": document.getElementById("total").textContent
-      }
-    };
-
-    if (this.validaVenda(formulario) === true) {
-      if (formulario.value.cliente.id !== null && formulario.value.cliente.id !== "") {
-        if (confirm("Confirmar Modificação da Venda")) {
-          let jsonVenda = (JSON.stringify(venda));
-          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-          this.http.delete("http://localhost:8080/venda/deleteItems/" + formulario.value.itemsVenda.vendaID, { headers }).toPromise().then((data: any) => {
-            console.log("Apagou " + formulario.value.itemsVenda.vendaID);
-          });
-
-          this.http.put('http://localhost:8080/venda/modifyTest', jsonVenda, { headers }).toPromise().then((data: any) => {
-            this.openSnackbar("snackbarVendaModificada");
-          });
-        }
-      } else {
-        this.openSnackbar("snackbarClienteInexistente");
-      }
-    } else {
-      this.openSnackbar("snackbarErroVenda");
-    }
-  }
 
   openSnackbar(textID) {
     var x = document.getElementById(textID);
@@ -646,64 +318,6 @@ export class TemplateFormComponent implements OnInit {
     setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
   }
 
-  validaVenda(formulario) {
-    if (formulario.value.itemsVenda.tradicional >= 1) {
-      return true
-    } else if (formulario.value.itemsVenda.canadense >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.original >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.australiano >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.cheddarSimples >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.cheddarDuplo >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.onions >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.comboRefri >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.comboCerveja >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.batata >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.batataCheddar >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.refrigerante >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.crispy >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.cheddarMelt >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.prime >= 1) {
-      return true;
-    } else if (formulario.value.itemsVenda.adicional >= 1) {
-      return true;
-    }
-    return false;
-  }
-
-  imprimir(formulario) {
-    /*this.printPedido();*/
-    if (formulario.value.itemsVenda.vendaID != '' && formulario.value.itemsVenda.vendaID != null) {
-      this.printPedido();
-    } else {
-      this.openSnackbar("snackbarErroImprimir");
-    }
-  }
-
-  printPedido() {
-    this.print('printPedido');
-    this.print('pedidoCozinha');
-  };
-
-  print(pedido) {
-    var conteudo = document.getElementById(pedido).innerHTML;
-    var tela_impressao = window.open('about:blank');
-    tela_impressao.document.write('<div style="max-width: 280px; margin: 0">' + conteudo);
-    setTimeout(() => { tela_impressao.window.print(); }, 250);
-    setTimeout(() => { tela_impressao.window.close(); }, 250);
-  }
 
   ///////////////////////////////
 
@@ -712,7 +326,7 @@ export class TemplateFormComponent implements OnInit {
       produto.quantidade += 1;
       this.listProdutos[produto.posicao].quantidade = produto.quantidade;
       this.newTotal += produto.preco;
-      this.newPrint();
+      this.setPedidoTxt();
     }
   }
 
@@ -721,7 +335,7 @@ export class TemplateFormComponent implements OnInit {
       produto.quantidade -= 1;
       this.listProdutos[produto.posicao].quantidade = produto.quantidade;
       this.newTotal -= produto.preco;
-      this.newPrint();
+      this.setPedidoTxt();
     }
   }
 
@@ -731,19 +345,27 @@ export class TemplateFormComponent implements OnInit {
     });
 
     formulario.form.patchValue({
-      itemsVenda: {
-        obs: null,
-        troco: null,
-        vendaID: null
-      }
+        newObs: "",
+        newTroco: null,
+        newVendaID: null,
+        newAdicional: null,
+        qtRefri: null
     });
     (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
     (<HTMLInputElement>document.getElementById("cidade")).checked = true;
+    (<HTMLInputElement>document.getElementById("nenhum")).checked = true;
     this.setEntrega(1);
     this.cartao = false;
     this.buttonNameVendaAction = "Salvar";
-    this.newPrint();
     this.newTotal = 0;
+  }
+
+  newVendaAction(formulario) {
+    if (formulario.value.newVendaID === null || formulario.value.newVendaID === "") {
+      this.newSave(formulario);
+    } else { 
+      this.newModify(formulario);
+    }
   }
 
   newSave(form) {
@@ -762,52 +384,128 @@ export class TemplateFormComponent implements OnInit {
         '"cliente": {' +
         '"id": ' + form.value.cliente.id +
         '},' +
-        '"obs": "' + form.value.itemsVenda.obs+'"' +
-        ', "troco": "' + form.value.itemsVenda.troco+'"' +
-        ', "total": ' + this.getNewTotal() + '}}';
-
-      console.log(json)
-      console.log(JSON.parse(json));
+        '"obs": "' + form.value.newObs + '"' +
+        ', "troco": "' + form.value.newTroco + '"' +
+        ', "adicional": "' + form.value.newAdicional + '"' +
+        ', "entrega": "' + this.entrega + '"' +
+        ', "cartao": "' + this.cartao + '"' +
+        ', "total": ' + this.getNewTotal(form.value.newAdicional) + '}}';
 
       if (confirm("Confirmar venda")) {
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         this.http.post('http://localhost:8080/venda/addTest', json, { headers }).toPromise().then((data: any) => {
           this.setVendaID(data, form);
           this.openSnackbar("snackbarVendaFeita");
+          this.buttonNameVendaAction = "Modificar";
         });
       }
     } else {
-      console.log("aqui")
       this.openSnackbar("snackbarErroVenda");
     }
-
-
   }
 
-  newPrint() {
-    this.txtPrint = '';
-    this.txtCozinha = '';
+
+  newModify(form) {
+    let produtosJson = '';
+    let temProduto = false; 
     this.listProdutos.forEach(p => {
+      if (p.quantidade > 0) {
+        produtosJson += '{ "produto": { "id": ' + p.id + ' }, "quantidade": ' + p.quantidade + ' },';
+        temProduto = true;
+      }
+    });
+
+    if (temProduto) {
+      let json = '{ "items": [' + produtosJson.substr(0, produtosJson.length - 1) + ']' +
+        ', "venda": {' +
+        '"cliente": {' +
+        '"id": ' + form.value.cliente.id +
+        '},' +
+        '"id": "' + form.value.newVendaID+'"' +
+        ', "obs": "' + form.value.newObs + '"' +
+        ', "troco": "' + form.value.newTroco + '"' +
+        ', "adicional": "' + form.value.newAdicional + '"' +
+        ', "entrega": "' + this.entrega + '"' +
+        ', "cartao": "' + this.cartao + '"' +
+        ', "total": ' + this.getNewTotal(form.value.newAdicional) + '}}';
+
+      if (confirm("Confirmar Modificação da Venda")) {
+        console.log(json)
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        this.http.delete("http://localhost:8080/venda/deleteItems/" + form.value.newVendaID, { headers }).toPromise().then((data: any) => {});
+        setTimeout(() => { this.http.put('http://localhost:8080/venda/modifyTest', json, { headers }).toPromise().then((data: any) => {
+            this.openSnackbar("snackbarVendaModificada");
+          })}, 250);
+      }
+    } else {
+      this.openSnackbar("snackbarErroVenda");
+    }
+  }
+
+  async newPrint(formulario) {
+    await this.setPedidoTxt();
+    if (formulario.value.newVendaID != '' && formulario.value.newVendaID != null) {
+      await this.newPrintPedido();
+    } else {
+      await this.openSnackbar("snackbarErroImprimir");
+    }
+  }
+
+  newPrintPedido() {
+    this.print2('printPedido');
+    this.print2('printMsg')
+    this.print2('pedidoCozinha');
+  };
+
+  print2(pedido) {
+    var conteudo = document.getElementById(pedido).innerHTML;
+    var tela_impressao = window.open('about:blank');
+    tela_impressao.document.write('<div style="max-width: 280px; margin: 0">' + conteudo);
+    setTimeout(() => { tela_impressao.window.print(); }, 250);
+    setTimeout(() => { tela_impressao.window.close(); }, 250);
+  }
+
+  async setPedidoTxt(){
+    this.txtPrint = await '';
+    this.txtCozinha = await '';
+    await this.listProdutos.forEach(p => {
       if (p.quantidade > 0) {
         this.txtPrint += '<b>' + p.quantidade + 'x ' + p.nome +':</b> R$ ' + p.preco.toFixed(2).replace('.',',') + '<br>';
         this.txtCozinha += p.quantidade + 'x ' + p.nome + '<br>';
       }
     });
-    this.newGet();
+    document.getElementById("teeeeste").innerHTML = await this.txtPrint;
+    document.getElementById("teeeeste2").innerHTML = await this.txtCozinha;
   }
 
-  newGet() {
-    document.getElementById("teeeeste").innerHTML = this.txtPrint;
-    document.getElementById("teeeeste2").innerHTML = this.txtCozinha;
-    return this.txtPrint;
+  setRefrigerante(formulario, refri){
+    this.refrigerante = refri;
+    var element = (<HTMLInputElement>document.getElementById("qtRefri"));
+    if (refri != "" && (element.value == "" || element.value == null || element.value == "0")) {
+      console.log('aqui');
+      formulario.form.patchValue({
+        qtRefri: 1
+    });
+    } else if (refri == "") {
+      formulario.form.patchValue({
+        qtRefri: null
+       });
+    }
   }
 
-  getNewTotal() {
-    return (this.newTotal + this.entrega).toFixed(2);
+  getRefrigerante() {
+    return this.refrigerante;
   }
 
-  getNewTroco(troco) {
-    return (troco - this.getNewTotal()).toFixed(2).replace('.',',');
+  getNewTotal(adicional) {
+    if (adicional == "" || adicional == null) {
+      adicional = 0;
+    }
+    return (this.newTotal + this.entrega + adicional).toFixed(2);
+  }
+
+  getNewTroco(troco, adicional) {
+    return (troco - this.getNewTotal(adicional)).toFixed(2);
   }
   
   /////////////////////// <b>2x Deck Tradicional:</b> R$ 10,00

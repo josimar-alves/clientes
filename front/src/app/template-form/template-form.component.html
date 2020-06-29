@@ -99,7 +99,7 @@
 
             <b>TOTAL:</b> R$
             <label
-              id="total">{{setTotal(adicional.value, crispy.value, cheddarMelt.value, prime.value, tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value)}}</label>
+              id="total">{{getNewTotal(newAdicional.value)}}</label>
           </div>
 
           <div class="col-md-1" style="border-right: 1px solid">
@@ -110,8 +110,8 @@
                <b>Entrega:  </b>
             <input type="radio" id="cidade" name="entrega" value="Cidade" checked (click)="setEntrega(1)"> 
             <label for="cidade">Cidade (R$ 1,00)</label>   -   
-            <input type="radio" id="zonaRural" name="entrega" value="Zona Rural" (click)="setEntrega(2)"> 
-            <label for="zonaRural">Zona Rural (R$ 2,00)</label>   -   
+            <input type="radio" id="zonaRural" name="entrega" value="Zona Rural" (click)="setEntrega(4)"> 
+            <label for="zonaRural">Mme (R$ 4,00)</label>   -   
             <input type="radio" id="gratis" name="entrega" value="Grátis" (click)="setEntrega(0)"> 
             <label for="gratis">Grátis</label>
           </div>
@@ -130,152 +130,6 @@
         </div>
       </font>
       <hr>
-
-      <div ngModelGroup="itemsVenda">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-2">
-              <label for="tradicional" class="control-label">Deck Tradicional</label>
-              <input type="number" class="form-control" id="tradicional" min="0" value="0" placeholder="0"
-                name="tradicional" ngModel #tradicional="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="canadense" class="control-label">Deck Canadense</label>
-              <input type="number" class="form-control" id="canadense" min="0" value="0" placeholder="0"
-                name="canadense" ngModel #canadense="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="original" class="control-label">Deck Original</label>
-              <input type="number" class="form-control" id="original" min="0" value="0" placeholder="0" name="original"
-                ngModel #original="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="australiano" class="control-label">Deck Australiano</label>
-              <input type="number" class="form-control" id="australiano" min="0" value="0" placeholder="0"
-                name="australiano" ngModel #australiano="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="cheddarSimples" class="control-label">Deck Cheddar Simples</label>
-              <input type="number" class="form-control" id="cheddarSimples" min="0" value="0" placeholder="0"
-                name="cheddarSimples" ngModel #cheddarSimples="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="cheddarDuplo" class="control-label">Deck Cheddar Duplo</label>
-              <input type="number" class="form-control" id="cheddarDuplo" min="0" value="0" placeholder="0"
-                name="cheddarDuplo" ngModel #cheddarDuplo="ngModel">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-2"></div>
-
-            <div class="col-md-2">
-              <label for="crispy" class="control-label">Deck Crispy</label>
-              <input type="number" class="form-control" id="crispy" min="0" value="0" placeholder="0" name="crispy"
-                ngModel #crispy="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="cheddarMelt" class="control-label">Deck cheddarMelt</label>
-              <input type="number" class="form-control" id="cheddarMelt" min="0" value="0" placeholder="0"
-                name="cheddarMelt" ngModel #cheddarMelt="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="prime" class="control-label">Deck prime</label>
-              <input type="number" class="form-control" id="prime" min="0" value="0" placeholder="0" name="prime"
-                ngModel #prime="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="adicional" class="control-label">Valor Adicional</label>
-              <input type="number" class="form-control" id="adicional" min="0" value="0" placeholder="0"
-                name="adicional" ngModel #adicional="ngModel">
-            </div>
-
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-2">
-              <label for="onions" class="control-label">Onions</label>
-              <input type="number" class="form-control" id="onions" min="0" value="0" placeholder="0" name="onions"
-                ngModel #onions="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="comboRefri" class="control-label">Combo de Refri</label>
-              <input type="number" class="form-control" id="comboRefri" min="0" value="0" placeholder="0"
-                name="comboRefri" ngModel #comboRefri="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="comboCerveja" class="control-label">Combo de Cerveja</label>
-              <input type="number" class="form-control" id="comboCerveja" min="0" value="0" placeholder="0"
-                name="comboCerveja" ngModel #comboCerveja="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="batata" class="control-label">Batatinha Normal</label>
-              <input type="number" class="form-control" id="batata" min="0" value="0" placeholder="0" name="batata"
-                ngModel #batata="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="batataCheddar" class="control-label">Batata Cheddar Bacon</label>
-              <input type="number" class="form-control" id="batataCheddar" min="0" value="0" placeholder="0"
-                name="batataCheddar" ngModel #batataCheddar="ngModel">
-            </div>
-
-            <div class="col-md-2">
-              <label for="refrigerante" class="control-label">Refrigerante</label>
-              <input type="number" class="form-control" id="refrigerante" min="0" value="0" placeholder="0"
-                name="refrigerante" ngModel #refrigerante="ngModel">
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-7">
-              <label for="obs" class="control-label">Observações</label>
-              <input type="text" class="form-control" id="obs" name="obs" ngModel #obs="ngModel">
-            </div>
-            <div class="col-md-1">
-              <label for="troco" class="control-label">Troco Para</label>
-              <input type="number" class="form-control" id="troco" name="troco" max="999" min="{{getTotal()}}" ngModel
-                #troco="ngModel">
-            </div>
-            <div class="col-md-1">
-              <label for="vendaID" class="control-label">VendaID</label>
-              <input type="number" class="form-control" id="vendaID" name="vendaID" ngModel #vendaID="ngModel"
-                (click)="getVenda(f)" readonly>
-            </div>
-
-            <br>
-            <div class="col-md-1 text-center">
-              <br>
-              <button type="button" class="btn btn-success align-bottom" (click)="vendaAction(f)"
-                [disabled]="!f.valid">{{buttonNameVendaAction}}</button>
-            </div>
-            <div class="col-md-1 text-center">
-              <br>
-              <button type="button" class="btn btn-info" (click)="imprimir(f)">Imprimir</button>
-            </div>
-            <div class="col-md-1 text-center">
-              <br>
-              <button type="button" class="btn btn-secondary" (click)="limparVenda(f)">Limpar</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- /////////////////////   ///////////////////// -->
 
@@ -369,9 +223,37 @@
         </ng-template>
       </ng-template>
 
+<!--////////////////////////////////////////////////////-->
 
-      
+      <hr>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-1">
+            <label class="control-label">Quantidade</label>
+          </div>
+          <div class="col-md-1">
+            <input type="number" class="form-control" id="qtRefri" name="qtRefri" max="999" min="1" ngModel
+              #qtRefri="ngModel">
+          </div>
+          <div class="col-md-7">
+             <b>Refrigerante:  </b>
+            <input type="radio" id="nenhum" name="tipoRefri" value="nenhum" checked (click)="setRefrigerante(f, '')"> 
+            <label for="nenhum">Nenhum</label>   -   
+            <input type="radio" id="coca" name="tipoRefri" value="coca" (click)="setRefrigerante(f, 'Coca-Cola')"> 
+            <label for="coca">Coca-Cola</label>   -   
+            <input type="radio" id="guarana" name="tipoRefri" value="guarana" (click)="setRefrigerante(f, 'Guaraná')"> 
+            <label for="guarana">Guaraná</label>   -   
+            <input type="radio" id="sprite" name="tipoRefri" value="sprite" (click)="setRefrigerante(f, 'Sprite')"> 
+            <label for="sprite">Sprite</label>   -   
+            <input type="radio" id="fanta" name="tipoRefri" value="fanta" (click)="setRefrigerante(f, 'Fanta')"> 
+            <label for="fanta">Fanta</label>
+          </div>
+        </div>
+      </div>
+      <hr>
 
+<!--////////////////////////////////////////////////////-->
 
       <div class="form-group">
         <div class="row">
@@ -386,7 +268,7 @@
           </div>
           <div class="col-md-1">
             <label for="newTroco" class="control-label">Troco Para</label>
-            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999" min="{{getNewTotal()}}" ngModel
+            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999" min="{{getNewTotal(newAdicional.value)}}" ngModel
               #newTroco="ngModel">
           </div>
           <div class="col-md-1">
@@ -394,9 +276,10 @@
             <input type="number" class="form-control" id="newVendaID" name="newVendaID" ngModel #newVendaID="ngModel"
               (click)="getVenda(f)" readonly>
           </div>
+
           <div class="col-md-1 text-center">
             <br>
-            <button type="button" class="btn btn-success" [disabled]="!f.valid" (click)="newSave(f)">Salvar</button>
+            <button type="button" class="btn btn-success" [disabled]="!f.valid" (click)="newVendaAction(f)">{{buttonNameVendaAction}}</button>
           </div>
           <div class="col-md-1 text-center">
             <br>
@@ -410,98 +293,6 @@
       </div>
 
       <!-- /////////////////////   ///////////////////// -->
-
-      <div id="printPedido">
-        <font size="4">
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-                    CUPOM NÃO-FISCAL
-          <br>
-                      Pedido ID #{{vendaID.value}}
-          <br><br>
-                        <img src="\..\favicon.ico" height="100" width="100">
-          <br><br>
-          -------- Dados do Cliente --------
-          <br><br>
-          <b>Nome:</b> {{nome.value}}
-          <br>
-          <b>Telefone:</b> {{telefone.value}}
-          <br>
-          <b>Rua:</b> {{rua.value}}
-          <br>
-          <b>Nº:</b> {{numCasa.value}}
-          <br>
-          <b>Bairro:</b> {{bairro.value}}
-          <br>
-          <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
-          <br><br>
-          ------------- Pedido -------------
-          <br><br>
-
-          <div *ngIf="crispy.value > 0"><b>{{crispy.value}}x Deck Crispy:</b> R$ 10,00</div>
-          <div *ngIf="cheddarMelt.value > 0"><b>{{cheddarMelt.value}}x Deck Cheddar Melt:</b> R$ 10,00</div>
-          <div *ngIf="prime.value > 0"><b>{{prime.value}}x Deck Prime:</b> R$ 10,00</div>
-          <div *ngIf="tradicional.value > 0"><b>{{tradicional.value}}x Deck Tradicional:</b> R$ 10,00</div>
-          <div *ngIf="canadense.value > 0"><b>{{canadense.value}}x Deck Canadense:</b> R$ 12,00</div>
-          <div *ngIf="original.value > 0"><b>{{original.value}}x Deck Original:</b> R$ 12,00</div>
-          <div *ngIf="australiano.value > 0"><b>{{australiano.value}}x Deck Australiano:</b> R$ 12,00</div>
-          <div *ngIf="cheddarSimples.value > 0"><b>{{cheddarSimples.value}}x Deck Ched. Simples:</b> R$ 12,00</div>
-          <div *ngIf="cheddarDuplo.value > 0"><b>{{cheddarDuplo.value}}x Deck Ched. Duplo:</b> R$ 14,00</div>
-          <div *ngIf="onions.value > 0"><b>{{onions.value}}x Onions:</b> R$ 7,00</div>
-          <div *ngIf="comboRefri.value > 0"><b>{{comboRefri.value}}x Combo 1 (refri):</b> R$ 6,00</div>
-          <div *ngIf="comboCerveja.value > 0"><b>{{comboCerveja.value}}x Combo 2 (Cerveja):</b> R$ 8,00</div>
-          <div *ngIf="batata.value > 0"><b>{{batata.value}}x Batata Frita:</b> R$ 4,00 </div>
-          <div *ngIf="batataCheddar.value > 0"><b>{{batataCheddar.value}}x Batata Ched. Bacon:</b> R$ 6,00</div>
-          <div *ngIf="refrigerante.value > 0"><b>{{refrigerante.value}}x Refri. (250 ml):</b> R$ 2,50</div>
-          <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}</div>
-          <div *ngIf="adicional.value > 0"><b>Valor Adicional:</b> R$ {{adicional.value.toFixed(2).replace('.',',')}}
-          </div>
-          <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
-          <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
-
-          <br>
-        </font>
-        <font size="5">
-          <b>TOTAL:</b> R$
-          {{setTotal(adicional.value, crispy.value, cheddarMelt.value, prime.value, tradicional.value, canadense.value, original.value, australiano.value, cheddarSimples.value, cheddarDuplo.value, onions.value, comboRefri.value, comboCerveja.value, batata.value, batataCheddar.value, refrigerante.value).replace('.',',')}}
-        </font>
-        <br><br>
-        <div *ngIf="troco.value == 0 || troco.value == '' || troco.value == null"><b>Troco:</b> Não</div>
-        <div *ngIf="troco.value > 0"><b>Troco Para:</b> R$ {{troco.value.toFixed(2).replace('.',',')}}</div>
-        <div *ngIf="troco.value > 0"><b>Troco (R$):</b> R$ {{getTroco(troco.value).replace('.',',')}}</div>
-        <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
-      </div>
-
-      <div id="pedidoCozinha">
-        <font size="5">
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-                 Pedido ID #{{vendaID.value}}
-          <br><br>
-          <b>Cliente:</b> {{nome.value}}
-          <br><br>
-          <b>Pedido:</b>
-          <br>
-          <div *ngIf="crispy.value > 0">{{crispy.value}}x Deck Crispy</div>
-          <div *ngIf="cheddarMelt.value > 0">{{cheddarMelt.value}}x Deck Cheddar Melt</div>
-          <div *ngIf="prime.value > 0">{{prime.value}}x Deck Prime</div>
-          <div *ngIf="tradicional.value > 0">{{tradicional.value}}x Deck Tradicional</div>
-          <div *ngIf="canadense.value > 0">{{canadense.value}}x Deck Canadense</div>
-          <div *ngIf="original.value > 0">{{original.value}}x Deck Original</div>
-          <div *ngIf="australiano.value > 0">{{australiano.value}}x Deck Australiano</div>
-          <div *ngIf="cheddarSimples.value > 0">{{cheddarSimples.value}}x Deck Ched. Simples</div>
-          <div *ngIf="cheddarDuplo.value > 0">{{cheddarDuplo.value}}x Deck Ched. Duplo</div>
-          <div *ngIf="onions.value > 0">{{onions.value}}x Onions</div>
-          <div *ngIf="comboRefri.value > 0">{{comboRefri.value}}x Combo 1 (refri)</div>
-          <div *ngIf="comboCerveja.value > 0">{{comboCerveja.value}}x Combo 2 (Cerveja)</div>
-          <div *ngIf="batata.value > 0">{{batata.value}}x Batata Frita</div>
-          <div *ngIf="batataCheddar.value > 0">{{batataCheddar.value}}x Batata Ched. Bacon</div>
-          <div *ngIf="refrigerante.value > 0">{{refrigerante.value}}x Refri. (250 ml)</div>
-          <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
-        </font>
-      </div>
-
-
     </form>
 
     <div id="snackbarClienteExistente">Cliente já existe!</div>
@@ -513,20 +304,33 @@
     <div id="snackbarErroImprimir">Para imprimir, salve a Venda!</div>
     <div id="snackbarVendaModificada">Venda Modificada com Sucesso!</div>
 
-
-
-
 <!-- \\\\\\\\\\\\\\\\\\\ -->
 
 
 
-<div id="printPedidoz">
+<div id="printMsg">
+  <font size="5">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+          <img src="https://lh3.googleusercontent.com/pw/ACtC-3eo6_6IQYGsG1O6zop2WBq9c16jGLjozWZWD5Ap67E5B57xsiVGwB5RqTz390zRCOQIlZ7NBs7tRkVqqhczNb-zXFPxcUTr64Iso5UJz07aELLhEZ4TLgW2A-1lk5jmcNnzAWVhKMF67MhMXkHIthp5_Q=s200-no?authuser=0" height="200" width="200">
+    <br><br>
+    Oooi, {{nome.value}} ❤ <br><br>
+    Agora Somos 2k 😍<br><br>
+    Muito obrigado por fazer parte dessa história ❤😍<br><br>
+    #Deck2k
+  </font>
+</div>
+
+
+<!-- \\\\\\\\\\\\\\\\\\\\ -->
+
+<div id="printPedido">
   <font size="4">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
               CUPOM NÃO-FISCAL
     <br>
-                Pedido ID #{{vendaID.value}}
+                Pedido ID #{{newVendaID.value}}
     <br><br>
                   <img src="\..\favicon.ico" height="100" width="100">
     <br><br>
@@ -549,36 +353,44 @@
 
     <p id="teeeeste"></p>
     <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}</div>
-    <div *ngIf="adicional.value > 0"><b>Valor Adicional:</b> R$ {{adicional.value.toFixed(2).replace('.',',')}}
+    <div *ngIf="newAdicional.value > 0"><b>Valor Adicional:</b> R$ {{newAdicional.value.toFixed(2).replace('.',',')}}
     </div>
     <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
-    <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
+    <div *ngIf="newObs.value !== '' && newObs.value !== null"><br><b>*Obs:</b> {{newObs.value}}</div>
 
     <br>
   </font>
   <font size="5">
     <b>TOTAL:</b> R$
-    {{getNewTotal().replace('.',',')}}
+    {{getNewTotal(newAdicional.value).replace('.',',')}}
   </font>
   <br><br>
   <div *ngIf="newTroco.value == 0 || newTroco.value == '' || newTroco.value == null"><b>Troco:</b> Não</div>
   <div *ngIf="newTroco.value > 0"><b>Troco Para:</b> R$ {{newTroco.value.toFixed(2).replace('.',',')}}</div>
-  <div *ngIf="newTroco.value > 0"><b>Troco (R$):</b> R$ {{getNewTroco(newTroco.value)}}</div>
+  <div *ngIf="newTroco.value > 0"><b>Troco (R$):</b> R$ {{getNewTroco(newTroco.value, newAdicional.value).replace('.',',')}}</div>
   <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
+  <font size="5">
+  <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
+    <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
+  </div>
+  </font>
 </div>
 
-<div id="pedidoCozinhaz">
+<div id="pedidoCozinha">
   <font size="5">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-           Pedido ID #{{vendaID.value}}
+           Pedido ID #{{newVendaID.value}}
     <br><br>
     <b>Cliente:</b> {{nome.value}}
     <br><br>
     <b>Pedido:</b>
     <br>
     <p id="teeeeste2"></p>
-    <div *ngIf="obs.value !== '' && obs.value !== null"><br><b>*Obs:</b> {{obs.value}}</div>
+    <div *ngIf="newObs.value !== '' && newObs.value !== null"><br><b>*Obs:</b> {{newObs.value}}</div>
+    <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
+      <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
+    </div>
   </font>
 </div>
 

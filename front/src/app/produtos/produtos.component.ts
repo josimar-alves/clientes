@@ -33,6 +33,7 @@ export class ProdutosComponent implements OnInit {
         return empty();
       })
     );
+    
 
     this.service.list()
       .pipe(

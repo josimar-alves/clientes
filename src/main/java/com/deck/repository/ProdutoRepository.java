@@ -13,7 +13,7 @@ public interface ProdutoRepository extends JpaRepository <Produto, Long> {
 	
 	Produto findByid(long id);
 	
-	@Query(nativeQuery = true, value = "select * from tb_produto ORDER BY id_produto")
+	@Query(nativeQuery = true, value = "select * from tb_produto ORDER BY posicao")
 	List<Produto> findAll();
 
 }

@@ -453,7 +453,7 @@ export class TemplateFormComponent implements OnInit {
 
   newPrintPedido() {
     this.print2('printPedido');
-    this.print2('printMsg')
+  //  this.print2('printMsg')
     this.print2('pedidoCozinha');
   };
 

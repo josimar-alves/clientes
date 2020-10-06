@@ -20,4 +20,8 @@ export class PrintComponent implements OnInit {
     setTimeout(() => { tela_impressao.window.close(); }, 250);
   }
 
+  setImg() {
+    // Setar imagem
+  }
+
 }

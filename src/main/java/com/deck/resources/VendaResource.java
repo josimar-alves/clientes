@@ -185,7 +185,7 @@ public class VendaResource {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date dataInicio = sdf.parse(date);
-//		Date dataInicioT = sdf.parse("2020-06-01");
+		Date dataInicioT = sdf.parse("2020-09-03");
 		Date dataFim = new Date(dataInicio.getTime()+(24*60*60*1000)-1);
 		
 		for (Venda v : vendaRepository.findAllWithData(dataInicio, dataFim)) {

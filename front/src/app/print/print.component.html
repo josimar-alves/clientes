@@ -3,6 +3,11 @@
       <div class="float-left">
         <h4>Imprimir Mensagem</h4>
       </div>
+      <div class="col-md-2">
+        <div class="form-check">
+          <input type="checkbox" style="margin-top: .10rem;" class="form-check-input" id="setImg" (click)="setImg()" checked>
+        </div>
+      </div>
       <div class="float-right">
         <button type="button" class="btn btn-info" (click)="print()" id="printButton" name="printButton"
           ngModel #printButton="ngModel">Imprimir</button>

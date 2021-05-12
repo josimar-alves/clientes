@@ -31,6 +31,7 @@ public class Venda implements Serializable {
 	private double adicional;
 	private double entrega;
 	private boolean cartao;
+	private String pagamento;
 
 	public double getTotal() {
 		return total;
@@ -103,5 +104,13 @@ public class Venda implements Serializable {
 
 	public void setCartao(boolean cartao) {
 		this.cartao = cartao;
+	}
+	
+	public String getPagamento() {
+		return this.pagamento;
+	}
+	
+	public void setPagamento(String pagamento) {
+		this.pagamento = pagamento;
 	}
 }

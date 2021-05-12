@@ -95,36 +95,43 @@
       <hr>
       <font size="4">
         <div class="row">
-          <div class="col-md-2">
 
-            <b>TOTAL:</b> R$
-            <label
-              id="total">{{getNewTotal(newAdicional.value)}}</label>
+          <div class="col-md-2 text-center">
+            <b>TOTAL</b><br>
+            R$ <label id="total">{{getNewTotal(newAdicional.value)}}</label>
           </div>
 
-          <div class="col-md-1" style="border-right: 1px solid">
+          <div style="border-right: 1px solid; margin-right:5px; margin-left:5px"></div>
 
+          <div class="col-md-2 text-center">
+            <font size="3"><b>ENTREGA (R$)</b></font>
+            <input type="number" class="form-control" id="entrega" name="entrega" ngModel="1" #entrega="ngModel"
+              max="9" min="0" (click)="setEntrega(entrega.value)">
           </div>
 
-          <div class="col-md-6">
-               <b>Entrega:  </b>
-            <input type="radio" id="cidade" name="entrega" value="Cidade" checked (click)="setEntrega(1)"> 
-            <label for="cidade">Cidade (R$ 1,00)</label>   -   
-            <input type="radio" id="zonaRural" name="entrega" value="Zona Rural" (click)="setEntrega(4)"> 
-            <label for="zonaRural">Mme (R$ 4,00)</label>   -   
-            <input type="radio" id="gratis" name="entrega" value="Grátis" (click)="setEntrega(0)"> 
-            <label for="gratis">Grátis</label>
+          <div style="border-right: 1px solid; margin-right:5px; margin-left:5px"></div>
+
+          <div class="col-md-5 text-center">
+            <b>FORMA DE PAGAMENTO</b>
+            <br>
+            <input id="Dinheiro" ngModel="Dinheiro" type="radio" name="formaPagamento" value="Dinheiro" (click)="setPagamento(f, 'Dinheiro')"> 
+            <label for="Dinheiro">Dinheiro</label>   -   
+            <input id="Cartão" ngModel type="radio" name="formaPagamento" value="Cartão" (click)="setPagamento(f, 'Cartão')"> 
+            <label for="Cartão">Cartão</label>   -   
+            <input id="PicPay" ngModel type="radio" name="formaPagamento" value="PicPay" (click)="setPagamento(f, 'PicPay')"> 
+            <label for="PicPay">PicPay</label>   -   
+            <input id="Transferência" ngModel type="radio" name="formaPagamento" value="Transferência" (click)="setPagamento(f, 'Transferência')"> 
+            <label for="Transferência">Transferência</label>
           </div>
 
-          <div class="col-md-1" style="border-left: 1px solid">
+          <div style="border-right: 1px solid; margin-right:5px; margin-left:5px"></div>
 
-          </div>
-
-          <div class="col-md-2">
+          <div class="col-md-2 text-center">
             <div class="form-check">
+              <br>
               <input type="checkbox" style="margin-top: .5rem;" class="form-check-input" id="checkCartao"
                 (click)="checkCartao()">
-              <label class="form-check-label" for="checkCartao">Cartão</label>
+              <label class="form-check-label" for="checkCartao">Levar Maquineta</label>
             </div>
           </div>
         </div>
@@ -223,7 +230,7 @@
         </ng-template>
       </ng-template>
 
-<!--////////////////////////////////////////////////////-->
+      <!--////////////////////////////////////////////////////-->
 
       <hr>
       <div class="form-group">
@@ -237,7 +244,7 @@
               #qtRefri="ngModel">
           </div>
           <div class="col-md-7">
-             <b>Refrigerante:  </b>
+               <b>Refrigerante:  </b>
             <input type="radio" id="nenhum" name="tipoRefri" value="nenhum" checked (click)="setRefrigerante(f, '')"> 
             <label for="nenhum">Nenhum</label>   -   
             <input type="radio" id="coca" name="tipoRefri" value="coca" (click)="setRefrigerante(f, 'Coca-Cola')"> 
@@ -253,7 +260,7 @@
       </div>
       <hr>
 
-<!--////////////////////////////////////////////////////-->
+      <!--////////////////////////////////////////////////////-->
 
       <div class="form-group">
         <div class="row">
@@ -268,8 +275,8 @@
           </div>
           <div class="col-md-1">
             <label for="newTroco" class="control-label">Troco Para</label>
-            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999" min="{{getNewTotal(newAdicional.value)}}" ngModel
-              #newTroco="ngModel">
+            <input type="number" class="form-control" id="newTroco" name="newTroco" max="999"
+              min="{{getNewTotal(newAdicional.value)}}" ngModel #newTroco="ngModel">
           </div>
           <div class="col-md-1">
             <label for="newVendaID" class="control-label">VendaID</label>
@@ -279,7 +286,8 @@
 
           <div class="col-md-1 text-center">
             <br>
-            <button type="button" class="btn btn-success" [disabled]="!f.valid" (click)="newVendaAction(f)">{{buttonNameVendaAction}}</button>
+            <button type="button" class="btn btn-success" [disabled]="!f.valid"
+              (click)="newVendaAction(f)">{{buttonNameVendaAction}}</button>
           </div>
           <div class="col-md-1 text-center">
             <br>
@@ -304,95 +312,100 @@
     <div id="snackbarErroImprimir">Para imprimir, salve a Venda!</div>
     <div id="snackbarVendaModificada">Venda Modificada com Sucesso!</div>
 
-<!-- \\\\\\\\\\\\\\\\\\\ -->
+    <!-- \\\\\\\\\\\\\\\\\\\ -->
 
 
 
-<div id="printMsg">
-  <font size="5">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-          <img src="https://lh3.googleusercontent.com/pw/ACtC-3eo6_6IQYGsG1O6zop2WBq9c16jGLjozWZWD5Ap67E5B57xsiVGwB5RqTz390zRCOQIlZ7NBs7tRkVqqhczNb-zXFPxcUTr64Iso5UJz07aELLhEZ4TLgW2A-1lk5jmcNnzAWVhKMF67MhMXkHIthp5_Q=s200-no?authuser=0" height="200" width="200">
-    <br><br>
-    Oooi, {{nome.value}} ❤ <br><br>
-    Agora Somos 2k 😍<br><br>
-    Muito obrigado por fazer parte dessa história ❤😍<br><br>
-    #Deck2k
-  </font>
-</div>
-
-
-<!-- \\\\\\\\\\\\\\\\\\\\ -->
-
-<div id="printPedido">
-  <font size="4">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-              CUPOM NÃO-FISCAL
-    <br>
-                Pedido ID #{{newVendaID.value}}
-    <br><br>
-                  <img src="\..\favicon.ico" height="100" width="100">
-    <br><br>
-    -------- Dados do Cliente --------
-    <br><br>
-    <b>Nome:</b> {{nome.value}}
-    <br>
-    <b>Telefone:</b> {{telefone.value}}
-    <br>
-    <b>Rua:</b> {{rua.value}}
-    <br>
-    <b>Nº:</b> {{numCasa.value}}
-    <br>
-    <b>Bairro:</b> {{bairro.value}}
-    <br>
-    <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
-    <br><br>
-    ------------- Pedido -------------
-    <br><br>
-
-    <p id="teeeeste"></p>
-    <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}</div>
-    <div *ngIf="newAdicional.value > 0"><b>Valor Adicional:</b> R$ {{newAdicional.value.toFixed(2).replace('.',',')}}
+    <div id="printMsg">
+      <font size="5">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+              <img
+          src="https://lh3.googleusercontent.com/pw/ACtC-3eo6_6IQYGsG1O6zop2WBq9c16jGLjozWZWD5Ap67E5B57xsiVGwB5RqTz390zRCOQIlZ7NBs7tRkVqqhczNb-zXFPxcUTr64Iso5UJz07aELLhEZ4TLgW2A-1lk5jmcNnzAWVhKMF67MhMXkHIthp5_Q=s200-no?authuser=0"
+          height="200" width="200">
+        <br><br>
+        Oooi, {{nome.value}} ❤ <br><br>
+        Agora Somos 2k 😍<br><br>
+        Muito obrigado por fazer parte dessa história ❤😍<br><br>
+        #Deck2k
+      </font>
     </div>
-    <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
-    <div *ngIf="newObs.value !== '' && newObs.value !== null"><br><b>*Obs:</b> {{newObs.value}}</div>
 
-    <br>
-  </font>
-  <font size="5">
-    <b>TOTAL:</b> R$
-    {{getNewTotal(newAdicional.value).replace('.',',')}}
-  </font>
-  <br><br>
-  <div *ngIf="newTroco.value == 0 || newTroco.value == '' || newTroco.value == null"><b>Troco:</b> Não</div>
-  <div *ngIf="newTroco.value > 0"><b>Troco Para:</b> R$ {{newTroco.value.toFixed(2).replace('.',',')}}</div>
-  <div *ngIf="newTroco.value > 0"><b>Troco (R$):</b> R$ {{getNewTroco(newTroco.value, newAdicional.value).replace('.',',')}}</div>
-  <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
-  <font size="5">
-  <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
-    <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
-  </div>
-  </font>
-</div>
 
-<div id="pedidoCozinha">
-  <font size="5">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-           Pedido ID #{{newVendaID.value}}
-    <br><br>
-    <b>Cliente:</b> {{nome.value}}
-    <br><br>
-    <b>Pedido:</b>
-    <br>
-    <p id="teeeeste2"></p>
-    <div *ngIf="newObs.value !== '' && newObs.value !== null"><br><b>*Obs:</b> {{newObs.value}}</div>
-    <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
-      <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
+    <!-- \\\\\\\\\\\\\\\\\\\\ -->
+
+    <div id="printPedido">
+      <font size="4">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+                  CUPOM NÃO-FISCAL
+        <br>
+                    Pedido ID #{{newVendaID.value}}
+        <br><br>
+                        <img src="\..\favicon.ico" height="100" width="100">
+        <br><br>
+        -------- Dados do Cliente --------
+        <br><br>
+        <b>Nome:</b> {{nome.value}}
+        <br>
+        <b>Telefone:</b> {{telefone.value}}
+        <br>
+        <b>Rua:</b> {{rua.value}}
+        <br>
+        <b>Nº:</b> {{numCasa.value}}
+        <br>
+        <b>Bairro:</b> {{bairro.value}}
+        <br>
+        <b>Ponto de Ref.:</b> {{pontoReferencia.value}}
+        <br><br>
+        ------------- Pedido -------------
+        <br><br>
+
+        <p id="teeeeste"></p>
+        <div *ngIf="getEntrega() > 0"><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}</div>
+        <div *ngIf="newAdicional.value > 0"><b>Valor Adicional:</b> R$
+          {{newAdicional.value.toFixed(2).replace('.',',')}}
+        </div>
+        <div *ngIf="getEntrega() == 0"><b>Entrega:</b> Grátis</div>
+        <div *ngIf="newObs.value !== '' && newObs.value !== null"><br><b>*Obs:</b> {{newObs.value}}</div>
+
+        <br>
+      </font>
+      <font size="5">
+        <b>TOTAL:</b> R$
+        {{getNewTotal(newAdicional.value).replace('.',',')}}
+      </font>
+      <br><br>
+      <div *ngIf="newTroco.value == 0 || newTroco.value == '' || newTroco.value == null"><b>Troco:</b> Não</div>
+      <div *ngIf="newTroco.value > 0"><b>Troco Para:</b> R$ {{newTroco.value.toFixed(2).replace('.',',')}}</div>
+      <div *ngIf="newTroco.value > 0"><b>Troco (R$):</b> R$
+        {{getNewTroco(newTroco.value, newAdicional.value).replace('.',',')}}</div>
+      <div><br><b>Forma de Pagamento:</b> {{getPagamento()}}</div>
+      <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
+      <font size="5">
+        <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
+          <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
+        </div>
+      </font>
     </div>
-  </font>
-</div>
+
+    <div id="pedidoCozinha">
+      <font size="5">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
+               Pedido ID #{{newVendaID.value}}
+        <br><br>
+        <b>Cliente:</b> {{nome.value}}
+        <br><br>
+        <b>Pedido:</b>
+        <br>
+        <p id="teeeeste2"></p>
+        <div *ngIf="newObs.value !== '' && newObs.value !== null"><br>*OBSERVAÇÕES:<br><b> {{newObs.value}}</b></div>
+        <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
+          <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
+        </div>
+      </font>
+    </div>
 
   </div>
   <!-- comment

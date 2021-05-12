@@ -32,6 +32,7 @@ export class TemplateFormComponent implements OnInit {
   private txtCozinha = '';
   private newTotal: number = 0;
   private refrigerante: any = '';
+  private formaDePagamento: any = 'Dinheiro';
   
   produtos$: Observable<DadosProduto[]>;
   listProdutos: DadosProduto[];
@@ -75,6 +76,9 @@ export class TemplateFormComponent implements OnInit {
           setTimeout(() => {
             (<HTMLInputElement>document.getElementById("newVendaID")).click();
           }, 100);
+        } else {
+          this.setEntrega(1);
+          this.clickPagamento();
         }
       });
     }, 500);
@@ -193,22 +197,11 @@ export class TemplateFormComponent implements OnInit {
           items[i] = [venda['items'][i]['produto']['id'], venda['items'][i]['quantidade']];
         }
 
+        this.formaDePagamento = venda['venda']['pagamento'];
         this.populaVendaForm(items, form);
-        this.setTypeEntrega(venda['venda']['entrega']);
+        this.setEntrega(venda['venda']['entrega']);
+        this.clickPagamento();
       });
-    }
-  }
-
-  setTypeEntrega(valorEntrega) {
-    if (valorEntrega == 0) {
-      this.entrega = 0;
-      (<HTMLInputElement>document.getElementById("gratis")).click();
-    } else if (valorEntrega == 3) {
-      this.entrega = 3;
-      (<HTMLInputElement>document.getElementById("zonaRural")).click();
-    } else {
-      this.entrega = 1;
-      (<HTMLInputElement>document.getElementById("cidade")).click();
     }
   }
 
@@ -228,6 +221,7 @@ export class TemplateFormComponent implements OnInit {
 
   setEntrega(value) {
     this.entrega = value;
+    (<HTMLInputElement>document.getElementById("entrega")).value = value;
   }
 
   getEntrega() {
@@ -352,12 +346,13 @@ export class TemplateFormComponent implements OnInit {
         qtRefri: null
     });
     (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
-    (<HTMLInputElement>document.getElementById("cidade")).checked = true;
     (<HTMLInputElement>document.getElementById("nenhum")).checked = true;
+    this.newTotal = 0;
     this.setEntrega(1);
     this.cartao = false;
     this.buttonNameVendaAction = "Salvar";
-    this.newTotal = 0;
+    this.formaDePagamento = "Dinheiro";
+    this.clickPagamento();
   }
 
   newVendaAction(formulario) {
@@ -389,6 +384,7 @@ export class TemplateFormComponent implements OnInit {
         ', "adicional": "' + form.value.newAdicional + '"' +
         ', "entrega": "' + this.entrega + '"' +
         ', "cartao": "' + this.cartao + '"' +
+        ', "pagamento": "' + this.formaDePagamento + '"' +
         ', "total": ' + this.getNewTotal(form.value.newAdicional) + '}}';
 
       if (confirm("Confirmar venda")) {
@@ -427,6 +423,7 @@ export class TemplateFormComponent implements OnInit {
         ', "adicional": "' + form.value.newAdicional + '"' +
         ', "entrega": "' + this.entrega + '"' +
         ', "cartao": "' + this.cartao + '"' +
+        ', "pagamento": "' + this.formaDePagamento + '"' +
         ', "total": ' + this.getNewTotal(form.value.newAdicional) + '}}';
 
       if (confirm("Confirmar Modificação da Venda")) {
@@ -452,7 +449,7 @@ export class TemplateFormComponent implements OnInit {
   }
 
   newPrintPedido() {
-    this.print2('printPedido');
+   this.print2('printPedido');
   //  this.print2('printMsg')
     this.print2('pedidoCozinha');
   };
@@ -485,12 +482,27 @@ export class TemplateFormComponent implements OnInit {
       console.log('aqui');
       formulario.form.patchValue({
         qtRefri: 1
-    });
+      });
     } else if (refri == "") {
       formulario.form.patchValue({
         qtRefri: null
        });
     }
+  }
+
+  setPagamento(formulario, pagamento){
+    this.formaDePagamento = pagamento;
+    formulario.form.patchValue({
+      formaDePagamento: this.formaDePagamento
+    });
+  }
+
+  clickPagamento() {
+    (<HTMLInputElement>document.getElementById(this.formaDePagamento)).click();
+  }
+
+  getPagamento() {
+    return this.formaDePagamento;
   }
 
   getRefrigerante() {

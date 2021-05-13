@@ -22,6 +22,7 @@ public class Produto implements Serializable {
 	private String nome;
 	private String descricao;
 	private double preco;
+	private String tipo;
 
 	public long getId() {
 		return id;
@@ -53,6 +54,14 @@ public class Produto implements Serializable {
 
 	public void setPreco(double preco) {
 		this.preco = preco;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }

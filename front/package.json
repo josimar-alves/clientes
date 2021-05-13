@@ -28,6 +28,7 @@
     "bs4-toast": "^0.6.0",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
+    "moment": "^2.29.1",
     "ng2-smart-table": "^1.5.0",
     "ngx-bootstrap": "^4.3.0",
     "ngx-pagination": "^5.0.0",

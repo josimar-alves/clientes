@@ -133,6 +133,7 @@ export class VendasComponent implements OnInit {
   
 
   editarVenda(id){
-    this.router.navigate(['/templateForm'], { queryParams: { venda: id } });
+    // this.router.navigate(['/templateForm'], { queryParams: { venda: id } });
+    window.open(`http://localhost:4200/templateForm?venda=${id}`);
   }
 }

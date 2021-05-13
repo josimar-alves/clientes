@@ -4,5 +4,6 @@ export interface DadosProduto {
     descricao : String,
     preco : number,
     quantidade: Number,
-    posicao: Number
+    posicao: Number,
+    tipo: String
 }

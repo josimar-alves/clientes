@@ -145,13 +145,13 @@
           <thead>
 
             <tr>
-              <th style="text-align:center">Produto</th>
+              <th style="text-align:center">Hamburguers</th>
               <th style="text-align:center" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let produto of listProdutosCol1">
+            <tr *ngFor="let produto of listHamburguers">
               <td style="width:54%;">{{ produto.nome }}</td>
               <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
               <td style="width:27%; text-align:center">
@@ -164,13 +164,13 @@
           <thead>
 
             <tr>
-              <th style="text-align:center">Produto</th>
+              <th style="text-align:center">Combo/Outros</th>
               <th style="text-align:center" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let produto of listProdutosCol2">
+            <tr *ngFor="let produto of listOutros">
               <td style="width:54%;">{{ produto.nome }}</td>
               <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
               <td style="width:27%; text-align:center">
@@ -183,13 +183,13 @@
           <thead>
 
             <tr>
-              <th style="text-align:center">Produto</th>
+              <th style="text-align:center">Shake/Açaí</th>
               <th style="text-align:center" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let produto of listProdutosCol3">
+            <tr *ngFor="let produto of listShake">
               <td style="width:54%;">{{ produto.nome }}</td>
               <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
               <td style="width:27%; text-align:center">
@@ -203,13 +203,13 @@
           <thead>
 
             <tr>
-              <th style="text-align:center">Produto</th>
+              <th style="text-align:center">Bebidas</th>
               <th style="text-align:center" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let produto of listProdutosCol4">
+            <tr *ngFor="let produto of listBebidas">
               <td style="width:54%;">{{ produto.nome }}</td>
               <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
               <td style="width:27%; text-align:center">
@@ -229,38 +229,6 @@
           <span>Carregando Pedidos...</span>
         </ng-template>
       </ng-template>
-
-      <!--////////////////////////////////////////////////////-->
-
-      <hr>
-      <div class="form-group">
-        <div class="row">
-          <div class="col-md-1"></div>
-          <div class="col-md-1">
-            <label class="control-label">Quantidade</label>
-          </div>
-          <div class="col-md-1">
-            <input type="number" class="form-control" id="qtRefri" name="qtRefri" max="999" min="1" ngModel
-              #qtRefri="ngModel">
-          </div>
-          <div class="col-md-7">
-               <b>Refrigerante:  </b>
-            <input type="radio" id="nenhum" name="tipoRefri" value="nenhum" checked (click)="setRefrigerante(f, '')"> 
-            <label for="nenhum">Nenhum</label>   -   
-            <input type="radio" id="coca" name="tipoRefri" value="coca" (click)="setRefrigerante(f, 'Coca-Cola')"> 
-            <label for="coca">Coca-Cola</label>   -   
-            <input type="radio" id="guarana" name="tipoRefri" value="guarana" (click)="setRefrigerante(f, 'Guaraná')"> 
-            <label for="guarana">Guaraná</label>   -   
-            <input type="radio" id="sprite" name="tipoRefri" value="sprite" (click)="setRefrigerante(f, 'Sprite')"> 
-            <label for="sprite">Sprite</label>   -   
-            <input type="radio" id="fanta" name="tipoRefri" value="fanta" (click)="setRefrigerante(f, 'Fanta')"> 
-            <label for="fanta">Fanta</label>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!--////////////////////////////////////////////////////-->
 
       <div class="form-group">
         <div class="row">
@@ -338,11 +306,11 @@
       <font size="4">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-                  CUPOM NÃO-FISCAL
+                      CUPOM NÃO-FISCAL
         <br>
-                    Pedido ID #{{newVendaID.value}}
+                         Pedido ID #{{newVendaID.value}}
         <br><br>
-                        <img src="\..\favicon.ico" height="100" width="100">
+                        <img src="\..\favicon.ico" height="150" width="150">
         <br><br>
         -------- Dados do Cliente --------
         <br><br>
@@ -382,11 +350,42 @@
         {{getNewTroco(newTroco.value, newAdicional.value).replace('.',',')}}</div>
       <div><br><b>Forma de Pagamento:</b> {{getPagamento()}}</div>
       <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
+
+      <font size="5">
+        <div *ngFor="let bebida of listBebidas">
+          <b *ngIf="bebida.quantidade > 0">
+            {{bebida.quantidade}}x {{bebida.nome}}
+          </b>
+        </div>
+        <div *ngFor="let produto of listOutros">
+          <b *ngIf="produto.quantidade > 0">
+            <div *ngIf="produto.id == 8">
+              {{ produto.quantidade }}x Coca-cola 250ml (Combo)
+            </div>
+            <div *ngIf="produto.id == 20">
+              {{ produto.quantidade }}x Guaraná 200ml (Combo)
+            </div>
+            <div *ngIf="produto.id == 9865">
+              {{ produto.quantidade }}x Shake 300ml (Combo)
+            </div>
+            <div *ngIf="produto.id == 9">
+              {{ produto.quantidade }}x Cerveja (Combo)
+            </div>
+          </b>
+        </div>
+        <div *ngFor="let shake of listShake">
+          <b *ngIf="shake.quantidade > 0">
+            {{shake.quantidade}}x {{shake.nome}}
+          </b>
+        </div>
+      </font>
+    <!-- 
       <font size="5">
         <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
           <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
         </div>
       </font>
+    -->
     </div>
 
     <div id="pedidoCozinha">
@@ -394,6 +393,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
                Pedido ID #{{newVendaID.value}}
+        <br>
+             {{dataHora()}}
         <br><br>
         <b>Cliente:</b> {{nome.value}}
         <br><br>
@@ -401,9 +402,11 @@
         <br>
         <p id="teeeeste2"></p>
         <div *ngIf="newObs.value !== '' && newObs.value !== null"><br>*OBSERVAÇÕES:<br><b> {{newObs.value}}</b></div>
-        <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
+      <!--        
+      <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
           <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
         </div>
+      -->
       </font>
     </div>
 

@@ -11,6 +11,8 @@ import { Observable, Subject, empty } from 'rxjs';
 import { DadosProduto } from '../produtos/dados-produto';
 import { catchError } from 'rxjs/operators';
 
+var moment = require('moment/moment');
+
 @Component({
   selector: 'app-template-form',
   templateUrl: './template-form.component.html',
@@ -36,10 +38,10 @@ export class TemplateFormComponent implements OnInit {
   
   produtos$: Observable<DadosProduto[]>;
   listProdutos: DadosProduto[];
-  listProdutosCol1: DadosProduto[] = [];
-  listProdutosCol2: DadosProduto[] = [];
-  listProdutosCol3: DadosProduto[] = [];
-  listProdutosCol4: DadosProduto[] = [];
+  listHamburguers: DadosProduto[] = [];
+  listOutros: DadosProduto[] = [];
+  listShake: DadosProduto[] = [];
+  listBebidas: DadosProduto[] = [];
   error$ = new Subject<boolean>();
 
 
@@ -100,27 +102,22 @@ export class TemplateFormComponent implements OnInit {
           let i = 0;
           let aux = 0;
 
-          this.listProdutosCol1 = [];
-          this.listProdutosCol2 = [];
-          this.listProdutosCol3 = [];
-          this.listProdutosCol4 = [];
+          this.listHamburguers = [];
+          this.listOutros = [];
+          this.listShake = [];
+          this.listBebidas = [];
+          this.listProdutos = dados;
 
-          while (i < dados.length) {
-            this.listProdutos = dados;
-            if (aux === 0) {
-              this.listProdutosCol1.push(dados[i]);
-              aux = 1;
-            } else if (aux === 1) {
-              this.listProdutosCol2.push(dados[i]);
-              aux = 2;
-            } else if (aux === 2) {
-              this.listProdutosCol3.push(dados[i]);
-              aux = 3;
-            } else {
-              this.listProdutosCol4.push(dados[i]);
-              aux = 0;
+          for (let produto of dados) {
+            if (produto.tipo == 'hamburguer') {
+              this.listHamburguers.push(produto);
+            } else if (produto.tipo == 'outros') {
+              this.listOutros.push(produto);
+            } else if (produto.tipo == 'shake') {
+              this.listShake.push(produto);
+            } else if (produto.tipo == 'bebida') {
+              this.listBebidas.push(produto);
             }
-            i += 1;
           }
         }
       );
@@ -318,8 +315,12 @@ export class TemplateFormComponent implements OnInit {
   somar(produto) {
     if (produto.quantidade < 99) {
       produto.quantidade += 1;
+      console.log(this.listProdutos)
+      console.log(this.listProdutos[produto.posicao])
       this.listProdutos[produto.posicao].quantidade = produto.quantidade;
+      console.log("aqui2")
       this.newTotal += produto.preco;
+      console.log("aqui3")
       this.setPedidoTxt();
     }
   }
@@ -518,6 +519,10 @@ export class TemplateFormComponent implements OnInit {
 
   getNewTroco(troco, adicional) {
     return (troco - this.getNewTotal(adicional)).toFixed(2);
+  }
+
+  dataHora(){
+    return moment().format('DD/MM/yy - HH:mm') + 'h';
   }
   
   /////////////////////// <b>2x Deck Tradicional:</b> R$ 10,00

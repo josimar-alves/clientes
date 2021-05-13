@@ -53,8 +53,9 @@ public class ProdutoResource {
 	public Produto modifyProduto (@PathVariable(value="id") long id, @RequestBody Produto produto) {
 		Produto p = produtoRepository.findByid(id);
 		p.setNome(produto.getNome());
-		p.setDescricao(produto.getNome());
+		p.setDescricao(produto.getDescricao());
 		p.setPreco(produto.getPreco());
+		p.setTipo(produto.getTipo());
 		return produtoRepository.save(p);
 	}
 	

@@ -9,6 +9,7 @@ public class ProdutoDTO {
 	private double preco;
 	private int quantidade;
 	private int posicao;
+	private String tipo;
 	
 	public int getPosicao() {
 		return posicao;
@@ -24,6 +25,7 @@ public class ProdutoDTO {
 		this.descricao = p.getDescricao();
 		this.preco = p.getPreco();
 		this.quantidade = 0;
+		this.tipo = p.getTipo();
 	}
 
 	public long getId() {
@@ -65,5 +67,12 @@ public class ProdutoDTO {
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
+	
+	public String getTipo() {
+		return tipo;
+	}
 
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 }

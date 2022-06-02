@@ -306,11 +306,11 @@
       <font size="4">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-                      CUPOM NÃO-FISCAL
+                 CUPOM NÃO-FISCAL
         <br>
-                         Pedido ID #{{newVendaID.value}}
+                    Pedido ID #{{newVendaID.value}}
         <br><br>
-                        <img src="\..\favicon.ico" height="150" width="150">
+                   <img src="\..\favicon.ico" height="150" width="150">
         <br><br>
         -------- Dados do Cliente --------
         <br><br>
@@ -351,6 +351,7 @@
       <div><br><b>Forma de Pagamento:</b> {{getPagamento()}}</div>
       <div *ngIf="getCartao()"><br><b>*Levar Maquineta</b></div>
 
+      <br>
       <font size="5">
         <div *ngFor="let bebida of listBebidas">
           <b *ngIf="bebida.quantidade > 0">
@@ -379,22 +380,13 @@
           </b>
         </div>
       </font>
-    <!-- 
       <font size="5">
-        <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
-          <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
-        </div>
-      </font>
-    -->
-    </div>
-
-    <div id="pedidoCozinha">
-      <font size="5">
+        <br>--<br>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
-               Pedido ID #{{newVendaID.value}}
+             Pedido ID #{{newVendaID.value}}
         <br>
-             {{dataHora()}}
+           {{dataHora()}}
         <br><br>
         <b>Cliente:</b> {{nome.value}}
         <br><br>
@@ -402,11 +394,12 @@
         <br>
         <p id="teeeeste2"></p>
         <div *ngIf="newObs.value !== '' && newObs.value !== null"><br>*OBSERVAÇÕES:<br><b> {{newObs.value}}</b></div>
-      <!--        
-      <div *ngIf="qtRefri.value > 0 && getRefrigerante() !== ''">
-          <b>---------------<br>{{qtRefri.value}}x {{getRefrigerante()}}<br>---------------</b>
-        </div>
-      -->
+        <br>--<br>
+      <!-- </font>
+      <font size="4"> -->
+        <div>     Pedido ID #{{newVendaID.value}}</div>
+        <b>Cliente:</b> {{nome.value}}
+        <b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}
       </font>
     </div>
 

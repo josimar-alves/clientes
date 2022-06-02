@@ -347,7 +347,6 @@ export class TemplateFormComponent implements OnInit {
         qtRefri: null
     });
     (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
-    (<HTMLInputElement>document.getElementById("nenhum")).checked = true;
     this.newTotal = 0;
     this.setEntrega(1);
     this.cartao = false;
@@ -452,7 +451,7 @@ export class TemplateFormComponent implements OnInit {
   newPrintPedido() {
    this.print2('printPedido');
   //  this.print2('printMsg')
-    this.print2('pedidoCozinha');
+    // this.print2('pedidoCozinha');
   };
 
   print2(pedido) {

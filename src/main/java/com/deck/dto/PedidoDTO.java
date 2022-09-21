@@ -74,4 +74,9 @@ public class PedidoDTO {
 		this.troco = troco;
 	}
 
+	@Override
+	public String toString() {
+		return "PedidoDTO [IDVenda=" + IDVenda + ", nome=" + nome + ", telefone=" + telefone + ", pedido=" + pedido
+				+ ", obs=" + obs + ", data=" + data + ", total=" + total + ", troco=" + troco + "]";
+	}
 }

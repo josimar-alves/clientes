@@ -5,7 +5,7 @@
       </div>
       <div class="col-md-2">
         <div class="form-check">
-          <input type="checkbox" style="margin-top: .10rem;" class="form-check-input" id="setImg" (click)="setImg()" checked>
+          <input type="checkbox" style="margin-top: .10rem;" class="form-check-input" id="setImg" (click)="setImg()" unchecked #setImg>
         </div>
       </div>
       <div class="float-right">
@@ -46,8 +46,9 @@
       <br>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-                   <img src="\..\favicon.ico" height="100" width="100">
-                      
+      <div *ngIf="setImg.checked">           <img src="\..\favicon.ico" height="100" width="100"></div>
+      
+      <font size="4">
         <div *ngIf="msg1.value != ''"><br>{{msg1.value}}</div>
         <div *ngIf="msg2.value != ''"><br>{{msg2.value}}</div>
         <div *ngIf="msg3.value != ''"><br>{{msg3.value}}</div>
@@ -56,5 +57,13 @@
         <div *ngIf="msg6.value != ''"><br>{{msg6.value}}</div>
         <div *ngIf="msg7.value != ''"><br>{{msg7.value}}</div>
         <div *ngIf="msg8.value != ''"><br><b>{{msg8.value}}</b></div>
+        <div *ngIf="!setImg.checked">
+            <br>
+            <b>Tipo de pagamento:</b>
+            <br>▢ Dinheiro
+            <br>▢ Pix / Pic Pay
+            <br>▢ Cartão / link
+        </div>
+      </font>
   </div>
   </div>

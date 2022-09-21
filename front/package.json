@@ -24,6 +24,7 @@
     "@ng-select/ng-select": "^3.7.3",
     "@types/jquery": "^3.3.38",
     "angular2-text-mask": "^9.0.0",
+    "apexcharts": "^3.35.5",
     "bootstrap": "^4.4.1",
     "bs4-toast": "^0.6.0",
     "core-js": "^3.6.5",

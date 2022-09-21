@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.deck.dto.SalesReportDTO;
+
 @Entity
 @Table(name = "TB_VENDA")
 public class Venda implements Serializable {
@@ -112,5 +114,16 @@ public class Venda implements Serializable {
 	
 	public void setPagamento(String pagamento) {
 		this.pagamento = pagamento;
+	}
+	
+	public SalesReportDTO getVendaReport() {
+		return new SalesReportDTO(data, this.total);
+	}
+
+	@Override
+	public String toString() {
+		return "Venda [id=" + id + ", cliente=" + cliente + ", data=" + data + ", obs=" + obs + ", total=" + total
+				+ ", troco=" + troco + ", adicional=" + adicional + ", entrega=" + entrega + ", cartao=" + cartao
+				+ ", pagamento=" + pagamento + "]";
 	}
 }

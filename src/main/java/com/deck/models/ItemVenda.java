@@ -62,5 +62,4 @@ public class ItemVenda {
 	public String itemToString() {
 		return this.quantidade + "x " + this.produto.getNome();
 	}
-
 }

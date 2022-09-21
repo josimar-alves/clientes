@@ -1,0 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+.body {
+  font-family: Roboto, sans-serif;
+}
+
+#chartVendasPorDia, #chartQtVendasItems {
+  max-width: 800px;
+  margin: 35px auto;
+}
+
+.card {
+  width: 115%;
+}

@@ -13,13 +13,14 @@ import { VendasService } from './vendas/venda.service';
 import { ProdutosComponent } from './produtos/produtos.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PrintComponent } from './print/print.component';
-
+import { ReportsComponent } from './reports/reports.component';
 @NgModule({
   declarations: [
     AppComponent,
     VendasComponent,
     ProdutosComponent,
-    PrintComponent
+    PrintComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

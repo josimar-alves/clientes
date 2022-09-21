@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="card-header">
+        <div class="float-left">
+            <h4>Reports</h4>
+        </div>
+
+        <div class="float-right">
+                      
+            <button type="button" class="btn btn-secondary" (click)="setupDataReport(initialDate.value, finalDate.value)" id="filterButton"
+                name="filterButton" ngModel ngDefaultControl #filterButton="ngModel">Filtrar</button>
+        </div>
+
+        <div class="float-right">
+            <b>Data Final: </b>
+            <input id="finalDate" type="date" name="finalDate" ngModel #finalDate="ngModel">
+        </div>
+
+        <div class="float-right">
+            <b>Data Inicial: </b>
+            <input id="initialDate" type="date" name="initialDate" ngModel #initialDate="ngModel">
+                      
+        </div>
+    </div>
+    <div class="card-body">
+        <h6>Vendas por dia</h6>
+        <div id="chartVendasPorDia"></div>
+        <h6>Quantidade de pedidos por item</h6>
+        <div id="chartQtVendasItems"></div>
+    </div>
+</div>

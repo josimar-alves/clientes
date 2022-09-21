@@ -381,7 +381,18 @@
         </div>
       </font>
       <font size="5">
-        <br>--<br>
+        <br>--------------------------<br>
+        <div>     Pedido ID #{{newVendaID.value}}</div>
+        <b>Cliente:</b> {{nome.value}}
+        <br><b>Valor:</b> {{getNewTotal(newAdicional.value).replace('.',',')}}
+        <br><b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}
+        <br><br>
+        <b>Tipo de pagamento:</b>
+        <br>▢ Dinheiro
+        <br>▢ Pix / Pic Pay
+        <br>▢ Cartão / link
+        <br>
+        <br>--------------------------<br>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script>
              Pedido ID #{{newVendaID.value}}
@@ -394,12 +405,6 @@
         <br>
         <p id="teeeeste2"></p>
         <div *ngIf="newObs.value !== '' && newObs.value !== null"><br>*OBSERVAÇÕES:<br><b> {{newObs.value}}</b></div>
-        <br>--<br>
-      <!-- </font>
-      <font size="4"> -->
-        <div>     Pedido ID #{{newVendaID.value}}</div>
-        <b>Cliente:</b> {{nome.value}}
-        <b>Entrega:</b> R$ {{getEntrega().replace('.',',')}}
       </font>
     </div>
 

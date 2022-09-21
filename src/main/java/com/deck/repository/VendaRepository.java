@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.deck.dto.SalesReportDTO;
 import com.deck.models.Venda;
 
 public interface VendaRepository extends JpaRepository <Venda, Long> {
@@ -15,6 +16,9 @@ public interface VendaRepository extends JpaRepository <Venda, Long> {
 	
 	@Query(nativeQuery = true, value = "select * from tb_venda ORDER BY data DESC")
 	List<Venda> findAll();	
+	
+	@Query(nativeQuery = true, value = "select * from tb_venda")
+	List<Venda> getAllSales();
 
 	@Modifying
 	@Query(nativeQuery = true, value = "delete from tb_venda as iv where iv.id = ?1")

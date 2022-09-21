@@ -3,9 +3,14 @@ package com.deck.resources;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.xml.crypto.Data;
@@ -22,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.deck.dto.PedidoDTO;
+import com.deck.dto.SalesProductReportDTO;
 import com.deck.dto.VendaDTO;
+import com.deck.dto.SalesReportDTO;
 import com.deck.models.ItemVenda;
 import com.deck.models.Produto;
 import com.deck.models.Venda;
@@ -45,6 +52,11 @@ public class VendaResource {
 	@GetMapping("/getAll")
 	public List<Venda> listaClitentes() {
 		return vendaRepository.findAll();
+	}
+
+	@GetMapping("/getAllSales")
+	public List<Venda> listAllSales() {
+		return vendaRepository.getAllSales();
 	}
 
 	@GetMapping("/get/{id}")
@@ -125,7 +137,7 @@ public class VendaResource {
 			VendaDTO vendaDTO = new VendaDTO();
 			vendaDTO.setVenda(items.get(0).getVenda());
 			List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
-	
+
 			for (ItemVenda i : items) {
 				i.setVenda(null);
 				itemsAux.add(i);
@@ -181,15 +193,110 @@ public class VendaResource {
 	@GetMapping("/getAllPedidosWithDate/{date}")
 	public List<PedidoDTO> getAllPedidosWithDate(@PathVariable(value = "date") String date) throws ParseException {
 
-		List<PedidoDTO> allPedidos = new LinkedList<PedidoDTO>();
-
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date dataInicio = sdf.parse(date);
-		//Date dataInicioT = sdf.parse("2020-12-17");
-		Date dataFim = new Date(dataInicio.getTime()+(24*60*60*1000)-1);
-		
-		for (Venda v : vendaRepository.findAllWithData(dataInicio, dataFim)) {
+		// Date dataInicioT = sdf.parse("2020-12-17");
+		Date dataFim = new Date(dataInicio.getTime() + (24 * 60 * 60 * 1000) - 1);
+
+		return getDataByDate(dataInicio, dataFim);
+	}
+
+	private List<PedidoDTO> getDataByDate(Date dataInicial, Date dataFinal) {
+		List<PedidoDTO> allPedidos = new LinkedList<PedidoDTO>();
+
+		for (Venda v : vendaRepository.findAllWithData(dataInicial, dataFinal)) {
 			List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(v.getId());
+			VendaDTO vendaDTO = new VendaDTO();
+			vendaDTO.setVenda(items.get(0).getVenda());
+
+			List<ItemVenda> itemsAux = new LinkedList<ItemVenda>();
+			for (ItemVenda i : items) {
+				i.setVenda(null);
+				itemsAux.add(i);
+			}
+			vendaDTO.setItems(itemsAux);
+			allPedidos.add(this.getPedido(vendaDTO));
+		}
+		return allPedidos;
+	}
+
+	@GetMapping("/getReportByDateRange/{initialDate}/{finalDate}")
+	public List<SalesReportDTO> getReportByDateRange(@PathVariable String initialDate,
+			@PathVariable String finalDate) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dataInicial = sdf.parse(initialDate);
+		Date dataFinal = sdf.parse(finalDate);
+
+		List<SalesReportDTO> vendas = new LinkedList<SalesReportDTO>();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyy");
+
+		String auxDate = "";
+		double auxTotal = 0;
+		for (Venda v : vendaRepository.findAllWithData(dataInicial, dataFinal)) {
+			String subDate = v.getData().substring(0, 10);
+			
+			if (auxDate.equals("")) {
+				auxDate = subDate;
+			}
+			
+			if (auxDate.equals(subDate)) {
+				auxTotal += v.getTotal();
+			} else {
+				vendas.add(new SalesReportDTO(formatter.parse(auxDate), auxTotal));
+				auxDate = subDate;
+				auxTotal = v.getTotal();
+			}
+		}
+
+		vendas.add(new SalesReportDTO(formatter.parse(auxDate), auxTotal));
+		
+		Collections.reverse(vendas);
+
+		return vendas;
+	}
+	
+	@GetMapping("/getProductSalesQuantityByDateRange/{initialDate}/{finalDate}")
+	public List<SalesProductReportDTO> getProductSalesQuantityByDateRange(@PathVariable String initialDate,
+			@PathVariable String finalDate) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dataInicial = sdf.parse(initialDate);
+		Date dataFinal = sdf.parse(finalDate);
+
+		List<SalesProductReportDTO> produtosPorVendas = new LinkedList<SalesProductReportDTO>();
+		List<SalesProductReportDTO> produtosPorVendasAux = new LinkedList<SalesProductReportDTO>();
+		List<ItemVenda> items = new LinkedList<>();
+		
+		for (Venda v : vendaRepository.findAllWithData(dataInicial, dataFinal)) {
+			items.addAll(itemVendaRepository.findItemVendaByVenda(v.getId()));
+		}
+		
+		for (ItemVenda i: items) {
+			if (i.getProduto().getTipo().equals("hamburguer")) {
+				produtosPorVendasAux.add(new SalesProductReportDTO(i.getProduto().getNome(), i.getQuantidade()));
+			}
+		}
+		
+		Map<Object, List<SalesProductReportDTO>> listSales =
+				produtosPorVendasAux.stream().collect(Collectors.groupingBy(item -> item.getName()));
+		
+		listSales.forEach((key, value) -> {
+			Integer totalPerItem = 0;
+			for (SalesProductReportDTO item: value) {
+				totalPerItem += item.getQuantity();
+			}
+			
+			produtosPorVendas.add(new SalesProductReportDTO(key.toString(), totalPerItem));
+		});
+		
+		return produtosPorVendas;
+	}
+
+	private List<PedidoDTO> getDataReportByDate(Date dataInicial, Date dataFinal) {
+		List<PedidoDTO> allPedidos = new LinkedList<PedidoDTO>();
+
+		for (Venda v : vendaRepository.findAllWithData(dataInicial, dataFinal)) {
+			List<ItemVenda> items = itemVendaRepository.findItemVendaByVenda(v.getId());
+
 			VendaDTO vendaDTO = new VendaDTO();
 			vendaDTO.setVenda(items.get(0).getVenda());
 

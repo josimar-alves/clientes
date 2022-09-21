@@ -16,8 +16,9 @@ export class VendasComponent implements OnInit {
   vendas$: Observable<DadosVenda[]>;
   error$ = new Subject<boolean>();
   private totalVendas: number = 0;
-  pag : Number = 1 ;
-  contador : Number = 50;
+  private qtVendas: number = 0;
+  pag: Number = 1;
+  contador: Number = 50;
 
   constructor(private service: VendasService, private router: Router) { }
 
@@ -27,9 +28,9 @@ export class VendasComponent implements OnInit {
 
   onRefresh() {
     var ts = new Date().toLocaleDateString();
-    var dia  = ts.split("/")[0];
-    var mes  = ts.split("/")[1];
-    var ano  = ts.split("/")[2];
+    var dia = ts.split("/")[0];
+    var mes = ts.split("/")[1];
+    var ano = ts.split("/")[2];
     var strDataHoje = ano + "-" + mes + "-" + dia;
     this.vendas$ = this.service.listByDate(strDataHoje).pipe(
       // map(),
@@ -50,7 +51,7 @@ export class VendasComponent implements OnInit {
         dados => {
         }
       );
-      this.setTotal();
+    this.setTotal();
   }
 
   printVenda(id) {
@@ -66,20 +67,25 @@ export class VendasComponent implements OnInit {
     return this.totalVendas.toFixed(2);
   }
 
+  getQtVendas() {
+    return this.qtVendas;
+  }
+
   setTotal() {
-    var filterButton = <HTMLInputElement> document.getElementById("dateFilterButton");
-    var refreshButton = <HTMLInputElement> document.getElementById("refreshButton");
+    var filterButton = <HTMLInputElement>document.getElementById("dateFilterButton");
+    var refreshButton = <HTMLInputElement>document.getElementById("refreshButton");
     filterButton.disabled = true;
     refreshButton.disabled = true;
 
     this.totalVendas = 0;
     this.vendas$.subscribe(val => {
-      var x= 0;
+      this.qtVendas = val.length;
+      var x = 0;
       if (val.length == 0) {
         filterButton.disabled = false;
         refreshButton.disabled = false;
       } else {
-        while(x < val.length) {
+        while (x < val.length) {
           this.totalVendas += Number(val[x].total);
           x += 1;
           if (x === val.length) {
@@ -91,7 +97,7 @@ export class VendasComponent implements OnInit {
     });
   }
 
-  filterByDate (date) {
+  filterByDate(date) {
     if (date === null || date === "") {
       this.vendas$ = this.service.list().pipe(
         catchError(error => {
@@ -100,15 +106,15 @@ export class VendasComponent implements OnInit {
           return empty();
         })
       );
-    
+
       this.service.listByDate(date).pipe(
-        catchError (error => empty())
-      ).subscribe (
+        catchError(error => empty())
+      ).subscribe(
         dados => {
         }
       );
       this.setTotal();
-    } else {      
+    } else {
       this.vendas$ = this.service.listByDate(date).pipe(
         catchError(error => {
           console.error(error);
@@ -116,23 +122,23 @@ export class VendasComponent implements OnInit {
           return empty();
         })
       );
-    
+
       this.service.listByDate(date).pipe(
-        catchError (error => empty())
-      ).subscribe (
+        catchError(error => empty())
+      ).subscribe(
         dados => {
         }
       );
       this.setTotal();
-     }
+    }
   }
 
-  sleep (time) {
+  sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
-  
 
-  editarVenda(id){
+
+  editarVenda(id) {
     // this.router.navigate(['/templateForm'], { queryParams: { venda: id } });
     window.open(`http://localhost:4200/templateForm?venda=${id}`);
   }

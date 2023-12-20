@@ -27,11 +27,7 @@
         </div>
       </div>
 
-      <div ngModelGroup="cliente">
-
-        <div class="form-group">
-        </div>
-
+      <div ngModelGroup="cliente" class="cliente-form">
         <div class="row">
           <div class="col-md-5">
             <label for="nome" class="control-label">Nome Cliente*</label>
@@ -105,8 +101,8 @@
 
           <div class="col-md-2 text-center">
             <font size="3"><b>ENTREGA (R$)</b></font>
-            <input type="number" class="form-control" id="entrega" name="entrega" ngModel="1" #entrega="ngModel"
-              max="9" min="0" (click)="setEntrega(entrega.value)">
+            <input type="number" class="form-control" id="entrega" name="entrega" ngModel="2" #entrega="ngModel" 
+              min="0" (click)="setEntrega(entrega.value)">
           </div>
 
           <div style="border-right: 1px solid; margin-right:5px; margin-left:5px"></div>
@@ -114,13 +110,17 @@
           <div class="col-md-5 text-center">
             <b>FORMA DE PAGAMENTO</b>
             <br>
-            <input id="Dinheiro" ngModel="Dinheiro" type="radio" name="formaPagamento" value="Dinheiro" (click)="setPagamento(f, 'Dinheiro')"> 
+            <input id="Dinheiro" ngModel="Dinheiro" type="radio" name="formaPagamento" value="Dinheiro"
+              (click)="setPagamento(f, 'Dinheiro')"> 
             <label for="Dinheiro">Dinheiro</label>   -   
-            <input id="Cartão" ngModel type="radio" name="formaPagamento" value="Cartão" (click)="setPagamento(f, 'Cartão')"> 
+            <input id="Cartão" ngModel type="radio" name="formaPagamento" value="Cartão"
+              (click)="setPagamento(f, 'Cartão')"> 
             <label for="Cartão">Cartão</label>   -   
-            <input id="PicPay" ngModel type="radio" name="formaPagamento" value="PicPay" (click)="setPagamento(f, 'PicPay')"> 
+            <input id="PicPay" ngModel type="radio" name="formaPagamento" value="PicPay"
+              (click)="setPagamento(f, 'PicPay')"> 
             <label for="PicPay">PicPay</label>   -   
-            <input id="Transferência" ngModel type="radio" name="formaPagamento" value="Transferência" (click)="setPagamento(f, 'Transferência')"> 
+            <input id="Transferência" ngModel type="radio" name="formaPagamento" value="Transferência"
+              (click)="setPagamento(f, 'Transferência')"> 
             <label for="Transferência">Transferência</label>
           </div>
 
@@ -143,18 +143,17 @@
       <table class="table table-hover table-bordered table-sm" *ngIf="produtos$ | async as produtos; else loadingError">
         <th class="notbold" style="width:25%;">
           <thead>
-
             <tr>
-              <th style="text-align:center">Hamburguers</th>
-              <th style="text-align:center" colspan="2">Qtd</th>
+              <th class="titulo-card-produto">Hamburguers</th>
+              <th class="titulo-card-qtd" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let produto of listHamburguers">
-              <td style="width:54%;">{{ produto.nome }}</td>
-              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-              <td style="width:27%; text-align:center">
+              <td class="coluna-produto">{{ produto.nome }}</td>
+              <td class="coluna-quantidade">{{ produto.quantidade }}</td>
+              <td class="coluna-botoes">
                 <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
                 <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
               </td>
@@ -164,16 +163,16 @@
           <thead>
 
             <tr>
-              <th style="text-align:center">Combo/Outros</th>
-              <th style="text-align:center" colspan="2">Qtd</th>
+              <th class="titulo-card-produto">Combo/Outros</th>
+              <th class="titulo-card-qtd" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let produto of listOutros">
-              <td style="width:54%;">{{ produto.nome }}</td>
-              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-              <td style="width:27%; text-align:center">
+              <td class="coluna-produto">{{ produto.nome }}</td>
+              <td class="coluna-quantidade">{{ produto.quantidade }}</td>
+              <td class="coluna-botoes">
                 <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
                 <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
               </td>
@@ -181,18 +180,17 @@
         </th>
         <th class="notbold" style="width:25%;">
           <thead>
-
             <tr>
-              <th style="text-align:center">Shake/Açaí</th>
-              <th style="text-align:center" colspan="2">Qtd</th>
+              <th class="titulo-card-produto">Shake/Açaí</th>
+              <th class="titulo-card-qtd" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let produto of listShake">
-              <td style="width:54%;">{{ produto.nome }}</td>
-              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-              <td style="width:27%; text-align:center">
+              <td class="coluna-produto">{{ produto.nome }}</td>
+              <td class="coluna-quantidade">{{ produto.quantidade }}</td>
+              <td class="coluna-botoes">
                 <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
                 <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
               </td>
@@ -201,18 +199,17 @@
         </th>
         <th class="notbold" style="width:25%;">
           <thead>
-
             <tr>
-              <th style="text-align:center">Bebidas</th>
-              <th style="text-align:center" colspan="2">Qtd</th>
+              <th class="titulo-card-produto">Bebidas</th>
+              <th class="titulo-card-qtd" colspan="2">Qtd</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let produto of listBebidas">
-              <td style="width:54%;">{{ produto.nome }}</td>
-              <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-              <td style="width:27%; text-align:center">
+              <td class="coluna-produto">{{ produto.nome }}</td>
+              <td class="coluna-quantidade">{{ produto.quantidade }}</td>
+              <td class="coluna-botoes">
                 <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
                 <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
               </td>
@@ -231,7 +228,7 @@
       </ng-template>
 
       <div class="form-group">
-        <div class="row">
+        <div class="container-botoes-fim-pagina row">
           <div class="col-md-5">
             <label for="newObs" class="control-label">Observações</label>
             <input type="text" class="form-control" id="newObs" name="newObs" ngModel #newObs="ngModel">

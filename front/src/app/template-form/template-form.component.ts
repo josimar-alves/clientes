@@ -79,7 +79,7 @@ export class TemplateFormComponent implements OnInit {
             (<HTMLInputElement>document.getElementById("newVendaID")).click();
           }, 100);
         } else {
-          this.setEntrega(1);
+          this.setEntrega(2);
           this.clickPagamento();
         }
       });
@@ -348,7 +348,7 @@ export class TemplateFormComponent implements OnInit {
     });
     (<HTMLInputElement>document.getElementById("checkCartao")).checked = false;
     this.newTotal = 0;
-    this.setEntrega(1);
+    this.setEntrega(2);
     this.cartao = false;
     this.buttonNameVendaAction = "Salvar";
     this.formaDePagamento = "Dinheiro";

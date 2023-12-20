@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ProdutoService } from './produto.service';
-import { Observable, empty, of, Subject, Subscriber } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
-import { DadosProduto } from './dados-produto';
-import { element } from 'protractor';
+import { ProdutoService } from './services/produtos.service';
+import { empty } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TipoDoProduto } from './enum/tipo-do-produto';
 
 @Component({
   selector: 'app-produtos',
@@ -12,69 +12,51 @@ import { element } from 'protractor';
 })
 export class ProdutosComponent implements OnInit {
 
-  produtos$: Observable<DadosProduto[]>;
-  listProdutos: DadosProduto[];
-  listProdutosCol1: DadosProduto[] = [];
-  listProdutosCol2: DadosProduto[] = [];
-  listProdutosCol3: DadosProduto[] = [];
-  error$ = new Subject<boolean>();
+  dados = {
+    listHamburguer: [],
+    listShakes: [],
+    listBebidas: [],
+    listOutros: []
+  };
 
-  constructor(private service: ProdutoService) { }
+  constructor(
+    private service: ProdutoService,
+    private http: HttpClient,
+  ) { }
 
   ngOnInit() {
-    this.onRefresh();
+
+    this.carregarListaDeProdutos();
   }
 
-  onRefresh() {
-    this.produtos$ = this.service.list().pipe(
-      catchError(error => {
-        console.error(error);
-        this.error$.next(true);
-        return empty();
-      })
-    );
-    
-
-    this.service.list()
-      .pipe(
-        catchError(error => empty())
-      )
-      .subscribe(
-        dados => {
-          let i = 0;
-          let aux = 0;
-          while (i < dados.length) {
-            this.listProdutos = dados;
-            if (aux === 0) {
-              this.listProdutosCol1.push(dados[i]);
-              aux = 1;
-            } else if (aux === 1){
-              this.listProdutosCol2.push(dados[i]);
-              aux = 2;
-            } else {
-              this.listProdutosCol3.push(dados[i]);
-              aux = 0;
-            }
-            i+= 1;
-          }
+  carregarListaDeProdutos() {
+    this.service.getAll().pipe().subscribe(dados => {
+      for (const produto of dados) {
+        if (produto.tipo == TipoDoProduto.HAMBURGUER) {
+          this.dados.listHamburguer.push(produto);
+        } else if (produto.tipo == TipoDoProduto.SHAKE) {
+          this.dados.listShakes.push(produto);
+        } else if (produto.tipo == TipoDoProduto.BEBIDA) {
+          this.dados.listBebidas.push(produto);
+        } else if (produto.tipo == TipoDoProduto.OUTROS) {
+          this.dados.listOutros.push(produto);
         }
-      );
+      }
+    });
+    this.dados.listHamburguer.sort((a, b) => a.posicao - b.posicao);
+    this.dados.listShakes.sort((a, b) => a.posicao - b.posicao);
+    this.dados.listBebidas.sort((a, b) => a.posicao - b.posicao);
+    this.dados.listOutros.sort((a, b) => a.posicao - b.posicao);
   }
 
-  somar(produto) {
-    produto.quantidade += 1;
-    this.listProdutos[produto.posicao].quantidade = produto.quantidade;
-  }
-
-  subtrair(produto) {
-    if (produto.quantidade > 0) {
-      produto.quantidade -= 1;
-      this.listProdutos[produto.posicao].quantidade = produto.quantidade;
+  salvarModificao() {
+    if (confirm("Salvar Modificação")) {
+      const arrayProdutos = [].concat(...Object.values(this.dados));
+      this.service.salvarModificao(arrayProdutos).toPromise().then(() => {
+        alert('Modificado com sucesso');
+      });
+    } else {
+      alert('Modificação não realizada');
     }
-  }
-
-
-  vender() {
-    console.log(this.listProdutos);
   }
 }

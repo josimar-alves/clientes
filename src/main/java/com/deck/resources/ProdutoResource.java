@@ -59,6 +59,24 @@ public class ProdutoResource {
 		return produtoRepository.save(p);
 	}
 	
+	@PostMapping("/modifyAll")
+	public List<Produto> modifyProdutos(@RequestBody List<Produto> produtos) {
+	    List<Produto> produtosModificados = new LinkedList<>();
+
+	    for (Produto produto : produtos) {
+	        Produto p = produtoRepository.findByid(produto.getId());
+	        if (p != null) {
+	            p.setNome(produto.getNome());
+	            p.setDescricao(produto.getDescricao());
+	            p.setPreco(produto.getPreco());
+	            p.setTipo(produto.getTipo());
+	            produtosModificados.add(produtoRepository.save(p));
+	        }
+	    }
+
+	    return produtosModificados;
+	}
+	
 	@DeleteMapping("/delete/{id}")
 	public void removeProduto (@PathVariable(value="id") long id) {
 		produtoRepository.deleteById(id);

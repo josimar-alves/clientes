@@ -1,27 +1,24 @@
-table {
-  width: 100%;
-}
-
 body {
   background-color: black !important;
 }
 
-th, td {
-  text-align: left;
-}
-
-.notbold {
-  font-weight:normal;
-}
-
 .card {
-  width: 115%;
+  width: 100%;
 }
 
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+.container-titulo {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+}
+
+.container-colunas {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+.divisor-vertical {
+  border-right: 1px solid rgba(128, 128, 128, 0.5);
 }

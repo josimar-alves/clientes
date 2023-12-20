@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ReportsService } from './reports.service';
 import { Router } from '@angular/router';
 import { DadosReports, DataProductChart } from './dados-reports';
-import { empty, Observable, Subject } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import ApexCharts from 'apexcharts'
 
 @Component({
@@ -27,6 +25,15 @@ export class ReportsComponent implements OnInit {
     }
 
     ngOnInit() {
+        const now = new Date().toLocaleDateString();
+        var dia = now.split("/")[0];
+        var mes = now.split("/")[1];
+        var ano = now.split("/")[2];
+
+        var startDate = ano + "-" + mes + "-" + dia;
+        var finalDate = ano + "-" + mes + "-" + (Number(dia) + 1);
+
+        this.setupDataReport(startDate, finalDate);
     }
 
     initAndClearData() {
@@ -61,6 +68,10 @@ export class ReportsComponent implements OnInit {
             this.setVendasPorItemChart();
 
             filterButton.disabled = false;
+        });
+
+        this.service.getTotalSalesValue().subscribe(total => {
+            console.log("Valor Total: R$ " + total)
         });
     }
 

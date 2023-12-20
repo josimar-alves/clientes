@@ -1,88 +1,20 @@
 <div class="card">
   <div class="card-header">
-    <div class="float-left">
-      <h4>Lista de Pedidos</h4>
+    <div class="container-titulo">
+      <h4>Produtos</h4>
+      <button type="button" class="btn btn-success" (click)="salvarModificao()">Salvar</button>
     </div>
 
   </div>
   <div class="card-body">
-    <table class="table table-hover table-bordered table-sm" *ngIf="produtos$ | async as produtos; else loadingError">
-      <th class="notbold">
-        <thead>
-          <tr>
-            ⠀<th style="text-align:center">#</th>
-            <th style="text-align:center">Produto</th>
-            <th style="text-align:center" colspan="2">Qtd</th>
-          </tr>
-        </thead>
+    <div class="container-colunas">
+      <app-tabela-produto [nomeDaTabela]="'Hambúrgueres'" [listaDeProdutos]="dados.listHamburguer"></app-tabela-produto>
+      <app-tabela-produto [nomeDaTabela]="'Combos e Outros'" [listaDeProdutos]="dados.listOutros"></app-tabela-produto>
+    </div>
 
-        <tbody>
-          <tr *ngFor="let produto of listProdutosCol1">
-            ⠀<td style="width:10%; text-align:center"><b>{{ produto.id }}</b></td>
-            <td style="width:55%;">{{ produto.nome }}</td>
-            <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-            <td style="width:40%; text-align:center">
-              <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
-              <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
-            </td>
-          </tr>
-        </tbody>
-      </th>
-      <th class="notbold">
-        <thead>
-
-          <tr>
-            ⠀<th style="text-align:center">#</th>
-            <th style="text-align:center">Produto</th>
-            <th style="text-align:center" colspan="2">Qtd</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let produto of listProdutosCol2">
-            ⠀<td style="width:10%; text-align:center"><b>{{ produto.id }}</b></td>
-            <td style="width:55%;">{{ produto.nome }}</td>
-            <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-            <td style="width:40%; text-align:center">
-              <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
-              <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
-            </td>
-          </tr>
-      </th>
-      <th class="notbold">
-        <thead>
-
-          <tr>
-            ⠀<th style="text-align:center">#</th>
-            <th style="text-align:center">Produto</th>
-            <th style="text-align:center" colspan="2">Qtd</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let produto of listProdutosCol3">
-            ⠀<td style="width:10%; text-align:center"><b>{{ produto.id }}</b></td>
-            <td style="width:55%;">{{ produto.nome }}</td>
-            <td style="width:10%; text-align:center">{{ produto.quantidade }}</td>
-            <td style="width:40%; text-align:center">
-              <button type="button" style="margin: 2px" class="btn btn-success" (click)="somar(produto)">+</button>
-              <button type="button" style="margin: 2px" class="btn btn-danger" (click)="subtrair(produto)">-</button>
-            </td>
-          </tr>
-        </tbody>
-      </th>
-    </table>
-
-    <ng-template #loadingError>
-      <div *ngIf="error$ | async; else loading">
-        Erro ao carregar pedidos. Tente novamente mais tarde.
-      </div>
-      <ng-template #loading>
-        <span>Carregando Pedidos...</span>
-      </ng-template>
-    </ng-template>
-
-    <button type="button" class="btn btn-success" (click)="vender(produto)">Vender</button>
-
+    <div class="container-colunas">
+      <app-tabela-produto [nomeDaTabela]="'Bebidas'" [listaDeProdutos]="dados.listBebidas"></app-tabela-produto>
+      <app-tabela-produto [nomeDaTabela]="'Shakes e Açaí'" [listaDeProdutos]="dados.listShakes"></app-tabela-produto>
+    </div>
   </div>
 </div>

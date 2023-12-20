@@ -14,13 +14,15 @@ import { ProdutosComponent } from './produtos/produtos.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PrintComponent } from './print/print.component';
 import { ReportsComponent } from './reports/reports.component';
+import { TabelaProdutoComponent } from './produtos/tabela-produto/tabela-produto.component';
 @NgModule({
   declarations: [
     AppComponent,
     VendasComponent,
     ProdutosComponent,
+    TabelaProdutoComponent,
     PrintComponent,
-    ReportsComponent
+    ReportsComponent,
   ],
   imports: [
     BrowserModule,

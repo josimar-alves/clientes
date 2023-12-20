@@ -9,7 +9,7 @@
   transform: translate(-50%, -50%);
 }
 
-.ng-invalid:not(form-group, form) {
+.ng-touched.ng-invalid:not(form-group, form) {
   border: 1px solid red;
 }
 
@@ -146,7 +146,7 @@
 }
 
 .card {
-  width: 115%;
+  width: 100%;
 }
 
 
@@ -168,4 +168,53 @@ th, td {
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+.titulo-card-produto {
+  width: 80%;
+  text-align: center;
+}
+
+.titulo-card-qtd { 
+  width: 20%;
+  text-align: center;
+}
+
+.tr {
+  min-width: 100%;
+}
+
+.coluna-produto {
+  width: 80%;
+}
+
+.coluna-quantidade {
+  width: 20%;
+  text-align: center;
+}
+
+.coluna-botoes {
+  min-width: 100px;
+  text-align: center;
+}
+
+.btn {
+  min-width: 38px;
+  min-height: 38px;
+}
+
+.btn:disabled {
+  color: #8b8b8b;
+  font-weight: 500;
+  border-color: #c1c1c1;
+  background-color: #dfdfdf;
+  cursor: default;
+}
+
+.cliente-form {
+  border: 0px !important;
+}
+
+.container-botoes-fim-pagina {
+  align-items: flex-end;
 }

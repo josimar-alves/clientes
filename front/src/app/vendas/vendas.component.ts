@@ -79,6 +79,7 @@ export class VendasComponent implements OnInit {
 
     this.totalVendas = 0;
     this.vendas$.subscribe(val => {
+      console.log(val);
       this.qtVendas = val.length;
       var x = 0;
       if (val.length == 0) {

@@ -271,9 +271,10 @@ public class VendaResource {
 		}
 		
 		for (ItemVenda i: items) {
-			if (i.getProduto().getTipo().equals("hamburguer")) {
-				produtosPorVendasAux.add(new SalesProductReportDTO(i.getProduto().getNome(), i.getQuantidade()));
-			}
+			produtosPorVendasAux.add(new SalesProductReportDTO(i.getProduto().getNome(), i.getQuantidade()));
+//			if (i.getProduto().getTipo().equals("hamburguer")) {
+//				produtosPorVendasAux.add(new SalesProductReportDTO(i.getProduto().getNome(), i.getQuantidade()));
+//			}
 		}
 		
 		Map<Object, List<SalesProductReportDTO>> listSales =
@@ -289,6 +290,17 @@ public class VendaResource {
 		});
 		
 		return produtosPorVendas;
+	}
+	
+	@GetMapping("/getTotalSalesValue")
+	public double getTotalSalesValue() {
+		double total = 0;
+		
+		for (Venda venda: vendaRepository.getAllSales()) {
+			total += venda.getTotal();
+		}
+
+		return total;
 	}
 
 	private List<PedidoDTO> getDataReportByDate(Date dataInicial, Date dataFinal) {
@@ -334,5 +346,4 @@ public class VendaResource {
 		}
 		return str.substring(0, str.length() - 2);
 	}
-
 }

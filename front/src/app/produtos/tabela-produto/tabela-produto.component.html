@@ -1,0 +1,36 @@
+<table class="table table-bordered">
+    <th class="th-table">
+        <div>{{ nomeDaTabela }}</div>
+        <thead>
+            <tr>
+                <th class="coluna-id">ID</th>
+                <th class="coluna-nome">Nome do produto</th>
+                <th class="coluna-tipo">Tipo</th>
+                <th class="coluna-posicao">Posição</th>
+                <th class="coluna-preco">Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let produto of listaDeProdutos">
+                <td class="coluna-id"><b>{{ produto.id }}</b></td>
+                <td class="coluna-nome">
+                    <input type="text" [(ngModel)]="produto.nome" class="input-nome">
+                  </td>
+                <td class="coluna-tipo"> 
+                    <select [(ngModel)]="produto.tipo" class="select-tipo">
+                      <option [value]="tipoDoProduto.HAMBURGUER" [selected]="produto.tipo === tipoDoProduto.HAMBURGUER">{{ tipoDoProduto.HAMBURGUER }}</option>
+                      <option [value]="tipoDoProduto.SHAKE" [selected]="produto.tipo === tipoDoProduto.SHAKE">{{ tipoDoProduto.SHAKE }}</option>
+                      <option [value]="tipoDoProduto.BEBIDA" [selected]="produto.tipo === tipoDoProduto.BEBIDA">{{ tipoDoProduto.BEBIDA }}</option>
+                      <option [value]="tipoDoProduto.OUTROS" [selected]="produto.tipo === tipoDoProduto.OUTROS">{{ tipoDoProduto.OUTROS }}</option>
+                    </select>
+                  </td>
+                  <td class="coluna-posicao">
+                    <input type="text" [(ngModel)]="produto.posicao" class="input-posicao">
+                  </td>
+                  <td class="coluna-preco">
+                    <input type="text" [(ngModel)]="produto.preco" class="input-preco">
+                  </td>
+            </tr>
+        </tbody>
+    </th>
+</table>

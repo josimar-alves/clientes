@@ -18,6 +18,11 @@ export class ReportsService {
         return this.http.get<DataProductChart[]>(this.API + "getProductSalesQuantityByDateRange/" + initialDate + "/" + finalDate)
             .pipe();
     }
+
+    getTotalSalesValue() {
+        return this.http.get<Number>(this.API + "getTotalSalesValue")
+            .pipe();
+    }
 }
 
 

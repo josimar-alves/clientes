@@ -17,7 +17,7 @@
     </div>
 
     <div class="col-md-2">
-      <input id="dateFilter" type="date" name="dateFilter" ngModel #dateFilter="ngModel">
+      <input class="filtro-de-data" id="dateFilter" type="date" name="dateFilter" ngModel #dateFilter="ngModel">
       <button id="dateFilterButton" name="dateFilterButton" ngModel #dateFilterButton="ngModel" type="button"
         class="btn btn-info" (click)="filterByDate(dateFilter.value)">Filtrar</button>
     </div>
